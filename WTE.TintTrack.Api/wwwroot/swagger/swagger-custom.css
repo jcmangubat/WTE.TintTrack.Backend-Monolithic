@@ -1,0 +1,28 @@
+﻿/* Custom CSS to change Swagger header logo and title */
+
+.swagger-ui .topbar .topbar-wrapper {
+    height: 70px;
+}
+
+.topbar {
+    background: linear-gradient(78deg, rgb(255 253 253 / 80%), rgb(255 255 255 / 17%) 70.71%), linear-gradient(70deg, rgb(66 167 142 / 35%), rgb(5 89 68) 70.71%), linear-gradient(292deg, #08614b, rgb(10 10 10) 70.71%);
+}
+
+    .topbar .link img {
+        content: url('/swagger/wte-tinttrack-logo.png') !important; /* Path to your logo */
+        height: 70px !important;
+    }
+
+    .topbar .link h1 {
+        display: none!important; /* Hide the default Swagger title */
+    }
+
+@keyframes fadeBackground {
+    0% {
+        background-color: white;
+    }
+
+    100% {
+        background-color: cyan;
+    }
+}

@@ -1,0 +1,128 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>230804eb-76f2-44ee-ad62-ed98293dbb35</UserSecretsId>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
+    <DocumentationFile>bin\Debug\net8.0\WTE.TintTrack.Api.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Controllers\Business\**" />
+    <Compile Remove="Controllers\Core\**" />
+    <Compile Remove="Data\**" />
+    <Compile Remove="Helpers\ControllerAbstractions\_old\**" />
+    <Compile Remove="keys\**" />
+    <Compile Remove="logs\**" />
+    <Compile Remove="src\**" />
+    <Content Remove="Controllers\Business\**" />
+    <Content Remove="Controllers\Core\**" />
+    <Content Remove="Data\**" />
+    <Content Remove="Helpers\ControllerAbstractions\_old\**" />
+    <Content Remove="keys\**" />
+    <Content Remove="logs\**" />
+    <Content Remove="src\**" />
+    <EmbeddedResource Remove="Controllers\Business\**" />
+    <EmbeddedResource Remove="Controllers\Core\**" />
+    <EmbeddedResource Remove="Data\**" />
+    <EmbeddedResource Remove="Helpers\ControllerAbstractions\_old\**" />
+    <EmbeddedResource Remove="keys\**" />
+    <EmbeddedResource Remove="logs\**" />
+    <EmbeddedResource Remove="src\**" />
+    <None Remove="Controllers\Business\**" />
+    <None Remove="Controllers\Core\**" />
+    <None Remove="Data\**" />
+    <None Remove="Helpers\ControllerAbstractions\_old\**" />
+    <None Remove="keys\**" />
+    <None Remove="logs\**" />
+    <None Remove="src\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Controllers\AuthController_xz.cs" />
+    <Compile Remove="Controllers\TenantSubscriptionPaymentController.cs" />
+    <Compile Remove="Helpers\ControllerAbstractions\EntityOperationsControllerBase - Copy.cs" />
+    <Compile Remove="Helpers\ControllerAbstractions\EnumControllerBase.cs" />
+    <Compile Remove="Helpers\ControllerAbstractions\LoggingControllerBase.cs" />
+    <Compile Remove="Helpers\ControllerAbstractions\MappedControllerBase.cs" />
+    <Compile Remove="Helpers\Extensions\ExceptionMiddlewareExtensions.cs" />
+    <Compile Remove="Middlewares\CustomValidationErrorMiddleware.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\swagger\swagger-clear-token.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove=".env_bak" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Controllers\Business\AuditLogsController.cs" />
+    <Compile Include="Controllers\Business\ContactController.cs" />
+    <Compile Include="Controllers\Business\CustomerController.cs" />
+    <Compile Include="Controllers\Business\InquiryController.cs" />
+    <Compile Include="Controllers\Business\PropertyController.cs" />
+    <Compile Include="Controllers\Core\AccountController.cs" />
+    <Compile Include="Controllers\Core\AuthController.cs" />
+    <Compile Include="Controllers\Core\PermissionsController.cs" />
+    <Compile Include="Controllers\Core\SubscriptionPlanController.cs" />
+    <Compile Include="Controllers\Core\SubscriptionPlanDiscountController.cs" />
+    <Compile Include="Controllers\Core\SubscriptionPlanFeatureController.cs" />
+    <Compile Include="Controllers\Core\TenantController.cs" />
+    <Compile Include="Controllers\Core\TenantSubscriptionController.cs" />
+    <Compile Include="Controllers\Core\TenantSubscriptionInvoiceController.cs" />
+    <Compile Include="Controllers\Core\UserBillingProfileController.cs" />
+    <Compile Include="Controllers\Core\UserTenantController.cs" />
+    <Compile Include="Controllers\Core\UtilityController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="dotenv.net" Version="3.2.1" />
+    <PackageReference Include="Duende.IdentityServer" Version="7.0.8" />
+    <PackageReference Include="Duende.IdentityServer.AspNetIdentity" Version="7.0.8" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.AzureAppServices.HostingStartup" Version="8.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="8.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.OData" Version="9.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="8.0.3" />
+    <PackageReference Include="Serilog.Sinks.ApplicationInsights" Version="4.0.0" />
+    <PackageReference Include="Serilog.Sinks.AzureBlobStorage" Version="4.0.5" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="7.1.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Community.OData" Version="1.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="8.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\_Business\WTE.TintTrack.Business.Application\WTE.TintTrack.Business.Application.csproj" />
+    <ProjectReference Include="..\_Business\WTE.TintTrack.Business.DataImporter\WTE.TintTrack.Business.DataImporter.csproj" />
+    <ProjectReference Include="..\_Common\WTE.TintTrack.Common.Application\WTE.TintTrack.Application.Shared.csproj" />
+    <ProjectReference Include="..\_Common\WTE.TintTrack.Common.Infrastructure\WTE.TintTrack.Infrastructure.Shared.csproj" />
+    <ProjectReference Include="..\_Core\WTE.TintTrack.Core.Application\WTE.TintTrack.Core.Application.csproj" />
+    <ProjectReference Include="..\_Core\WTE.TintTrack.Core.Domain\WTE.TintTrack.Core.Domain.csproj" />
+    <ProjectReference Include="..\_Core\WTE.TintTrack.Core.Infrastructure\WTE.TintTrack.Core.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Description.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

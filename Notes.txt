@@ -1,0 +1,64 @@
+Client:
+
+
+<form id="loginForm">
+    <input type="text" id="username" placeholder="Username" />
+    <input type="password" id="password" placeholder="Password" />
+    <button type="submit">Login</button>
+</form>
+
+<script>
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        const response = await fetch('/api/login/token', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ Username: username, Password: password })
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            localStorage.setItem('token', data.token);
+            // Redirect or handle successful login
+        } else {
+            // Handle login failure
+        }
+    });
+</script>
+
+==============================
+
+const token = "your_access_token"; // Obtain the token from IdentityServer
+fetch('https://api.example.com/protected-endpoint', {
+    method: 'GET',
+    headers: {
+        'Authorization': `Bearer ${token}`
+    }
+})
+.then(response => response.json())
+.then(data => console.log(data));
+
+======================================
+
+Steps to Generate TypeScript from OpenAPI:
+
+Install OpenAPI Generator (if not already installed):
+npm install @openapitools/openapi-generator-cli -g
+
+Generate TypeScript models and services: Use the OpenAPI URL from ASP.NET backend (/swagger/v1/swagger.json) to generate TypeScript models and validation rules.
+openapi-generator-cli generate -i https://wte-tinttrack-backend-dev.azurewebsites.net/swagger/v1/swagger.json -g typescript-axios -o ./src/api-client
+
+This will create TypeScript models and API client code in the specified output directory (./src/api-client).
+
+Use the Generated Models in Next.js: We can now import the generated models and API client into our Next.js app. Validation on the frontend can be handled based on the models generated from the backend.
+
+Example:
+import { Customer } from './api-client/models';
+
+// Now use the Customer model in the form validation logic
+
+

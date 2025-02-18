@@ -1,0 +1,59 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Entities\old\**" />
+    <Compile Remove="Interfaces\Repositories\_old\**" />
+    <EmbeddedResource Remove="Entities\old\**" />
+    <EmbeddedResource Remove="Interfaces\Repositories\_old\**" />
+    <None Remove="Entities\old\**" />
+    <None Remove="Interfaces\Repositories\_old\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Entities\ApplicationRole.cs" />
+    <Compile Remove="Entities\ApplicationUser.cs" />
+    <Compile Remove="Entities\PropertyDetails.cs" />
+    <Compile Remove="Entities\SubscriptionPlan.cs" />
+    <Compile Remove="Entities\SubscriptionPlanFeature.cs" />
+    <Compile Remove="Entities\SubscriptionPromoDiscount.cs" />
+    <Compile Remove="Entities\Tenant.cs" />
+    <Compile Remove="Entities\TenantSubscription.cs" />
+    <Compile Remove="Entities\TenantSubscriptionInvoice.cs" />
+    <Compile Remove="Entities\TenantSubscriptionPayment.cs" />
+    <Compile Remove="Entities\UserBillingProfile.cs" />
+    <Compile Remove="Entities\UserTenant.cs" />
+    <Compile Remove="Entities\UserTenantRole.cs" />
+    <Compile Remove="Entities\Vehicle.cs" />
+    <Compile Remove="Interfaces\Repositories\IContactOwnershipRepository.cs" />
+    <Compile Remove="Interfaces\Repositories\ISubscriptionPlanFeatureRepository.cs" />
+    <Compile Remove="Interfaces\Repositories\ISubscriptionPlanRepository.cs" />
+    <Compile Remove="Interfaces\Repositories\ISubscriptionPromoDiscountRepository.cs" />
+    <Compile Remove="Interfaces\Repositories\ITenantSubscriptionInvoiceRepository.cs" />
+    <Compile Remove="Interfaces\Repositories\ITenantSubscriptionPaymentRepository.cs" />
+    <Compile Remove="Interfaces\Repositories\ITenantSubscriptionRepository.cs" />
+    <Compile Remove="Interfaces\Repositories\IUserBillingProfileRepository.cs" />
+    <Compile Remove="Interfaces\Repositories\IUserRepository.cs" />
+    <Compile Remove="Interfaces\Repositories\IUserTenantRepository.cs" />
+    <Compile Remove="Interfaces\Repositories\IVehicleRepository.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Entities\Contact.cs~RF1395f25.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SMEAppHouse.Core.Patterns.Repo" Version="9.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\_Common\WTE.TintTrack.Common\WTE.TintTrack.Common.csproj" />
+    <ProjectReference Include="..\..\_Common\WTE.TintTrack.Domain.Shared\WTE.TintTrack.Domain.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

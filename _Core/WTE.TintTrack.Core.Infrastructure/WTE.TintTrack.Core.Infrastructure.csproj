@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Configurations\ApplicationFeatureConfiguration.cs" />
+    <Compile Remove="Configurations\ApplicationFeatureRoleAccessConfiguration.cs" />
+    <Compile Remove="Repositories\ApplicationFeatureRepository.cs" />
+    <Compile Remove="Repositories\ApplicationFeatureRoleAccessRepository.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.10" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\_Business\WTE.TintTrack.Business.Infrastructure\WTE.TintTrack.Business.Infrastructure.csproj" />
+    <ProjectReference Include="..\WTE.TintTrack.Core.Application\WTE.TintTrack.Core.Application.csproj" />
+    <ProjectReference Include="..\WTE.TintTrack.Core.Domain\WTE.TintTrack.Core.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

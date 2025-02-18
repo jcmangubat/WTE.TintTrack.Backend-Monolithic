@@ -1,0 +1,67 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="EntityRecordValidators\**" />
+    <Compile Remove="Services\old\**" />
+    <EmbeddedResource Remove="EntityRecordValidators\**" />
+    <EmbeddedResource Remove="Services\old\**" />
+    <None Remove="EntityRecordValidators\**" />
+    <None Remove="Services\old\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="DTOs\ApplicationRoleDto.cs" />
+    <Compile Remove="DTOs\ApplicationUserDto.cs" />
+    <Compile Remove="DTOs\ContactOwnershipDto.cs" />
+    <Compile Remove="DTOs\PropertyDetailsDto.cs" />
+    <Compile Remove="DTOs\SubscriptionPlanDto.cs" />
+    <Compile Remove="DTOs\SubscriptionPlanFeatureDto.cs" />
+    <Compile Remove="DTOs\SubscriptionPromoDiscountDto.cs" />
+    <Compile Remove="DTOs\TenantDto.cs" />
+    <Compile Remove="DTOs\TenantSubscriptionDto.cs" />
+    <Compile Remove="DTOs\TenantSubscriptionInvoiceDto.cs" />
+    <Compile Remove="DTOs\TenantSubscriptionPaymentDto.cs" />
+    <Compile Remove="DTOs\UserBillingProfileDto.cs" />
+    <Compile Remove="DTOs\UserTenantDto.cs" />
+    <Compile Remove="DTOs\UserTenantRoleDto.cs" />
+    <Compile Remove="DTOs\VehicleDto.cs" />
+    <Compile Remove="Interfaces\ISubscriptionPlanFeatureService.cs" />
+    <Compile Remove="Interfaces\ISubscriptionPlanService.cs" />
+    <Compile Remove="Interfaces\ISubscriptionPromoDiscountService.cs" />
+    <Compile Remove="Interfaces\ITenantSubscriptionInvoiceService.cs" />
+    <Compile Remove="Interfaces\ITenantSubscriptionPaymentService.cs" />
+    <Compile Remove="Interfaces\ITenantSubscriptionService.cs" />
+    <Compile Remove="Interfaces\IUserBillingProfileService.cs" />
+    <Compile Remove="Interfaces\IUserService.cs" />
+    <Compile Remove="Interfaces\IUserTenantService.cs" />
+    <Compile Remove="Interfaces\IVehicleService.cs" />
+    <Compile Remove="Mappings\CoreMappingProfile.cs" />
+    <Compile Remove="Services\SubscriptionPlanFeatureService.cs" />
+    <Compile Remove="Services\SubscriptionPlanService.cs" />
+    <Compile Remove="Services\SubscriptionPromoDiscountService.cs" />
+    <Compile Remove="Services\TenantSubscriptionInvoiceService.cs" />
+    <Compile Remove="Services\TenantSubscriptionPaymentService.cs" />
+    <Compile Remove="Services\TenantSubscriptionService.cs" />
+    <Compile Remove="Services\UserBillingProfileService.cs" />
+    <Compile Remove="Services\UserService.cs" />
+    <Compile Remove="Services\UserTenantService.cs" />
+    <Compile Remove="Services\VehicleService.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\_Common\WTE.TintTrack.Common.Application\WTE.TintTrack.Application.Shared.csproj" />
+    <ProjectReference Include="..\..\_Common\WTE.TintTrack.Common\WTE.TintTrack.Common.csproj" />
+    <ProjectReference Include="..\WTE.TintTrack.Business.Domain\WTE.TintTrack.Business.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -398,3 +398,7 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+/WTE.TintTrack.Api/.env
+/WTE.TintTrack.Api/.env_bak
+/WTE.TintTrack.Api/appsettings.json
+/WTE.TintTrack.Api/Description.txt

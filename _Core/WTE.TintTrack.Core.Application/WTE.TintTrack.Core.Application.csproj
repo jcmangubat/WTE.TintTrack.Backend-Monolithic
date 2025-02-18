@@ -1,0 +1,54 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Authorization\**" />
+    <Compile Remove="Features\**" />
+    <Compile Remove="Messages\**" />
+    <Compile Remove="Services\old\**" />
+    <EmbeddedResource Remove="Authorization\**" />
+    <EmbeddedResource Remove="Features\**" />
+    <EmbeddedResource Remove="Messages\**" />
+    <EmbeddedResource Remove="Services\old\**" />
+    <None Remove="Authorization\**" />
+    <None Remove="Features\**" />
+    <None Remove="Messages\**" />
+    <None Remove="Services\old\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="DTOs\CoreEntityRelated\ApplicationFeatureDto.cs" />
+    <Compile Remove="DTOs\CoreEntityRelated\ApplicationFeatureRoleAccessDto.cs" />
+    <Compile Remove="DTOs\LoginRequestDto.cs" />
+    <Compile Remove="DTOs\PasswordResetRequestDto.cs" />
+    <Compile Remove="DTOs\RefreshTokenDto.cs" />
+    <Compile Remove="DTOs\TenantResult.cs" />
+    <Compile Remove="DTOs\UserFromTokenDto.cs" />
+    <Compile Remove="DTOs\UserRegistrationDto.cs" />
+    <Compile Remove="Helpers\ModelExtensions.cs" />
+    <Compile Remove="Interfaces\IAccessControlService.cs" />
+    <Compile Remove="Services\AccessControlService.cs" />
+    <Compile Remove="Validators\PasswordValidator.cs" />
+    <Compile Remove="Validators\SubscriptionPlanRequestValidator.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\_Common\WTE.TintTrack.Common\WTE.TintTrack.Common.csproj" />
+    <ProjectReference Include="..\WTE.TintTrack.Core.Domain\WTE.TintTrack.Core.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Helpers\" />
+  </ItemGroup>
+
+</Project>

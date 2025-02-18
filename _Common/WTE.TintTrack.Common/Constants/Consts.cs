@@ -1,0 +1,872 @@
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
+
+namespace WTE.TintTrack.Common.Constants;
+
+public static class Consts
+{
+    public enum LeadSourcesEnum
+    {
+        /// <summary>
+        /// The customer contacted via phone.
+        /// </summary>
+        Phone,
+
+        /// <summary>
+        /// The customer submitted an inquiry through the website.
+        /// </summary>
+        Website,
+
+        /// <summary>
+        /// The customer made an in-person visit to the business location.
+        /// </summary>
+        InPerson,
+
+        /// <summary>
+        /// The customer contacted via email.
+        /// </summary>
+        Email,
+
+        /// <summary>
+        /// The customer contacted through social media platforms.
+        /// </summary>
+        SocialMedia,
+
+        /// <summary>
+        /// The customer contacted through another method not covered by the above options.
+        /// </summary>
+        Other
+    }
+
+
+    public enum CustomerStatusEnum
+    {
+        /// <summary>
+        /// Initial stage, when the customer shows interest but hasn’t yet committed.
+        /// </summary>
+        Prospect = 1,
+
+        /// <summary>
+        /// Prospect who has been qualified and shows potential for conversion.
+        /// </summary>
+        Lead = 2,
+
+        /// <summary>
+        /// Qualified lead with active engagement in sales discussions or negotiations.
+        /// </summary>
+        Opportunity = 3,
+
+        /// <summary>
+        /// Customer who has completed at least one transaction or contract.
+        /// </summary>
+        Client = 4,
+
+        /// <summary>
+        /// Client who has engaged in multiple transactions or contracts.
+        /// </summary>
+        RepeatClient = 5,
+
+        /// <summary>
+        /// Formerly active client who hasn’t engaged in recent business for a specific period.
+        /// </summary>
+        LapsedClient = 6,
+
+        /// <summary>
+        /// A client who is no longer actively engaging but may still receive communications for re-engagement.
+        /// </summary>
+        Inactive = 7
+    }
+
+    public enum CustomerContactRelationshipTypesEnum
+    {
+        /// <summary>
+        /// The main contact person for a customer account.
+        /// </summary>
+        PrimaryContact,
+
+        /// <summary>
+        /// The contact responsible for receiving and managing billing information.
+        /// </summary>
+        BillingContact,
+
+        /// <summary>
+        /// A contact for handling support or service-related inquiries.
+        /// </summary>
+        SupportContact,
+
+        /// <summary>
+        /// An emergency contact for urgent matters.
+        /// </summary>
+        EmergencyContact,
+
+        /// <summary>
+        /// A technical contact, often for IT-related matters.
+        /// </summary>
+        TechnicalContact,
+
+        /// <summary>
+        /// A decision-maker or authority figure for the customer.
+        /// </summary>
+        DecisionMaker,
+
+        /// <summary>
+        /// A contact associated with contract or legal matters.
+        /// </summary>
+        LegalContact,
+
+        /// <summary>
+        /// A representative for sales inquiries or opportunities.
+        /// </summary>
+        SalesContact
+    }
+
+    [JsonConverter(typeof(JsonStringEnumConverter))]
+    public enum PropertyTypesEnum
+    {
+        Automotive = 1,          // Vehicles, including windshields, windows, mirrors, etc.
+        Architectural = 2,       // Buildings, windows, doors, skylights, etc.
+        Residential = 3,         // Specifically for residential properties (e.g., homes, apartments)
+        Commercial = 4,          // Commercial properties like storefronts, office partitions, etc.
+        Specialty = 5,           // Specialized glass types like smart glass, fire-resistant, etc.
+        GlassFilm = 6,           // For any tinting or film applications (e.g., UV, heat-reflective)
+        EnergyEfficient = 7,     // Energy-saving glass options like IGUs and Low-E coatings
+        Custom = 8,              // Custom or unique glass applications (e.g., curved, colored glass)
+        Signage = 9,             // Glass used for signage, branding, and displays
+        Outdoor = 10,            // Glass used in outdoor settings (e.g., railings, pool fences)
+        Other = 11               // For any properties that don't fall under the predefined categories
+    }
+
+    public enum TintTypesEnum
+    {
+        /// <summary>
+        /// Standard tint type, typically the most basic and affordable option.
+        /// </summary>
+        Standard = 1,
+
+        /// <summary>
+        /// Ceramic tint type, offering better heat rejection and UV protection.
+        /// </summary>
+        Ceramic = 2,
+
+        /// <summary>
+        /// Reflective tint type, designed to reflect more light and reduce glare.
+        /// </summary>
+        Reflective = 3,
+
+        /// <summary>
+        /// Dyed tint type, providing a darker look and improving privacy, but offers less heat rejection compared to ceramic.
+        /// </summary>
+        Dyed = 4,
+
+        /// <summary>
+        /// Carbon tint type, offers high heat rejection and UV protection, providing a stylish matte finish.
+        /// </summary>
+        Carbon = 5,
+
+        /// <summary>
+        /// Metalized tint type, known for reflecting heat and reducing glare, typically used for more durability.
+        /// </summary>
+        Metalized = 6,
+
+        /// <summary>
+        /// Photochromic tint type, also known as transition tint, which adjusts its darkness based on light exposure.
+        /// </summary>
+        Photochromic = 7,
+
+        /// <summary>
+        /// Nano-Ceramic tint type, offering superior heat rejection and UV protection with enhanced clarity.
+        /// </summary>
+        NanoCeramic = 8
+    }
+
+    public enum ProjectTypesEnum
+    {
+        /// <summary>
+        /// Automotive Window Tinting: Applying tinted film to vehicle windows.
+        /// </summary>
+        AutomotiveWindowTinting = 1,
+
+        /// <summary>
+        /// Residential Window Tinting: Tinting windows in homes for privacy and energy efficiency.
+        /// </summary>
+        ResidentialWindowTinting = 2,
+
+        /// <summary>
+        /// Commercial Window Tinting: Window tinting for office buildings and commercial spaces.
+        /// </summary>
+        CommercialWindowTinting = 3,
+
+        /// <summary>
+        /// Automotive Paint Protection and Tinting: Combining paint protection films and window tinting.
+        /// </summary>
+        AutomotivePaintProtectionAndTinting = 4,
+
+        /// <summary>
+        /// Architectural Tinting for Glass Facades: Tinting glass facades of buildings for aesthetic and energy efficiency.
+        /// </summary>
+        ArchitecturalTintingForGlassFacades = 5,
+
+        /// <summary>
+        /// Smart Window Tinting: Electrochromic tinting that adjusts automatically based on sunlight or temperature.
+        /// </summary>
+        SmartWindowTinting = 6,
+
+        /// <summary>
+        /// Window Tinting for Privacy and Security: Tinting windows to enhance privacy and prevent breakage.
+        /// </summary>
+        WindowTintingForPrivacyAndSecurity = 7,
+
+        /// <summary>
+        /// Sunscreen and UV Protection Tinting: Tinting designed to block harmful UV rays and protect interiors.
+        /// </summary>
+        SunscreenAndUVProtectionTinting = 8,
+
+        /// <summary>
+        /// Solar Control Window Films: Films to reduce solar heat gain and improve building energy efficiency.
+        /// </summary>
+        SolarControlWindowFilms = 9,
+
+        /// <summary>
+        /// Decorative Tinting: Tints applied primarily for aesthetic purposes, such as patterns, colors, or branding.
+        /// </summary>
+        DecorativeTinting = 10,
+
+        /// <summary>
+        /// Protective Coatings and Tinting for Industrial Equipment: Tinting applied to industrial equipment to reduce glare and protect sensitive components.
+        /// </summary>
+        ProtectiveCoatingsAndTintingForIndustrialEquipment = 11,
+
+        /// <summary>
+        /// Window Tinting for Privacy Glass in Smart Homes: Using smart glass technology for on-demand privacy in homes.
+        /// </summary>
+        WindowTintingForPrivacyGlassInSmartHomes = 12
+    }
+
+    public enum InvitationSourcesEnum
+    {
+        FromUser,
+        FromTenant
+    }
+
+    public enum ActiveInclusionOptionsEnum
+    {
+        ALL,
+        ACTIVE_ONLY,
+        INACTIVE_ONLY
+    }
+
+    public enum TenantStatusEnum
+    {
+        Active, Inactive, Suspended,
+        PendingApproval
+    }
+
+    public enum BillingProfileTypesEnum
+    {
+        CreditCard,
+        BankTransfer,
+        PayPal,
+        Invoice,
+        Other
+    }
+
+    public enum UserRolesEnum
+    {
+        /// <summary>
+        /// This role is designed for personnel who manage the CRM system on a company-wide 
+        /// level, overseeing multiple tenants. A GlobalAdmin would have full administrative 
+        /// privileges, including managing tenant accounts, CRM configurations, and global 
+        /// reporting. They can perform actions across all tenant data and resources. This 
+        /// role is typically reserved for the company's highest level of CRM administrators 
+        /// or IT staff.
+        /// </summary>
+        GlobalAdmin,
+
+        /// <summary>
+        /// This role would represent a global technical support or customer service team member who 
+        /// provides assistance to tenants across multiple branches. They may need access to all tenant 
+        /// data to troubleshoot issues related to the CRM, billing, or operations but would not have 
+        /// administrative or management rights. Their permissions: read-only access to tenants' customer 
+        /// data and job statuses, plus tools for diagnosing issues but no ability to alter global settings.
+        /// </summary>
+        GlobalTechSupport,
+
+        /// <summary>
+        /// This role designed for personnel managing customer accounts
+        /// </summary>
+        GlobalAccountMgr,
+
+        /// <summary>
+        /// Users of these role have read-only access to all tenants within the CRM system. 
+        /// This is useful for executives, auditors, or stakeholders who need to monitor 
+        /// tenant performance, review global metrics, or generate system-wide reports but 
+        /// without making any changes. They can view tenant data but have no write or administrative 
+        /// permissions.
+        /// </summary>
+        GlobalViewer,
+
+        /// <summary>
+        /// This role represents the highest authority within a specific tenant (e.g., a franchisee 
+        /// or branch owner). They have full administrative rights over their tenant, including managing 
+        /// users (such as installers, technicians, or managers), overseeing projects (like window tint 
+        /// installations), handling financials, and accessing tenant-specific reports. This role can 
+        /// control all aspects of the business at the tenant level, from customer management to service 
+        /// delivery.
+        /// </summary>
+        TenantOwner,
+
+        TenantAccountAdmin,
+
+        /// <summary>
+        /// Personnel of this role might act as a local manager for a branch within the tint business, 
+        /// handling day-to-day operations. This role would involve overseeing team members (installers, 
+        /// consultants, technicians), managing appointments, and perhaps handling inventory or customer 
+        /// relations. The TenantManager has fewer permissions than the TenantOwner, likely focusing more on operational and less on administrative functions like billing or contracts.
+        /// </summary>
+        TenantSystemAdmin,
+
+        /// <summary>
+        /// In a tint business, managing the inventory of tint materials, tools, and supplies is 
+        /// critical. The TenantInventoryManager would focus on tracking stock levels, ordering new 
+        /// materials, and ensuring installers have what they need for their jobs.
+        /// Permissions: Access to inventory management features, order placement, and stock updates.
+        /// No access to customer management, CRM, or administrative settings.
+        /// </summary>
+        TenantInventoryManager,
+
+        /// <summary>
+        /// This role could handle tenant-level financial operations, such as invoicing, 
+        /// payment collection, and financial reporting for the branch. The TenantBillingManager 
+        /// might handle customer payments, refunds, and other finance-related tasks. 
+        /// Permissions: Access to billing, invoicing, and payment history.Limited or no access to 
+        /// installation scheduling or customer service operations.
+        /// </summary>
+        TenantBillingManager,
+
+        /// <summary>
+        /// Personnel of this role might handle the scheduling and coordination of installers and 
+        /// technicians. This role would involve ensuring the right personnel are assigned to the right 
+        /// jobs, managing work calendars, and keeping the workflow organized.
+        /// Permissions: Access to job schedules, installer availability, and appointment bookings. 
+        /// Limited or no access to billing or customer management.
+        /// </summary>
+        TenantDispatcher,
+
+        /// <summary>
+        /// Personnel of this role likely represents an external advisor or a specialized role focused 
+        /// on sales, consultation, or advisory services. They may have permissions to access customer 
+        /// information, offer recommendations on services (like which type of tint to use), and work 
+        /// closely with customers on planning and customization, but without the ability to modify 
+        /// core system settings or manage the tenant's staff.
+        /// </summary>
+        TenantConsultant,
+
+        /// <summary>
+        /// This role is for personnel who handle the installation of tint products at customer sites. 
+        /// Their permissions would likely focus on accessing customer orders, managing installation 
+        /// schedules, and updating job statuses. They may not have access to CRM features unrelated 
+        /// to the installation process, like customer acquisition or financial data.
+        /// </summary>
+        TenantInstaller,
+
+        /// <summary>
+        /// Personnel of this role provide support for ongoing maintenance or troubleshooting related 
+        /// to the tint products after installation. They might handle customer service requests, 
+        /// perform repairs or maintenance, and update the CRM with job status or outcomes. Their 
+        /// role is likely more limited compared to TenantInstallers, focusing strictly on technical 
+        /// tasks rather than the installation itself.
+        /// </summary>
+        TenantTechnician,
+
+        /// <summary>
+        /// This role is for someone focused specifically on sales and customer acquisition within 
+        /// a tenant (branch). The TenantSalesRep would handle lead generation, customer interactions, 
+        /// and closing deals (e.g., selling tint services, upselling premium products). This role may 
+        /// not require administrative permissions but should be able to create and modify customer 
+        /// records, generate quotes, and book installations.
+        /// Their permissions: Access to CRM for customer management, sales pipeline, and scheduling. 
+        /// No access to tenant settings, installer assignments, or technical operations.
+        /// </summary>
+        TenantSalesRep,
+
+        /// <summary>
+        /// Personnel of this role specifically is for handling tenant-level customer inquiries, 
+        /// complaints, and post-service follow-ups. The TenantCustomerService role would focus on 
+        /// addressing customer issues related to tint installations, scheduling follow-ups, and 
+        /// handling complaints or warranty requests.
+        /// Permissions: Access to customer records, job statuses, and the ability to update service 
+        /// requests, but no access to tenant-level management or administrative features.
+        /// </summary>
+        TenantCustomerService,
+
+        TenantViewer,
+    }
+
+    public enum SubscriptionStatusEnum
+    {
+        Active, Inactive, ForReview, InReview, InProvisioning, Cancelled
+    }
+
+    public enum BillingCyclesEnum
+    {
+        /// <summary>
+        /// The subscription is billed on a daily basis.
+        /// </summary>
+        Daily,
+
+        /// <summary>
+        /// The subscription is billed on a weekly basis.
+        /// </summary>
+        Weekly,
+
+        /// <summary>
+        /// The subscription is billed every two weeks.
+        /// </summary>
+        BiWeekly,
+
+        /// <summary>
+        /// The subscription is billed once a month.
+        /// </summary>
+        Monthly,
+
+        /// <summary>
+        /// The subscription is billed every three months.
+        /// </summary>
+        Quarterly,
+
+        /// <summary>
+        /// The subscription is billed every six months.
+        /// </summary>
+        SemiAnnually,
+
+        /// <summary>
+        /// The subscription is billed once a year.
+        /// </summary>
+        Annually,
+
+        /// <summary>
+        /// The subscription is billed once every two years.
+        /// </summary>
+        Biennially,
+
+        /// <summary>
+        /// The subscription is billed once every three years.
+        /// </summary>
+        Triennially
+    }
+
+    public enum PaymentStatusEnum
+    {
+        /// <summary>
+        /// Payment has been successfully completed.
+        /// </summary>
+        [Description("Payment has been successfully completed.")]
+        Successful,
+
+        /// <summary>
+        /// Payment has failed due to an error (e.g., insufficient funds, card declined).
+        /// </summary>
+        [Description("Payment has failed due to an error (e.g., insufficient funds, card declined).")]
+        Failed,
+
+        /// <summary>
+        /// Payment is currently in progress and awaiting confirmation.
+        /// </summary>
+        [Description("Payment is currently in progress and awaiting confirmation.")]
+        Pending,
+
+        /// <summary>
+        /// Payment has been canceled by the user or the system.
+        /// </summary>
+        [Description("Payment has been canceled by the user or the system.")]
+        Canceled,
+
+        /// <summary>
+        /// Payment has been refunded back to the user.
+        /// </summary>
+        [Description("Payment has been refunded back to the user.")]
+        Refunded,
+
+        /// <summary>
+        /// Payment is disputed and under review by the payment provider.
+        /// </summary>
+        [Description("Payment is disputed and under review by the payment provider.")]
+        Disputed
+    }
+
+    public enum InvoiceStatusEnum
+    {
+        Unpaid, Paid, Overdue, Failed
+    }
+
+    /// <summary>
+    /// Enum representing the possible statuses of a tenant invitation.
+    /// </summary>
+    public enum TenantInvitationStatusEnum
+    {
+        /// <summary>
+        /// The invitation has been created and sent but has not yet been responded to by the recipient.
+        /// </summary>
+        Pending,
+
+        /// <summary>
+        /// The recipient has accepted the invitation and joined the tenant.
+        /// </summary>
+        Accepted,
+
+        /// <summary>
+        /// The recipient has explicitly declined the invitation.
+        /// </summary>
+        Declined,
+
+        /// <summary>
+        /// The invitation has passed the expiration time and is no longer valid.
+        /// </summary>
+        Expired,
+
+        /// <summary>
+        /// The invitation has been canceled by the sender before it was accepted or declined.
+        /// </summary>
+        Revoked,
+
+        /// <summary>
+        /// The invitation has been resent to the recipient after a previous failure or request.
+        /// </summary>
+        Resent,
+
+        /// <summary>
+        /// The invitation process has been successfully completed, and the invitee has taken all necessary actions to join.
+        /// </summary>
+        Completed,
+
+        /// <summary>
+        /// There was an issue sending or processing the invitation.
+        /// </summary>
+        Failed,
+
+        /// <summary>
+        /// The recipient has viewed the invitation but has not yet taken further action (accepted or declined).
+        /// </summary>
+        Viewed
+    }
+
+    public enum ContactTypesEnum
+    {
+        Customer,       // Represents a current customer
+        Lead,           // Represents an inquiry or prospect
+        Referral,       // Contact referred by someone else
+        Subscriber,     // Someone signed up for communications
+        Inactive,       // Former customers or leads
+        VIP,            // High-value customers
+        Partner,        // Business or individual partners
+        Distributor,    // Reseller or distributor of products
+        EventAttendee   // Attendee of events or workshops
+    }
+
+    public enum LengthUnitsEnum
+    {
+        [Display(Name = "Kilometer", ShortName = "km")]
+        Kilometer,
+        [Display(Name = "Meter", ShortName = "m")]
+        Meter,
+        [Display(Name = "Centimeter", ShortName = "cm")]
+        Centimeter,
+        [Display(Name = "Millimeter", ShortName = "mm")]
+        Millimeter,
+        [Display(Name = "Micrometer", ShortName = "µm")]
+        Micrometer,
+        [Display(Name = "Nanometer", ShortName = "nm")]
+        Nanometer,
+        [Display(Name = "Mile", ShortName = "mi")]
+        Mile,
+        [Display(Name = "Yard", ShortName = "yd")]
+        Yard,
+        [Display(Name = "Foot", ShortName = "ft")]
+        Foot,
+        [Display(Name = "Inch", ShortName = "in")]
+        Inch
+    }
+
+    public enum RecipientTypesEnum
+    {
+
+        /// <summary>
+        /// The primary recipient(s) of the email.
+        /// </summary>
+        PRIMARY,
+
+        /// <summary>
+        /// Secondary recipients who receive a copy of the email and 
+        /// whose email addresses are visible to all recipients.
+        /// </summary>
+        CARBONCOPY,
+
+        /// <summary>
+        /// Secondary recipients who receive a copy of the email 
+        /// but whose email addresses are not visible to other recipients.
+        /// </summary>
+        BLINDCARBONCOPY
+    }
+
+    public static class AuthPoliciesEnum
+    {
+        public const string GlobalAdminPolicy = "GlobalAdminPolicy";
+        public const string GlobalAdminAccountPolicy = "GlobalAdminAccountPolicy";
+        public const string GlobalTechnicalSupportPolicy = "GlobalTechnicalSupportPolicy";
+        public const string TenantOwnerPolicy = "TenantOwnerPolicy";
+        public const string TenantBillingManagementPolicy = "TenantBillingManagementPolicy";
+        public const string TenantSystemAdminPolicy = "TenantSystemAdminPolicy";
+    }
+
+    public static UserRolesEnum[] InternalRoles = [
+        UserRolesEnum.GlobalAdmin,
+        UserRolesEnum.GlobalAccountMgr,
+        UserRolesEnum.GlobalTechSupport,
+        UserRolesEnum.GlobalViewer
+    ];
+
+    public enum FeatureAccessPermissionsEnum
+    {
+        CanView = 0,    // can view menu representing the feature including the paged records
+        CanRead = 1,    // can open and view individual records
+        CanPrint = 2,   // can open, view and print or export data
+        CanWrite = 3,   // can create record of the same type of record
+        CanUpdate = 4,  // can modify record
+        CanDelete = 5   // can delete a record
+    }
+
+    public enum FeaturesEnum
+    {
+        UserManagement = 0,
+        Reports = 1,
+        Inventory = 2,
+        Billing = 3
+    }
+
+    /// <summary>
+    /// Represents various tax exemption reasons.
+    /// </summary>
+    public enum TaxExemptionReasonsEnum
+    {
+        /// <summary>
+        /// Not exempt from taxes.
+        /// </summary>
+        NotExempt,
+
+        /// <summary>
+        /// Purchases made by the federal government.
+        /// </summary>
+        FederalGovernment,
+
+        /// <summary>
+        /// Purchases made by a state government entity.
+        /// </summary>
+        StateGovernment,
+
+        /// <summary>
+        /// Purchases made by a local government entity.
+        /// </summary>
+        LocalGovernment,
+
+        /// <summary>
+        /// Purchases made by a recognized tribal government.
+        /// </summary>
+        TribalGovernment,
+
+        /// <summary>
+        /// Purchases made by charitable organizations.
+        /// </summary>
+        CharitableOrganization,
+
+        /// <summary>
+        /// Purchases made by religious organizations.
+        /// </summary>
+        ReligiousOrganization,
+
+        /// <summary>
+        /// Purchases made by educational organizations, such as schools and universities.
+        /// </summary>
+        EducationalOrganization,
+
+        /// <summary>
+        /// Purchases made by hospitals or healthcare providers with exempt status.
+        /// </summary>
+        Hospital,
+
+        /// <summary>
+        /// Purchases for resale purposes.
+        /// </summary>
+        Resale,
+
+        /// <summary>
+        /// Purchases covered under a direct pay permit.
+        /// </summary>
+        DirectPayPermit,
+
+        /// <summary>
+        /// Purchases for use in multiple jurisdictions (points of use).
+        /// </summary>
+        MultiplePointsOfUse,
+
+        /// <summary>
+        /// Purchases related to direct mail services or campaigns.
+        /// </summary>
+        DirectMail,
+
+        /// <summary>
+        /// Purchases for agricultural production purposes.
+        /// </summary>
+        AgriculturalProduction,
+
+        /// <summary>
+        /// Purchases for industrial production or manufacturing processes.
+        /// </summary>
+        IndustrialProductionOrManufacturing,
+
+        /// <summary>
+        /// Purchases made by foreign diplomats or foreign entities with exemption status.
+        /// </summary>
+        ForeignDiplomat,
+
+        /// <summary>
+        /// Purchases made by nonresidents or foreign entities.
+        /// </summary>
+        NonResidentExemption,
+
+        /// <summary>
+        /// Purchases intended for export and not used domestically.
+        /// </summary>
+        ExportSales,
+
+        /// <summary>
+        /// Purchases of construction materials for qualifying projects.
+        /// </summary>
+        ConstructionExemption,
+
+        /// <summary>
+        /// Lease or rental of qualifying equipment under exempt conditions.
+        /// </summary>
+        LeaseOrRentalExemption,
+
+        /// <summary>
+        /// Purchases involving interstate commerce transactions.
+        /// </summary>
+        InterstateCommerce,
+
+        /// <summary>
+        /// Purchases made by nonprofit healthcare providers.
+        /// </summary>
+        NonProfitHealthcareProvider,
+
+        /// <summary>
+        /// Purchases related to scientific research or institutions.
+        /// </summary>
+        ScientificInstitution,
+
+        /// <summary>
+        /// Purchases made for disaster relief efforts in officially declared areas.
+        /// </summary>
+        DisasterReliefEfforts,
+
+        /// <summary>
+        /// Purchases of farm machinery, tools, or supplies for agricultural purposes.
+        /// </summary>
+        FarmMachineryOrSupplies,
+
+        /// <summary>
+        /// Purchases of raw materials used in production or manufacturing.
+        /// </summary>
+        RawMaterialsExemption,
+
+        /// <summary>
+        /// Purchases of machinery and equipment used directly in production processes.
+        /// </summary>
+        MachineryAndEquipment,
+
+        /// <summary>
+        /// Purchases made by diplomatic missions or international organizations.
+        /// </summary>
+        SalesToExemptBuyers,
+
+        /// <summary>
+        /// Purchases of tools and software used in qualifying IT or software development.
+        /// </summary>
+        SoftwareDevelopment,
+
+        /// <summary>
+        /// Purchases of materials related to nonprofit educational programs.
+        /// </summary>
+        EducationalMaterials
+    }
+
+    /// <summary>
+    /// Represents the roles a member can have in a proposal.
+    /// </summary>
+    public enum ProposalMemberRolesEnum
+    {
+        /// <summary>
+        /// A member who reviews the proposal but does not approve it.
+        /// </summary>
+        Reviewer,
+
+        /// <summary>
+        /// A member who has the authority to approve the proposal.
+        /// </summary>
+        Approver
+    }
+
+    public enum TaskStatusEnum
+    {
+        Pending,
+        InProgress,
+        Completed,
+        OnHold,
+        Canceled
+    }
+
+    public enum PriorityEnums
+    {
+        Low = 1,       // Low priority
+        Medium = 2,    // Medium priority
+        High = 3,      // High priority
+        Critical = 4   // Critical priority
+    }
+
+    public enum UnitOfMeasuresEnum
+    {
+        Meters,             // Linear measurement
+        SquareMeters,       // Area measurement
+        Rolls,              // Tint rolls
+        Feet,               // Linear measurement in feet
+        SquareFeet,         // Area measurement in square feet
+        Inches,             // Linear measurement in inches
+        SquareInches,       // Area measurement in square inches
+        Centimeters,        // Linear measurement in centimeters
+        SquareCentimeters,  // Area measurement in square centimeters
+        Millimeters,        // Linear measurement in millimeters
+        SquareMillimeters,  // Area measurement in square millimeters
+        Kilograms,          // Weight measurement (e.g., accessories or heavy items)
+        Grams,              // Smaller weight measurement
+        Liters,             // Volume measurement (e.g., cleaning solutions)
+        Milliliters,        // Smaller volume measurement
+        Packs,              // Pre-packaged materials (e.g., adhesive packs)
+        Pieces,             // Individual units (e.g., squeegees or blades)
+        Boxes,              // Larger packaged materials
+        Sheets              // Individual sheets of tint or related material
+    }
+
+    public enum TaskAssigneeRolesEnum
+    {
+        ProjectManager,    // Oversees the entire project or activity
+        TaskOwner,         // Directly responsible for the completion of a specific task or activity
+        TeamMember,        // Contributes to the task or activity under the direction of the task owner
+        Approver,          // Validates and approves the task or activity before it's considered complete
+        Reviewer,          // Reviews the output and provides feedback, but does not approve
+        Support,           // Provides technical or logistical support to assist with task completion
+        Stakeholder,       // Interested party who is impacted by the activity but not directly involved
+        QualityAssurance,  // Ensures quality through testing, checks, or validation of the task's results
+        SubjectMatterExpert, // Subject Matter Expert, offers advice and solves complex problems
+        Admin              // Manages access, configuration, and logistics for project activities
+    }
+}

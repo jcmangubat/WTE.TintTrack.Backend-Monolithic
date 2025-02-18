@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Entities\old\**" />
+    <Compile Remove="Features\**" />
+    <Compile Remove="Interfaces\Repositories\_old\**" />
+    <EmbeddedResource Remove="Entities\old\**" />
+    <EmbeddedResource Remove="Features\**" />
+    <EmbeddedResource Remove="Interfaces\Repositories\_old\**" />
+    <None Remove="Entities\old\**" />
+    <None Remove="Features\**" />
+    <None Remove="Interfaces\Repositories\_old\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Entities\AppAccessPermission.cs" />
+    <Compile Remove="Entities\ApplicationFeature.cs" />
+    <Compile Remove="Entities\ApplicationFeatureRoleAccess.cs" />
+    <Compile Remove="Entities\TenantUserMembership.cs" />
+    <Compile Remove="Interfaces\Repositories\IApplicationFeatureRepository.cs" />
+    <Compile Remove="Interfaces\Repositories\IApplicationFeatureRoleAccessRepository.cs" />
+    <Compile Remove="Interfaces\Repositories\IUserTenantRoleRepository.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\_Common\WTE.TintTrack.Common.Application\WTE.TintTrack.Application.Shared.csproj" />
+    <ProjectReference Include="..\..\_Common\WTE.TintTrack.Common\WTE.TintTrack.Common.csproj" />
+  </ItemGroup>
+
+</Project>

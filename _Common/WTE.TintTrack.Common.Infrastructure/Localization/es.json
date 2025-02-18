@@ -1,0 +1,4 @@
+{
+  "ERR001": "Se requiere un token de usuario para esta solicitud.",
+  "ERR002": "El token de acceso proporcionado no es válido."
+}

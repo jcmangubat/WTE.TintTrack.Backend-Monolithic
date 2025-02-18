@@ -1,0 +1,66 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Configurations\ApplicationRoleConfiguration.cs" />
+    <Compile Remove="Configurations\ApplicationUserConfiguration.cs" />
+    <Compile Remove="Configurations\ContactOwnershipConfiguration.cs" />
+    <Compile Remove="Configurations\InvoiceConfiguration.cs" />
+    <Compile Remove="Configurations\ProjectConfiguration.cs" />
+    <Compile Remove="Configurations\PropertyDetailsConfiguration.cs" />
+    <Compile Remove="Configurations\ProposalConfiguration.cs" />
+    <Compile Remove="Configurations\QuoteConfiguration.cs" />
+    <Compile Remove="Configurations\SubscriptionPlanConfiguration.cs" />
+    <Compile Remove="Configurations\SubscriptionPlanFeatureConfiguration.cs" />
+    <Compile Remove="Configurations\SubscriptionPromoDiscountConfiguration.cs" />
+    <Compile Remove="Configurations\TenantSubscriptionConfiguration.cs" />
+    <Compile Remove="Configurations\TenantSubscriptionInvoiceConfiguration.cs" />
+    <Compile Remove="Configurations\TenantSubscriptionPaymentConfiguration.cs" />
+    <Compile Remove="Configurations\UserBillingProfileConfiguration.cs" />
+    <Compile Remove="Configurations\UserTenantConfiguration.cs" />
+    <Compile Remove="Configurations\UserTenantRoleConfiguration.cs" />
+    <Compile Remove="Repositories\ContactOwnershipRepository.cs" />
+    <Compile Remove="Repositories\SubscriptionPlanFeatureRepository.cs" />
+    <Compile Remove="Repositories\SubscriptionPlanRepository.cs" />
+    <Compile Remove="Repositories\SubscriptionPromoDiscountRepository.cs" />
+    <Compile Remove="Repositories\TenantRepository.cs" />
+    <Compile Remove="Repositories\TenantSubscriptionInvoiceRepository.cs" />
+    <Compile Remove="Repositories\TenantSubscriptionPaymentRepository.cs" />
+    <Compile Remove="Repositories\TenantSubscriptionRepository.cs" />
+    <Compile Remove="Repositories\UserBillingProfileRepository.cs" />
+    <Compile Remove="Repositories\UserRepository.cs" />
+    <Compile Remove="Repositories\UserTenantRepository.cs" />
+    <Compile Remove="Repositories\VehicleRepository.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="appsettings.Development.json" />
+    <None Remove="appsettings.json" />
+    <None Remove="ResetDB.SQL" />
+    <None Remove="SqlFiles\DropAllFKs.sql" />
+    <None Remove="SqlFiles\DropAllPKs.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="SqlFiles\DropAllFKs.sql" />
+    <EmbeddedResource Include="SqlFiles\DropAllPKs.sql" />
+    <EmbeddedResource Include="SqlFiles\DropAllDBs.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\_Common\WTE.TintTrack.Common.Application\WTE.TintTrack.Application.Shared.csproj" />
+    <ProjectReference Include="..\..\_Common\WTE.TintTrack.Common\WTE.TintTrack.Common.csproj" />
+    <ProjectReference Include="..\WTE.TintTrack.Business.Domain\WTE.TintTrack.Business.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

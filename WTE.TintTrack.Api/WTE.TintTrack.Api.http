@@ -1,0 +1,6 @@
+@WTE.TintTrack.IdentityServer_HostAddress = http://localhost:5149
+
+GET {{WTE.TintTrack.IdentityServer_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
