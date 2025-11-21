@@ -1,7 +1,7 @@
 ﻿using WTE.TintTrack.Application.Shared.ServiceAbstractions;
-using WTE.TintTrack.Business.Application.DTOs;
-using WTE.TintTrack.Business.Domain.Entities;
-using WTE.TintTrack.Business.Domain.Interfaces.Repositories;
+using WTE.TintTrack.Business.Application.DTOs.CommercialOffersModels;
+using WTE.TintTrack.Business.Domain.Entities.CommercialOffersEntities;
+using WTE.TintTrack.Business.Domain.Interfaces.Repositories.CommercialOfferRepos;
 
 namespace WTE.TintTrack.Business.Application.Interfaces;
 

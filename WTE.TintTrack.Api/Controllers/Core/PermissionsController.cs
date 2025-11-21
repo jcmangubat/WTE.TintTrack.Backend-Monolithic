@@ -11,8 +11,11 @@ using static WTE.TintTrack.Common.Constants.Consts;
 namespace WTE.TintTrack.Api.Controllers.Core;
 
 /// <summary>
-/// Controller for managing and checking permissions for roles.
+/// Controller for handling role permission management operations.
 /// </summary>
+/// <remarks>
+/// This controller provides comprehensive permission management functionality for roles in the system. It enables administrators to retrieve roles associated with specific permissions, get permissions for roles, update permission-role associations, and check access permissions. The controller supports role-based access control by managing the relationship between features, permission levels, and user roles, allowing fine-grained access control configuration across the application.
+/// </remarks>
 [ApiController]
 [Authorize(Policy = AuthPoliciesEnum.GlobalAdminPolicy)]
 [Route("api/permissions")]

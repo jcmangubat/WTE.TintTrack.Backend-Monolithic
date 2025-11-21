@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using SMEAppHouse.Core.CodeKits.Helpers;
 using WTE.TintTrack.Api.Messaging._Abstractions;
-using WTE.TintTrack.Api.Messaging.Business.Request;
+using WTE.TintTrack.Api.Messaging.Business.Requests.Inquiry;
 using WTE.TintTrack.Business.Application.DTOs;
 using WTE.TintTrack.Business.Application.Interfaces;
 using WTE.TintTrack.Business.Domain.Interfaces.Repositories;
@@ -22,7 +22,7 @@ public class InquiryCRUDExtender(ILogger<InquiryCRUDExtender> logger, IMapper ma
 
         if (entityUpdateRequest.LeadSource != null) entityDto.LeadSource = entityUpdateRequest.LeadSource.Value;
         if (entityUpdateRequest.ConsultationDate != null) entityDto.ConsultationDate = entityUpdateRequest.ConsultationDate.Value;
-        if (entityUpdateRequest.Subject != null) entityDto.Subject= entityUpdateRequest.Subject;
+        if (entityUpdateRequest.Subject != null) entityDto.Subject = entityUpdateRequest.Subject;
         if (entityUpdateRequest.Details != null) entityDto.Details = entityUpdateRequest.Details;
         if (entityUpdateRequest.PropertyType != null) entityDto.PropertyType = entityUpdateRequest.PropertyType.Value;
 
@@ -30,7 +30,7 @@ public class InquiryCRUDExtender(ILogger<InquiryCRUDExtender> logger, IMapper ma
         if (entityUpdateRequest.TintType != null) entityDto.TintType = entityUpdateRequest.TintType;
         if (entityUpdateRequest.SpecialRequests != null) entityDto.SpecialRequests = entityUpdateRequest.SpecialRequests;
         if (entityUpdateRequest.FollowUpNeeded != null) entityDto.FollowUpNeeded = entityUpdateRequest.FollowUpNeeded;
-        if (entityUpdateRequest.ProposalCode != null) entityDto.ProposalCode = entityUpdateRequest.ProposalCode;
+        //if (entityUpdateRequest.ProposalCode != null) entityDto.ProposalCode = entityUpdateRequest.ProposalCode;
 
         if (entityUpdateRequest.SalesRepUserCode != null) entityDto.SalesRepUserCode = entityUpdateRequest.SalesRepUserCode;
 
@@ -49,7 +49,7 @@ public class InquiryCRUDExtender(ILogger<InquiryCRUDExtender> logger, IMapper ma
             {
                 try
                 {
-                    var custCode = CodeGenerator.GenerateUniqueCode($"{createEntityRequest.Name}{createEntityRequest.Company}{createEntityRequest.Email}", FieldLengths.Customer.Code);
+                    var custCode = CodeGenerator.GenerateUniqueCode($"{createEntityRequest.Name}{createEntityRequest.GeneralEmail}", FieldLengths.Customer.Code);
                     customer = await _customerService.FindSingleAsync(p => p.Code == custCode);
                     if (customer == null)
                     {
@@ -58,10 +58,8 @@ public class InquiryCRUDExtender(ILogger<InquiryCRUDExtender> logger, IMapper ma
                             Code = custCode,
                             Id = Guid.NewGuid(),
                             Name = createEntityRequest.Name,
-                            Company = createEntityRequest.Company,
-                            Email = createEntityRequest.Email,
-                            Phone = createEntityRequest.Phone,
-                            Phone2 = createEntityRequest.Phone2,
+                            MainPhone = createEntityRequest.MainPhone,
+                            GeneralEmail = createEntityRequest.GeneralEmail,
                             CustomerStatus = Consts.CustomerStatusEnum.Lead
                         };
                         await _customerService.AddAsync(customer);
@@ -75,7 +73,7 @@ public class InquiryCRUDExtender(ILogger<InquiryCRUDExtender> logger, IMapper ma
 
             var entityDto = _mapper.Map<InquiryDto>(createEntityRequest);
 
-            entityDto.CustomerId = customer.Id;
+            //entityDto.CustomerCode= customer.Code;
 
             return (true, entityDto);
         }

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using System.Linq.Expressions;
 using WTE.TintTrack.Api.Messaging._Abstractions;
-using WTE.TintTrack.Api.Messaging.Business.Request;
+using WTE.TintTrack.Api.Messaging.Business.Requests.Contact;
 using WTE.TintTrack.Business.Application.DTOs;
 using WTE.TintTrack.Business.Domain.Interfaces.Repositories;
 
@@ -14,7 +14,23 @@ public class ContactCRUDExtender(ILogger<ContactCRUDExtender> logger, IMapper ma
     {
         entityDto = base.TransformForUpdate(entityDto, entityUpdateRequest);
 
+        if (entityUpdateRequest.Code != null) entityDto.Code = entityUpdateRequest.Code;
         if (entityUpdateRequest.FirstName != null) entityDto.FirstName = entityUpdateRequest.FirstName;
+        if (entityUpdateRequest.LastName != null) entityDto.LastName = entityUpdateRequest.LastName;
+        if (entityUpdateRequest.DateOfBirth != null) entityDto.DateOfBirth = entityUpdateRequest.DateOfBirth;
+        if (entityUpdateRequest.Gender != null) entityDto.Gender = entityUpdateRequest.Gender.Value;
+        if (entityUpdateRequest.MaritalStatus != null) entityDto.MaritalStatus = entityUpdateRequest.MaritalStatus.Value;
+        if (entityUpdateRequest.Phone != null) entityDto.Phone = entityUpdateRequest.Phone;
+        if (entityUpdateRequest.Mobile != null) entityDto.Mobile = entityUpdateRequest.Mobile;
+        if (entityUpdateRequest.AltPhone != null) entityDto.AltPhone = entityUpdateRequest.AltPhone;
+        if (entityUpdateRequest.Email != null) entityDto.Email = entityUpdateRequest.Email;
+        if (entityUpdateRequest.JobTitle != null) entityDto.JobTitle = entityUpdateRequest.JobTitle;
+        //if (entityUpdateRequest.ContactType != null) entityDto.ContactType = entityUpdateRequest.ContactType.Value;
+        if (entityUpdateRequest.Tags != null) entityDto.Tags = entityUpdateRequest.Tags;
+        if (entityUpdateRequest.Notes != null) entityDto.Notes = entityUpdateRequest.Notes;
+        if (entityUpdateRequest.IsImported != null) entityDto.IsImported = entityUpdateRequest.IsImported.Value;
+
+        /*if (entityUpdateRequest.FirstName != null) entityDto.FirstName = entityUpdateRequest.FirstName;
         if (entityUpdateRequest.LastName != null) entityDto.LastName = entityUpdateRequest.LastName;
         if (entityUpdateRequest.Phone != null) entityDto.Phone = entityUpdateRequest.Phone;
         if (entityUpdateRequest.Mobile != null) entityDto.Mobile = entityUpdateRequest.Mobile;
@@ -32,7 +48,7 @@ public class ContactCRUDExtender(ILogger<ContactCRUDExtender> logger, IMapper ma
         if (entityUpdateRequest.Website != null) entityDto.Website = entityUpdateRequest.Website;
         if (entityUpdateRequest.ContactType != null) entityDto.ContactType = entityUpdateRequest.ContactType.Value;
         if (entityUpdateRequest.JobTitle != null) entityDto.JobTitle = entityUpdateRequest.JobTitle;
-        if (entityUpdateRequest.Notes != null) entityDto.Notes = entityUpdateRequest.Notes;
+        if (entityUpdateRequest.Notes != null) entityDto.Notes = entityUpdateRequest.Notes;*/
 
         return entityDto;
     }
@@ -44,6 +60,6 @@ public class ContactCRUDExtender(ILogger<ContactCRUDExtender> logger, IMapper ma
 
     public override Expression<Func<ContactDto, object>>[]? GetIncludes() =>
     [
-        dto => dto.CustomerContacts
+        //dto => dto.CustomerContacts
     ];
 }

@@ -12,8 +12,9 @@ public class AuditLogConfiguration(string schema = "dbo") : EntityConfiguration<
     {
         base.OnModelCreating(builder);
 
-        builder.DefineDbField(al => al.UserId, true);
+        builder.DefineDbField(al => al.UserCode, false, FieldLengths.General.CODE);
         builder.DefineDbField(al => al.ActionDate, true);
-        builder.DefineDbField(al => al.Action, true, FieldLengths.General.LENGTH150);
+        builder.DefineDbField(al => al.EntityName, true, FieldLengths.General.LENGTH60);
+        builder.DefineDbField(al => al.ActionData, true, FieldLengths.General.SummaryParagraph);
     }
 }

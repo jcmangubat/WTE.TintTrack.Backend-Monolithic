@@ -23,6 +23,13 @@ public interface ITenantSubscriptionRepository : IRepositoryForKeyedEntity<Tenan
     Task<TenantSubscription?> GetByIdAsync(Guid subscriptionId);
 
     /// <summary>
+    /// Gets a subscription by its unique identifier with invoices and payments included.
+    /// </summary>
+    /// <param name="subscriptionId">The subscription's ID.</param>
+    /// <returns>The TenantSubscription with invoices and payments if found; otherwise, null.</returns>
+    Task<TenantSubscription?> GetByIdWithInvoicesAndPaymentsAsync(Guid subscriptionId);
+
+    /// <summary>
     /// Deletes a TenantSubscription by its ID.
     /// </summary>
     /// <param name="subscriptionId">The subscription's ID.</param>

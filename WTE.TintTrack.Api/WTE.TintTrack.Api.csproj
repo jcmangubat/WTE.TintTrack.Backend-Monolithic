@@ -1,13 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>230804eb-76f2-44ee-ad62-ed98293dbb35</UserSecretsId>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);1591</NoWarn>
-    <DocumentationFile>bin\Debug\net8.0\WTE.TintTrack.Api.xml</DocumentationFile>
+    <!-- XML documentation file will be generated automatically in the output directory -->
+    <!-- Remarks and all XML documentation tags are included in the generated XML file -->
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,6 +18,9 @@
     <Compile Remove="Helpers\ControllerAbstractions\_old\**" />
     <Compile Remove="keys\**" />
     <Compile Remove="logs\**" />
+    <Compile Remove="Messaging\Business.Requests\**" />
+    <Compile Remove="Messaging\Business.Responses\**" />
+    <Compile Remove="Messaging\_Validators\Business\old\**" />
     <Compile Remove="src\**" />
     <Content Remove="Controllers\Business\**" />
     <Content Remove="Controllers\Core\**" />
@@ -24,6 +28,9 @@
     <Content Remove="Helpers\ControllerAbstractions\_old\**" />
     <Content Remove="keys\**" />
     <Content Remove="logs\**" />
+    <Content Remove="Messaging\Business.Requests\**" />
+    <Content Remove="Messaging\Business.Responses\**" />
+    <Content Remove="Messaging\_Validators\Business\old\**" />
     <Content Remove="src\**" />
     <EmbeddedResource Remove="Controllers\Business\**" />
     <EmbeddedResource Remove="Controllers\Core\**" />
@@ -31,6 +38,9 @@
     <EmbeddedResource Remove="Helpers\ControllerAbstractions\_old\**" />
     <EmbeddedResource Remove="keys\**" />
     <EmbeddedResource Remove="logs\**" />
+    <EmbeddedResource Remove="Messaging\Business.Requests\**" />
+    <EmbeddedResource Remove="Messaging\Business.Responses\**" />
+    <EmbeddedResource Remove="Messaging\_Validators\Business\old\**" />
     <EmbeddedResource Remove="src\**" />
     <None Remove="Controllers\Business\**" />
     <None Remove="Controllers\Core\**" />
@@ -38,6 +48,9 @@
     <None Remove="Helpers\ControllerAbstractions\_old\**" />
     <None Remove="keys\**" />
     <None Remove="logs\**" />
+    <None Remove="Messaging\Business.Requests\**" />
+    <None Remove="Messaging\Business.Responses\**" />
+    <None Remove="Messaging\_Validators\Business\old\**" />
     <None Remove="src\**" />
   </ItemGroup>
 
@@ -48,6 +61,7 @@
     <Compile Remove="Helpers\ControllerAbstractions\EnumControllerBase.cs" />
     <Compile Remove="Helpers\ControllerAbstractions\LoggingControllerBase.cs" />
     <Compile Remove="Helpers\ControllerAbstractions\MappedControllerBase.cs" />
+    <Compile Remove="Helpers\DatabaseInitializer.cs" />
     <Compile Remove="Helpers\Extensions\ExceptionMiddlewareExtensions.cs" />
     <Compile Remove="Middlewares\CustomValidationErrorMiddleware.cs" />
   </ItemGroup>
@@ -64,8 +78,16 @@
     <Compile Include="Controllers\Business\AuditLogsController.cs" />
     <Compile Include="Controllers\Business\ContactController.cs" />
     <Compile Include="Controllers\Business\CustomerController.cs" />
+    <Compile Include="Controllers\Business\EstimateController.cs" />
     <Compile Include="Controllers\Business\InquiryController.cs" />
-    <Compile Include="Controllers\Business\PropertyController.cs" />
+    <Compile Include="Controllers\Business\InventoryController.cs" />
+    <Compile Include="Controllers\Business\ProposalController.cs" />
+    <Compile Include="Controllers\Business\QuoteController.cs" />
+    <Compile Include="Controllers\Business\TintMaterialPriceOverrideController.cs" />
+    <Compile Include="Controllers\Business\TintMaterialPriceHistoryController.cs" />
+    <Compile Include="Controllers\Business\TintMaterialController.cs" />
+    <Compile Include="Controllers\Business\TintMaterialPriceTierController.cs" />
+    <Compile Include="Controllers\Business\PropertyAssetController.cs" />
     <Compile Include="Controllers\Core\AccountController.cs" />
     <Compile Include="Controllers\Core\AuthController.cs" />
     <Compile Include="Controllers\Core\PermissionsController.cs" />
@@ -78,33 +100,94 @@
     <Compile Include="Controllers\Core\UserBillingProfileController.cs" />
     <Compile Include="Controllers\Core\UserTenantController.cs" />
     <Compile Include="Controllers\Core\UtilityController.cs" />
+    <Compile Include="Messaging\Business.Requests\Invoice\CreateInvoiceItemRequest.cs" />
+    <Compile Include="Messaging\Business.Requests\Invoice\UpdateInvoiceItemRequest.cs" />
+    <Compile Include="Messaging\Business.Requests\Invoice\CreateInvoiceRequest.cs" />
+    <Compile Include="Messaging\Business.Requests\Invoice\UpdateInvoiceRequest.cs" />
+    <Compile Include="Messaging\Business.Requests\Inventory\CreateInventoryItemRequest.cs" />
+    <Compile Include="Messaging\Business.Requests\Inventory\UpdateInventoryItemRequest.cs" />
+    <Compile Include="Messaging\Business.Requests\Proposal\CreateProjectMilesoneRequest.cs" />
+    <Compile Include="Messaging\Business.Requests\Proposal\UpdateProjectMilesoneRequest.cs" />
+    <Compile Include="Messaging\Business.Requests\WorkOrder\CreateWorkOrderItemRequest.cs" />
+    <Compile Include="Messaging\Business.Requests\WorkOrder\UpdateWorkOrderItemRequest.cs" />
+    <Compile Include="Messaging\Business.Requests\WorkOrder\CreateWorkOrderRequest.cs" />
+    <Compile Include="Messaging\Business.Requests\WorkOrder\UpdateWorkOrderRequest.cs" />
+    <Compile Include="Messaging\Business.Requests\Quote\CreateQuoteRequest.cs" />
+    <Compile Include="Messaging\Business.Requests\Quote\UpdateQuoteRequest.cs" />
+    <Compile Include="Messaging\Business.Requests\TintMaterial\CreateTintMaterialPriceHistoryRequest.cs" />
+    <Compile Include="Messaging\Business.Requests\TintMaterial\CreateTintMaterialPriceOverrideRequest.cs" />
+    <Compile Include="Messaging\Business.Requests\TintMaterial\CreateTintMaterialPriceScheduleRequest.cs" />
+    <Compile Include="Messaging\Business.Requests\TintMaterial\CreateTintMaterialPriceTierRequest.cs" />
+    <Compile Include="Messaging\Business.Requests\TintMaterial\CreateTintMaterialRequest.cs" />
+    <Compile Include="Messaging\Business.Requests\TintMaterial\UpdateTintMaterialPriceHistoryRequest.cs" />
+    <Compile Include="Messaging\Business.Requests\TintMaterial\UpdateTintMaterialPriceOverrideRequest.cs" />
+    <Compile Include="Messaging\Business.Requests\TintMaterial\UpdateTintMaterialPriceScheduleRequest.cs" />
+    <Compile Include="Messaging\Business.Requests\TintMaterial\UpdateTintMaterialPriceTierRequest.cs" />
+    <Compile Include="Messaging\Business.Requests\TintMaterial\UpdateTintMaterialRequest.cs" />
+    <Compile Include="Messaging\Business.Requests\CustomerContact\CreateCustomerContactRequest.cs" />
+    <Compile Include="Messaging\Business.Requests\Contact\CreateContactRequest.cs" />
+    <Compile Include="Messaging\Business.Requests\Estimate\CreateEstimateRequest.cs" />
+    <Compile Include="Messaging\Business.Requests\Estimate\UpdateEstimateRequest.cs" />
+    <Compile Include="Messaging\Business.Requests\Proposal\CreateProposalRequest.cs" />
+    <Compile Include="Messaging\Business.Requests\Inquiry\CreateInquiryRequest.cs" />
+    <Compile Include="Messaging\Business.Requests\Customer\CreateCustomerRequest.cs" />
+    <Compile Include="Messaging\Business.Requests\PropertyAsset\CreatePropertyAssetRequest.cs" />
+    <Compile Include="Messaging\Business.Requests\Proposal\UpdateProposalRequest.cs" />
+    <Compile Include="Messaging\Business.Requests\Contact\UpdateContactRequest.cs" />
+    <Compile Include="Messaging\Business.Requests\Inquiry\UpdateInquiryRequest.cs" />
+    <Compile Include="Messaging\Business.Requests\Customer\UpdateCustomerRequest.cs" />
+    <Compile Include="Messaging\Business.Requests\PropertyAsset\UpdatePropertyAssetRequest.cs" />
+    <Compile Include="Messaging\Business.Responses\Inventory\InventoryItemResponse.cs" />
+    <Compile Include="Messaging\Business.Responses\TintMaterial\TintMaterialPriceHistoryResponse.cs" />
+    <Compile Include="Messaging\Business.Responses\TintMaterial\TintMaterialPriceOverrideResponse.cs" />
+    <Compile Include="Messaging\Business.Responses\TintMaterial\TintMaterialPriceScheduleResponse.cs" />
+    <Compile Include="Messaging\Business.Responses\TintMaterial\TintMaterialPriceTierResponse.cs" />
+    <Compile Include="Messaging\Business.Responses\TintMaterial\TintMaterialResponse.cs" />
+    <Compile Include="Messaging\Business.Responses\Contact\ContactResponse.cs" />
+    <Compile Include="Messaging\Business.Responses\CustomerContact\CustomerContactResponse.cs" />
+    <Compile Include="Messaging\Business.Responses\Estimate\EstimateResponse.cs" />
+    <Compile Include="Messaging\Business.Responses\Invoice\InvoiceItemResponse.cs" />
+    <Compile Include="Messaging\Business.Responses\Invoice\InvoiceResponse.cs" />
+    <Compile Include="Messaging\Business.Responses\Proposal\ProjectMilestoneResponse.cs" />
+    <Compile Include="Messaging\Business.Responses\Proposal\ProposalResponse.cs" />
+    <Compile Include="Messaging\Business.Responses\Inquiry\InquiryResponse.cs" />
+    <Compile Include="Messaging\Business.Responses\Customer\CustomerResponse.cs" />
+    <Compile Include="Messaging\Business.Responses\PropertyAsset\PropertyAssetResponse.cs" />
+    <Compile Include="Messaging\Business.Responses\Quote\QuoteResponse.cs" />
+    <Compile Include="Messaging\Business.Responses\WorkOrder\WorkOrderItemResponse.cs" />
+    <Compile Include="Messaging\Business.Responses\WorkOrder\WorkOrderResponse.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="AutoMapper" Version="14.0.0" />
     <PackageReference Include="dotenv.net" Version="3.2.1" />
-    <PackageReference Include="Duende.IdentityServer" Version="7.0.8" />
-    <PackageReference Include="Duende.IdentityServer.AspNetIdentity" Version="7.0.8" />
+    <PackageReference Include="Duende.IdentityServer" Version="7.2.0" />
+    <PackageReference Include="Duende.IdentityServer.AspNetIdentity" Version="7.2.0" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.10" />
-    <PackageReference Include="Microsoft.AspNetCore.AzureAppServices.HostingStartup" Version="8.0.10" />
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.10" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.10" />
-    <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="8.0.10" />
-    <PackageReference Include="Microsoft.AspNetCore.OData" Version="9.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.10" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0">
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.AzureAppServices.HostingStartup" Version="9.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="9.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="9.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.OData" Version="9.2.1" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.0" />
-    <PackageReference Include="Serilog.AspNetCore" Version="8.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="10.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="10.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="9.0.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
     <PackageReference Include="Serilog.Sinks.ApplicationInsights" Version="4.0.0" />
     <PackageReference Include="Serilog.Sinks.AzureBlobStorage" Version="4.0.5" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="7.1.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="8.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.Community.OData" Version="1.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="8.0.2" />
   </ItemGroup>
@@ -112,8 +195,10 @@
   <ItemGroup>
     <ProjectReference Include="..\_Business\WTE.TintTrack.Business.Application\WTE.TintTrack.Business.Application.csproj" />
     <ProjectReference Include="..\_Business\WTE.TintTrack.Business.DataImporter\WTE.TintTrack.Business.DataImporter.csproj" />
+    <ProjectReference Include="..\_Business\WTE.TintTrack.Business.Infrastructure\WTE.TintTrack.Business.Infrastructure.csproj" />
     <ProjectReference Include="..\_Common\WTE.TintTrack.Common.Application\WTE.TintTrack.Application.Shared.csproj" />
     <ProjectReference Include="..\_Common\WTE.TintTrack.Common.Infrastructure\WTE.TintTrack.Infrastructure.Shared.csproj" />
+    <ProjectReference Include="..\_Common\WTE.TintTrack.Integration\WTE.TintTrack.Integration.csproj" />
     <ProjectReference Include="..\_Core\WTE.TintTrack.Core.Application\WTE.TintTrack.Core.Application.csproj" />
     <ProjectReference Include="..\_Core\WTE.TintTrack.Core.Domain\WTE.TintTrack.Core.Domain.csproj" />
     <ProjectReference Include="..\_Core\WTE.TintTrack.Core.Infrastructure\WTE.TintTrack.Core.Infrastructure.csproj" />

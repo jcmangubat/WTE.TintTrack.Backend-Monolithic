@@ -9,7 +9,7 @@ using SMEAppHouse.Core.CodeKits.Extensions;
 using System.Data;
 using System.Net.Mime;
 using WTE.TintTrack.Api.Helpers.ControllerAbstractions;
-using WTE.TintTrack.Api.Messaging.Core.Request;
+using WTE.TintTrack.Api.Messaging.Core.Requests;
 using WTE.TintTrack.Api.Messaging.Core.Responses;
 using WTE.TintTrack.Application.Shared.Interfaces;
 using WTE.TintTrack.Application.Shared.Messaging;
@@ -23,10 +23,14 @@ using static WTE.TintTrack.Common.Constants.Consts;
 namespace WTE.TintTrack.Api.Controllers.Core;
 
 /// <summary>
-/// Manage user-specific actions, including registration, login, and managing subscriptions.
+/// Controller for handling user account operations.
 /// </summary>
+/// <remarks>
+/// This controller provides comprehensive user account management functionality, including user registration, profile management, email confirmation, tenant joining, and user administration. It supports retrieving user profiles by code or email, updating user information, managing user-tenants associations, uploading profile images, and performing administrative operations such as user deletion and role management. The controller integrates with user services, tenant services, and messaging services to provide a complete account management solution.
+/// </remarks>
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/[controller]")]
 [ApiController]
-[Route("api/[controller]")]
 //[ApiExplorerSettings(GroupName = "coremodules")]
 [Produces(MediaTypeNames.Application.Json)]
 public class AccountController(ILogger<AccountController> logger, IMapper mapper,

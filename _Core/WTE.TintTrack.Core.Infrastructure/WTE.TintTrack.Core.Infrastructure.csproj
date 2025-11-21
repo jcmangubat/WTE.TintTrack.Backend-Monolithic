@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
@@ -11,16 +11,24 @@
     <Compile Remove="Configurations\ApplicationFeatureRoleAccessConfiguration.cs" />
     <Compile Remove="Repositories\ApplicationFeatureRepository.cs" />
     <Compile Remove="Repositories\ApplicationFeatureRoleAccessRepository.cs" />
+    <Compile Remove="TenantDatabaseCreator.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.3">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\_Business\WTE.TintTrack.Business.Infrastructure\WTE.TintTrack.Business.Infrastructure.csproj" />
-    <ProjectReference Include="..\WTE.TintTrack.Core.Application\WTE.TintTrack.Core.Application.csproj" />
+    <ProjectReference Include="..\..\_Common\WTE.TintTrack.Common\WTE.TintTrack.Common.csproj" />
     <ProjectReference Include="..\WTE.TintTrack.Core.Domain\WTE.TintTrack.Core.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

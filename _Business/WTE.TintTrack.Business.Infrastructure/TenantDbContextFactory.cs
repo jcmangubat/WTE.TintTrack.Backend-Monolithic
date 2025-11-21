@@ -27,11 +27,11 @@ public class TenantDbContextFactory : IDesignTimeDbContextFactory<TenantDbContex
             .Build();
 
         // Retrieve the connection string from appsettings.json
-        var tenantConnectionString = configuration.GetConnectionString("WTETintTrackCRMTenantConnection");
+        var tenantConnectionString = configuration.GetConnectionString("TintTrackCRMTenantConnection");
         Console.WriteLine($"Connection string: {tenantConnectionString}");
 
         if (string.IsNullOrEmpty(tenantConnectionString))
-            throw new InvalidOperationException("Connection string 'WTETintTrackCRMTenantConnection' is not found.");
+            throw new InvalidOperationException("Connection string 'TintTrackCRMTenantConnection' is not found.");
         
         // Configure DbContext options with the connection string
         var optionsBuilder = new DbContextOptionsBuilder<TenantDbContext>();

@@ -15,13 +15,11 @@ public class UserRepository(UserManager<ApplicationUser> userManager, Applicatio
     public async Task<ApplicationUser?> GetByIdAsync(Guid userId)
     {
         return await _dbContext.Users.FirstOrDefaultAsync(p => p.Id == userId);
-        //return await _userManager.FindByIdAsync(userId.ToString());
     }
 
     public async Task<ApplicationUser?> GetByEmailAsync(string email)
     {
         return await _dbContext.Users.FirstOrDefaultAsync(p => p.Email == email);
-        //return await _userManager.FindByEmailAsync(email);
     }
 
     public async Task<bool> AnyAsync(Expression<Func<ApplicationUser, bool>> whereExpression)

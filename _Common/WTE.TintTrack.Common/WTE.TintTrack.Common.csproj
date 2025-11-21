@@ -16,14 +16,12 @@
 
   <ItemGroup>
     <Compile Remove="Helpers\IncludePredicateConverter.cs" />
-    <Compile Remove="Interfaces\ITenantContext.cs" />
-    <Compile Remove="Interfaces\IUnitOfWork.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0" />
-    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.3" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.7.0" />
   </ItemGroup>
 
 </Project>

@@ -1,30 +1,34 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Configurations\ApplicationRoleConfiguration.cs" />
-    <Compile Remove="Configurations\ApplicationUserConfiguration.cs" />
-    <Compile Remove="Configurations\ContactOwnershipConfiguration.cs" />
-    <Compile Remove="Configurations\InvoiceConfiguration.cs" />
-    <Compile Remove="Configurations\ProjectConfiguration.cs" />
-    <Compile Remove="Configurations\PropertyDetailsConfiguration.cs" />
-    <Compile Remove="Configurations\ProposalConfiguration.cs" />
-    <Compile Remove="Configurations\QuoteConfiguration.cs" />
-    <Compile Remove="Configurations\SubscriptionPlanConfiguration.cs" />
-    <Compile Remove="Configurations\SubscriptionPlanFeatureConfiguration.cs" />
-    <Compile Remove="Configurations\SubscriptionPromoDiscountConfiguration.cs" />
-    <Compile Remove="Configurations\TenantSubscriptionConfiguration.cs" />
-    <Compile Remove="Configurations\TenantSubscriptionInvoiceConfiguration.cs" />
-    <Compile Remove="Configurations\TenantSubscriptionPaymentConfiguration.cs" />
-    <Compile Remove="Configurations\UserBillingProfileConfiguration.cs" />
-    <Compile Remove="Configurations\UserTenantConfiguration.cs" />
-    <Compile Remove="Configurations\UserTenantRoleConfiguration.cs" />
+    <Compile Remove="Configurations\CommercialOffersConfig\**" />
+    <Compile Remove="Configurations\old\**" />
+    <Compile Remove="Configurations\SalesAndQuotingConfig\**" />
+    <Compile Remove="Repositories\SalesAndQuoting\**" />
+    <Compile Remove="Repositories\_old\**" />
+    <EmbeddedResource Remove="Configurations\CommercialOffersConfig\**" />
+    <EmbeddedResource Remove="Configurations\old\**" />
+    <EmbeddedResource Remove="Configurations\SalesAndQuotingConfig\**" />
+    <EmbeddedResource Remove="Repositories\SalesAndQuoting\**" />
+    <EmbeddedResource Remove="Repositories\_old\**" />
+    <None Remove="Configurations\CommercialOffersConfig\**" />
+    <None Remove="Configurations\old\**" />
+    <None Remove="Configurations\SalesAndQuotingConfig\**" />
+    <None Remove="Repositories\SalesAndQuoting\**" />
+    <None Remove="Repositories\_old\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Repositories\ContactOwnershipRepository.cs" />
+    <Compile Remove="Repositories\CustomerOwnershipRepository.cs" />
+    <Compile Remove="Repositories\ProjectMilestoneRepository.cs" />
+    <Compile Remove="Repositories\ProjectRepository.cs" />
     <Compile Remove="Repositories\SubscriptionPlanFeatureRepository.cs" />
     <Compile Remove="Repositories\SubscriptionPlanRepository.cs" />
     <Compile Remove="Repositories\SubscriptionPromoDiscountRepository.cs" />
@@ -47,20 +51,46 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="SqlFiles\DropAllFKs.sql" />
-    <EmbeddedResource Include="SqlFiles\DropAllPKs.sql" />
-    <EmbeddedResource Include="SqlFiles\DropAllDBs.sql" />
+    <Compile Include="Configurations\CommercialOffersConfig\EstimateConfiguration.cs" />
+    <Compile Include="Configurations\CommercialOffersConfig\OfferHistoryConfiguration.cs" />
+    <Compile Include="Configurations\CommercialOffersConfig\OfferMilestoneConfiguration.cs" />
+    <Compile Include="Configurations\CommercialOffersConfig\OfferRecipientConfiguration.cs" />
+    <Compile Include="Configurations\CommercialOffersConfig\ProposalConfiguration.cs" />
+    <Compile Include="Configurations\CommercialOffersConfig\QuoteConfiguration.cs" />
+    <Compile Include="Configurations\SalesAndQuotingConfig\ContractConfiguration.cs" />
+    <Compile Include="Configurations\SalesAndQuotingConfig\ProjectConfiguration.cs" />
+    <Compile Include="Configurations\SalesAndQuotingConfig\ProjectMilestoneConfiguration.cs" />
+    <Compile Include="Configurations\SalesAndQuotingConfig\WorkOrderAssignmentConfiguration.cs" />
+    <Compile Include="Configurations\SalesAndQuotingConfig\WorkOrderConfiguration.cs" />
+    <Compile Include="Configurations\SalesAndQuotingConfig\WorkOrderItemConfiguration.cs" />
+    <Compile Include="Configurations\SalesAndQuotingConfig\WorkOrderLogConfiguration.cs" />
+    <Compile Include="Configurations\SalesAndQuotingConfig\WorkOrderLogPhotoConfiguration.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.0" />
+    <EmbeddedResource Include="SqlFiles\DropAllFKs.sql" />
+    <EmbeddedResource Include="SqlFiles\DropAllPKs.sql" />
+    <EmbeddedResource Include="SqlFiles\DropAllTbls.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.3">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\_Common\WTE.TintTrack.Common.Application\WTE.TintTrack.Application.Shared.csproj" />
     <ProjectReference Include="..\..\_Common\WTE.TintTrack.Common\WTE.TintTrack.Common.csproj" />
     <ProjectReference Include="..\WTE.TintTrack.Business.Domain\WTE.TintTrack.Business.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+    <Folder Include="Repositories\TintServiceRepos\" />
   </ItemGroup>
 
 </Project>

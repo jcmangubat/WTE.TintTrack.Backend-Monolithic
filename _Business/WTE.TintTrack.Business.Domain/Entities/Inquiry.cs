@@ -1,4 +1,6 @@
 ﻿using SMEAppHouse.Core.Patterns.EF.EntityCompositing.Abstractions;
+using WTE.TintTrack.Business.Domain.Entities.CommercialOffersEntities;
+using WTE.TintTrack.Domain.Shared;
 using static WTE.TintTrack.Common.Constants.Consts;
 
 namespace WTE.TintTrack.Business.Domain.Entities;
@@ -7,8 +9,10 @@ namespace WTE.TintTrack.Business.Domain.Entities;
 /// Represents the initial consultation or inquiry from a customer regarding tint services.
 /// Tracks details such as the customer’s needs, preferred service type, and consultation outcome.
 /// </summary>
-public class Inquiry : GuidKeyedAuditableEntity
+public class Inquiry : GuidKeyedAuditableEntity, ICodedEntity
 {
+    public required string Code { get; set; }
+
     /// <summary>
     /// Gets or sets the method by which the customer initiated the inquiry (e.g., Phone, Website, In-Person).
     /// </summary>
@@ -56,10 +60,15 @@ public class Inquiry : GuidKeyedAuditableEntity
     /// </summary>
     public string? SalesRepUserCode { get; set; }
 
-    public required string CustomerContactCode { get; set; }
+    public IEnumerable<string>? TintServiceCodes { get; set; }
 
-    /// <summary>
-    /// Gets or sets the proposals that may result from this consultation.
-    /// </summary>
-    public virtual ICollection<Proposal> Proposals { get; set; } = new HashSet<Proposal>();
+    public required Guid CustomerContactId { get; set; }
+    public virtual CustomerContact CustomerContact { get; set; }
+
+    public ICollection<Proposal> Proposals { get; set; } = new HashSet<Proposal>();
+
+    public ICollection<Quote> Quotes { get; set; } = new HashSet<Quote>();
+
+    public ICollection<Estimate> Estimates { get; set; } = new HashSet<Estimate>();
 }
+

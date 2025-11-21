@@ -45,37 +45,37 @@ public static class Consts
         /// <summary>
         /// Initial stage, when the customer shows interest but hasn’t yet committed.
         /// </summary>
-        Prospect = 1,
+        Prospect = 0,
 
         /// <summary>
         /// Prospect who has been qualified and shows potential for conversion.
         /// </summary>
-        Lead = 2,
+        Lead = 1,
 
         /// <summary>
         /// Qualified lead with active engagement in sales discussions or negotiations.
         /// </summary>
-        Opportunity = 3,
+        Opportunity = 2,
 
         /// <summary>
         /// Customer who has completed at least one transaction or contract.
         /// </summary>
-        Client = 4,
+        Client = 3,
 
         /// <summary>
         /// Client who has engaged in multiple transactions or contracts.
         /// </summary>
-        RepeatClient = 5,
+        RepeatClient = 4,
 
         /// <summary>
         /// Formerly active client who hasn’t engaged in recent business for a specific period.
         /// </summary>
-        LapsedClient = 6,
+        LapsedClient = 5,
 
         /// <summary>
         /// A client who is no longer actively engaging but may still receive communications for re-engagement.
         /// </summary>
-        Inactive = 7
+        Inactive = 6
     }
 
     public enum CustomerContactRelationshipTypesEnum
@@ -118,7 +118,12 @@ public static class Consts
         /// <summary>
         /// A representative for sales inquiries or opportunities.
         /// </summary>
-        SalesContact
+        SalesContact,
+
+        /// <summary>
+        /// A contact for industry related matters.
+        /// </summary>
+        ConsultancyContact,
     }
 
     [JsonConverter(typeof(JsonStringEnumConverter))]
@@ -456,6 +461,7 @@ public static class Consts
         Triennially
     }
 
+
     public enum PaymentStatusEnum
     {
         /// <summary>
@@ -497,7 +503,11 @@ public static class Consts
 
     public enum InvoiceStatusEnum
     {
-        Unpaid, Paid, Overdue, Failed
+        Draft,
+        Issued,
+        Overdue,
+        Paid,
+        Cancelled
     }
 
     /// <summary>
@@ -551,18 +561,17 @@ public static class Consts
         Viewed
     }
 
-    public enum ContactTypesEnum
+    /*public enum ContactTypesEnum
     {
         Customer,       // Represents a current customer
         Lead,           // Represents an inquiry or prospect
         Referral,       // Contact referred by someone else
         Subscriber,     // Someone signed up for communications
-        Inactive,       // Former customers or leads
         VIP,            // High-value customers
         Partner,        // Business or individual partners
         Distributor,    // Reseller or distributor of products
-        EventAttendee   // Attendee of events or workshops
-    }
+        EventAttendee,  // Attendee of events or workshops
+    }*/
 
     public enum LengthUnitsEnum
     {
@@ -800,22 +809,6 @@ public static class Consts
         EducationalMaterials
     }
 
-    /// <summary>
-    /// Represents the roles a member can have in a proposal.
-    /// </summary>
-    public enum ProposalMemberRolesEnum
-    {
-        /// <summary>
-        /// A member who reviews the proposal but does not approve it.
-        /// </summary>
-        Reviewer,
-
-        /// <summary>
-        /// A member who has the authority to approve the proposal.
-        /// </summary>
-        Approver
-    }
-
     public enum TaskStatusEnum
     {
         Pending,
@@ -856,6 +849,25 @@ public static class Consts
         Sheets              // Individual sheets of tint or related material
     }
 
+    public enum PriceCalculationTypesEnum
+    {
+        Standard,       // Uses MarkupPercentage
+        FixedPrice,     // Uses a fixed FinalPrice instead
+        DynamicFormula  // Uses a stored formula in CustomFormula
+    }
+
+    public enum PriceTypesEnum
+    {
+        Retail = 1,      // Standard price for individual customers
+        Wholesale = 2,   // Bulk pricing for wholesalers or B2B clients
+        Discounted = 3,  // Special promotional or seasonal discount
+        Contract = 4,    // Pre-negotiated contract price for specific customers
+        Tiered = 5,      // Price that depends on quantity purchased
+        SpecialOffer = 6,// Limited-time special pricing
+        Clearance = 7,   // Discounted price for clearance or end-of-life products
+        Custom = 8       // Custom pricing based on special agreements
+    }
+
     public enum TaskAssigneeRolesEnum
     {
         ProjectManager,    // Oversees the entire project or activity
@@ -868,5 +880,326 @@ public static class Consts
         QualityAssurance,  // Ensures quality through testing, checks, or validation of the task's results
         SubjectMatterExpert, // Subject Matter Expert, offers advice and solves complex problems
         Admin              // Manages access, configuration, and logistics for project activities
+    }
+
+    public enum AddressTypesEnum
+    {
+        /// <summary>
+        /// A home address where an individual resides.
+        /// </summary>
+        Residential,
+
+        /// <summary>
+        /// The official address of a business or organization.
+        /// </summary>
+        Business,
+
+        /// <summary>
+        /// The address where mail is received, which may differ from the physical location.
+        /// </summary>
+        Mailing,
+
+        /// <summary>
+        /// The address where packages are sent, often used for e-commerce and logistics.
+        /// </summary>
+        Shipping,
+
+        /// <summary>
+        /// The address associated with credit cards and financial transactions.
+        /// </summary>
+        Billing,
+
+        /// <summary>
+        /// The legally registered address of a company for tax and compliance purposes.
+        /// </summary>
+        Registered,
+
+        /// <summary>
+        /// A long-term official address for an individual, often used for legal identification.
+        /// </summary>
+        Permanent,
+
+        /// <summary>
+        /// A short-term address used by students, travelers, or temporary workers.
+        /// </summary>
+        Temporary,
+
+        /// <summary>
+        /// The address used for tax filings and official correspondence with tax authorities.
+        /// </summary>
+        Tax,
+
+        /// <summary>
+        /// A real-world, physical location where a person or business is based.
+        /// </summary>
+        Physical,
+
+        /// <summary>
+        /// A digital or remote business address, often used for mail forwarding services.
+        /// </summary>
+        Virtual,
+
+        /// <summary>
+        /// An address in non-urban areas where street addresses may be unavailable.
+        /// </summary>
+        Rural,
+
+        /// <summary>
+        /// A rented post office box used to receive mail at a post office location.
+        /// </summary>
+        POBox,
+
+        /// <summary>
+        /// A military address used by armed forces personnel, following APO, FPO, or DPO formats.
+        /// </summary>
+        Military
+    }
+
+    public enum IndustryTypesEnum
+    {
+        Undefined = 0, // Default value when not specified
+
+        // Primary Industries (Raw Materials)
+        Agriculture,
+        Forestry,
+        Fishing,
+        Mining,
+        OilAndGas,
+
+        // Secondary Industries (Manufacturing & Construction)
+        Manufacturing,
+        Construction,
+
+        // Tertiary Industries (Services)
+        Retail,
+        Wholesale,
+        Transportation,
+        Logistics,
+        Healthcare,
+        Education,
+        FinancialServices,
+        Insurance,
+        RealEstate,
+        Hospitality,
+        Tourism,
+        FoodAndBeverage,
+        MediaAndEntertainment,
+        Telecommunications,
+        LegalServices,
+        Consulting,
+        ITAndSoftware,
+        CyberSecurity,
+        Engineering,
+        Architecture,
+        Automotive,
+
+        // Quaternary Industries (Knowledge & Research)
+        ResearchAndDevelopment,
+        Biotechnology,
+        Aerospace,
+        RenewableEnergy,
+        Nanotechnology,
+
+        // Quinary Industries (High-Level Decision-Making)
+        Government,
+        NonProfit,
+        MilitaryAndDefense,
+        PublicAdministration
+    }
+
+    public enum GendersEnum
+    {
+        Male,
+        Female
+    }
+
+    public enum MaritalStatusEnum
+    {
+        /// <summary>
+        /// The individual is not married and has never been married.
+        /// </summary>
+        Single,
+
+        /// <summary>
+        /// The individual is legally married.
+        /// </summary>
+        Married,
+
+        /// <summary>
+        /// The individual was previously married but is now legally divorced.
+        /// </summary>
+        Divorced,
+
+        /// <summary>
+        /// The individual is legally separated but not yet divorced.
+        /// </summary>
+        Separated,
+
+        /// <summary>
+        /// The individual's spouse has passed away, and they have not remarried.
+        /// </summary>
+        Widowed,
+
+        /// <summary>
+        /// The individual is in a legally recognized domestic partnership or civil union.
+        /// </summary>
+        DomesticPartnership,
+
+        /// <summary>
+        /// The individual is in a long-term relationship but not legally married.
+        /// </summary>
+        Cohabitating,
+
+        /// <summary>
+        /// The individual's marital status is unknown or not disclosed.
+        /// </summary>
+        Unknown
+    }
+
+    public enum OfferDocumentTypesEnum
+    {
+        Quote,
+        Proposal,
+        Estimate
+    }
+
+    /// <summary>
+    /// Represents the roles a member can have in a proposal.
+    /// </summary>
+    public enum OfferDocumentRecipientRolesEnum
+    {
+        /// <summary>
+        /// A member who is actively involved in the proposal process and may not necessarily approve it.
+        /// </summary>
+        Observer,
+
+        /// <summary>
+        /// A member who reviews the proposal and provides feedback or suggestions; may not necessarily approve it.
+        /// </summary>
+        Reviewer,
+
+        /// <summary>
+        /// A member who has the authority to approve the proposal.
+        /// </summary>
+        Approver
+    }
+
+    public enum OfferDocumentStatusEnum
+    {
+        Draft = 0,
+        Submitted = 1,
+        UnderReview = 2,
+        ReviewedWithComment = 3,
+        Approved = 4,
+        Rejected = 5,
+        Recalled = 6,
+        Expired = 7,
+        Archived = 8
+    }
+
+    public enum TintServiceTypesEnum
+    {
+        Automotive, Residential, Commercial
+    }
+
+    public enum ProjectStatusEnum
+    {
+        /// <summary>
+        /// Project is being prepared but not finalized yet
+        /// </summary>
+        Draft = 0,
+
+        /// <summary>
+        /// Work is scheduled, but not yet started
+        /// </summary>
+        Scheduled = 1,
+
+        /// <summary>
+        /// Work is actively being done
+        /// </summary>
+        InProgress = 2,
+
+        /// <summary>
+        /// Project temporarily paused (e.g., waiting for customer or materials)
+        /// </summary>
+        OnHold = 3,
+
+        /// <summary>
+        /// Work completed successfully
+        /// </summary>
+        Completed = 4,
+
+        /// <summary>
+        /// Project was cancelled before completion
+        /// </summary>
+        Cancelled = 5
+    }
+
+    public enum WorkOrderStatusEnum
+    {
+        Pending = 0,          // Created but not yet scheduled
+        Scheduled = 1,        // Assigned a date and/or technician
+        InProgress = 2,       // Work is currently being executed
+        Paused = 3,           // Temporarily halted (e.g., awaiting materials, customer confirmation)
+        Completed = 4,        // Work finished successfully
+        Cancelled = 5         // Work order was cancelled before completion
+    }
+
+    public enum BillingTypesEnum
+    {
+        FixedPrice = 1,       // A fixed price for the entire project or milestone.
+        TimeAndMaterials = 2, // Based on hours worked and materials used.
+        MilestoneBased = 3,   // Billing is based on project milestones.
+        Retainer = 4,         // A recurring fee paid in advance for ongoing work.
+        TimeAndMaterialsWithCap = 5 // Time and Materials with a maximum cost cap.
+    }
+
+    public enum PaymentTermsEnum
+    {
+        Net30 = 1,           // Payment is due in full 30 days after the invoice date.
+        Net60 = 2,           // Payment is due in full 60 days after the invoice date.
+        Net90 = 3,           // Payment is due in full 90 days after the invoice date.
+        DueOnReceipt = 4,    // Payment is due immediately upon receipt of the invoice.
+        MilestonePayments = 5, // Payment is due upon the completion of specific project milestones.
+        Installments = 6,     // Payments are made in installments (e.g., monthly or quarterly).
+        UponCompletion = 7,   // Payment is due once the project or work is completed.
+        RetainerPayment = 8,  // A pre-paid or recurring payment for ongoing services.
+        UponAcceptance = 9    // Payment is due upon formal acceptance of the work or deliverables.
+    }
+
+    /// <summary>
+    /// Enum representing various payment methods.
+    /// </summary>
+    public enum PaymentMethodsEnum
+    {
+        BankTransfer,
+        CreditCard,
+        PayPal,
+        Cash,
+        Check,
+        Other
+    }
+
+    public enum InvoiceSignatureTypesEnum
+    {
+        None = 0,              // No signature required
+        Manual = 1,            // Manually signed (e.g., scanned signature, uploaded image)
+        DigitalEmbedded = 2,   // Signed within the app via drawing or input
+        DigitalThirdParty = 3, // Signed using external e-sign providers (e.g., DocuSign, AdobeSign)
+        Acknowledged = 4       // Client just acknowledged without actual signature
+    }
+
+    public enum AdjustmentTypesEnum
+    {
+        Discount,
+        PriceCorrection,
+        Other
+    }
+
+    public enum CreditMemoStatusEnum
+    {
+        Applied,
+        Pending,
+        Reversed
     }
 }

@@ -21,6 +21,8 @@ public class AuditLogRepository(TenantDbContext dbContext) : RepositoryForGuidKe
 
     public async Task<IEnumerable<AuditLog>> GetByUserAsync(Guid userId)
     {
-        return await _dbContext.AuditLogs.Where(t => t.UserId == userId).ToListAsync();
+        return  await _dbContext.AuditLogs
+            .Where(t => t.Id == userId)
+            .Select(t => t).ToListAsync();
     }
 }

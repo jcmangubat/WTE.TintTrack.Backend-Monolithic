@@ -7,12 +7,11 @@ using WTE.TintTrack.Core.Application.Interfaces;
 namespace WTE.TintTrack.Api.Controllers;
 
 /// <summary>
-/// Controller for handling tenant subscription payments.
+/// Controller for handling tenant subscription payment operations.
 /// </summary>
 /// <remarks>
-/// Constructor for the TenantSubscriptionPaymentController.
+/// This controller manages payment records for tenant subscriptions, enabling tracking of payments made against subscription invoices. It provides operations for retrieving payments by tenant subscription ID, retrieving specific payment records by payment ID, and deleting payment records. The controller integrates with payment services to maintain payment history, track payment status, and support financial reconciliation for subscription-based billing.
 /// </remarks>
-/// <param name="paymentService">The payment service.</param>
 [ApiController]
 [Route("api/[controller]")]
 //[ApiExplorerSettings(GroupName = "Core Modules")]

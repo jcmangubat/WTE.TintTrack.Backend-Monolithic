@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using WTE.TintTrack.Application.Shared.ModelAbstraction;
+using SMEAppHouse.Core.Patterns.EF.EntityCompositing.Interfaces;
 
 namespace WTE.TintTrack.Core.Domain.Entities;
 

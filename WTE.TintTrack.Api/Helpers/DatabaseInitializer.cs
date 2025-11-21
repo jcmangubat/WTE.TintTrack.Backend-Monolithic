@@ -47,39 +47,46 @@ public static class DatabaseInitializer
 
     private static async Task InitializeTenantsAsync(IServiceProvider serviceProvider, ApplicationSettings appSettings)
     {
-        var tenantService = serviceProvider.GetRequiredService<ITenantService>();
-        var connStrTemplate = appSettings.TenantConnStrTemplate;
+        var logger = serviceProvider.GetRequiredService<ILogger<DatabaseInitializer>>();
+        var migrationService = serviceProvider.GetRequiredService<TenantMigrationService>();
 
-        var tenantCodes = new List<string> { "DEFAULTCLIENT", "WTE001", "WTE002" };
-
-        foreach (var tenantCode in tenantCodes)
+        try
         {
-            var tenantConnStr = connStrTemplate.Replace("{TENANTCODE}", tenantCode);
-            var optionsBuilder = new DbContextOptionsBuilder<TenantDbContext>();
+            logger.LogInformation("Starting tenant database migrations");
 
-            optionsBuilder.UseSqlServer(tenantConnStr);
+            // Use TenantMigrationService to migrate all tenants dynamically
+            // This will fetch tenants from ApplicationDbContext and migrate each one
+            var result = await migrationService.MigrateAllTenantsAsync(continueOnError: true);
 
-            using var tenantContext = new TenantDbContext(optionsBuilder.Options);
-
-            if (!await tenantContext.Database.CanConnectAsync())
+            if (result.Success)
             {
-                var created = await tenantContext.Database.EnsureCreatedAsync();
-
-                var dropAllFKsSQL = await TenantDbContext.GetSqlAsync("WTE.TintTrack.Business.Infrastructure.SqlFiles.DropAllFKs.sql");
-                await tenantContext.Database.ExecuteSqlRawAsync(dropAllFKsSQL);
-
-                var dropAllPKsSQL = await TenantDbContext.GetSqlAsync("WTE.TintTrack.Business.Infrastructure.SqlFiles.DropAllPKs.sql");
-                await tenantContext.Database.ExecuteSqlRawAsync(dropAllPKsSQL);
-
-                var dropAllDBsSQL = await TenantDbContext.GetSqlAsync("WTE.TintTrack.Business.Infrastructure.SqlFiles.DropAllDBs.sql");
-                await tenantContext.Database.ExecuteSqlRawAsync(dropAllDBsSQL);
+                logger.LogInformation(
+                    "Tenant migrations completed successfully. Migrated {SuccessCount} tenant(s) in {Duration}ms",
+                    result.SuccessCount,
+                    result.Duration.TotalMilliseconds);
             }
+            else
+            {
+                logger.LogWarning(
+                    "Tenant migrations completed with errors. Success: {SuccessCount}, Failed: {FailureCount}, Duration: {Duration}ms",
+                    result.SuccessCount,
+                    result.FailureCount,
+                    result.Duration.TotalMilliseconds);
 
-            if (tenantContext.Database.GetPendingMigrations().Any())
-                await tenantContext.Database.MigrateAsync();
-
-            //if (tenantCode.Equals("WTE001")) await RunImportAsync(tenantContext);
-
+                // Log details of failed tenants
+                foreach (var kvp in result.TenantResults.Where(r => !r.Value.Success))
+                {
+                    logger.LogError(
+                        "Failed to migrate tenant {TenantCode}: {Error}",
+                        kvp.Key,
+                        kvp.Value.ErrorMessage);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Fatal error during tenant database initialization");
+            throw;
         }
     }
 

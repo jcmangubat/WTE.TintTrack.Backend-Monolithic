@@ -13,13 +13,13 @@ public class PropertyService(
     IMapper mapper,
     ILogger<PropertyService> logger,
     IMessageProviderService messageProviderService,
-    IPropertyRepository repository)
-    : MappedLoggingServiceWithCRUD<IPropertyService, IPropertyRepository, Property, PropertyDto>(
-        mapper, logger, messageProviderService, repository), IPropertyService
+    IPropertyAssetRepository repository)
+    : MappedLoggingServiceWithCRUD<IPropertyAssetService, IPropertyAssetRepository, PropertyAsset, PropertyAssetDto>(
+        mapper, logger, messageProviderService, repository), IPropertyAssetService
 {
-    public async Task<PropertyDto?> GetByCodeAsync(string code)
+    public async Task<PropertyAssetDto?> GetByCodeAsync(string code)
     {
         var entity = await Repository.GetSingleAsync(p => p.Code == code);
-        return Mapper.Map<PropertyDto>(entity);
+        return Mapper.Map<PropertyAssetDto>(entity);
     }
 }

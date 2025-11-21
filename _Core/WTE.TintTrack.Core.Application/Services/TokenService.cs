@@ -66,7 +66,7 @@ public class TokenService(IMapper mapper,
                 if (tenantSubscriptions == null || !tenantSubscriptions.Any())
                     throw RecordNotFoundException("ERR011");
 
-                var activeTenantSubscription = tenantSubscriptions.FirstOrDefault(p => p.SubscriptionStatus == Common.Constants.Consts.SubscriptionStatusEnum.Active) ??
+                var activeTenantSubscription = tenantSubscriptions.FirstOrDefault(p => p.SubscriptionStatus == SubscriptionStatusEnum.Active) ??
                     throw RecordNotFoundException("ERR012");
 
                 tenantSubscriptionDto = Mapper.Map<TenantSubscriptionDto>(activeTenantSubscription);

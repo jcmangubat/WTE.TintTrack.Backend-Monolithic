@@ -9,8 +9,8 @@ namespace WTE.TintTrack.Business.Infrastructure.Configurations;
 
 public class InquiryConfiguration(string schema = "dbo")
     : EntityConfiguration<Inquiry, Guid>(
-        prefixEntityNameToId: false, 
-        prefixAltTblNameToEntity: false, 
+        prefixEntityNameToId: false,
+        prefixAltTblNameToEntity: false,
         schema: schema, pluralizeTblName: true
     )
 {
@@ -18,6 +18,7 @@ public class InquiryConfiguration(string schema = "dbo")
     {
         base.OnModelCreating(builder);
 
+        builder.DefineDbField(p => p.Code, true, FieldLengths.General.CODE);
         builder.DefineDbField(p => p.LeadSource, true);
         builder.DefineDbField(p => p.ConsultationDate, true);
         builder.DefineDbField(p => p.Subject, true, FieldLengths.Inquiry.Subject);
@@ -28,14 +29,26 @@ public class InquiryConfiguration(string schema = "dbo")
         builder.DefineDbField(p => p.TintType, false);
         builder.DefineDbField(p => p.SpecialRequests, false, FieldLengths.Inquiry.SpecialRequests);
         builder.DefineDbField(p => p.FollowUpNeeded, false);
-        builder.DefineDbField(p => p. ProposalCode, false, FieldLengths.Inquiry.ProposalCode);
 
         builder.DefineDbField(p => p.SalesRepUserCode, false, FieldLengths.Inquiry.SalesRepUserCode);
+        builder.DefineDbField(p => p.TintServiceCodes, false, FieldLengths.Inquiry.TintServiceCodes);
 
-        builder.HasOne(p => p.Customer)
-                .WithMany(p => p.Inquiries)
-                .HasForeignKey(p => p.CustomerId)
-                .IsRequired(false)
-                .OnDelete(DeleteBehavior.Cascade);
+        builder.HasMany(p => p.Proposals)
+            .WithOne(p => p.Inquiry)
+            .HasForeignKey(p => p.InquiryId)
+            .OnDelete(DeleteBehavior.Restrict)
+            .IsRequired(false);
+
+        builder.HasMany(p => p.Quotes)
+            .WithOne(p => p.Inquiry)
+            .HasForeignKey(p => p.InquiryId)
+            .OnDelete(DeleteBehavior.Restrict)
+            .IsRequired(false);
+
+        builder.HasMany(p => p.Estimates)
+            .WithOne(p => p.Inquiry)
+            .HasForeignKey(p => p.InquiryId)
+            .OnDelete(DeleteBehavior.Restrict)
+            .IsRequired(false);
     }
 }

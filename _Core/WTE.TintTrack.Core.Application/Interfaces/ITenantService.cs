@@ -17,5 +17,5 @@ public interface ITenantService : IMappedLoggingService<ITenantService>
     Task<IEnumerable<TenantDto>?> GetTenantsByUserEmailAsync(string emailAddress);
     Task<bool> ValidateTenantAsync(string tenantCode);
     Task<string> UploadLogoImage(string tenantCode, IFormFile logoImageFormFile);
-    Task ApproveTenantAsync(string tenantCode, bool force = false);
+    Task ApproveTenantAsync(string tenantCode, bool force = false, CancellationToken cancellationToken = default);
 }

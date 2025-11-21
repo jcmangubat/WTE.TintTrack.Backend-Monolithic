@@ -1,16 +1,15 @@
 ﻿using AutoMapper;
-using System.Linq.Expressions;
 using WTE.TintTrack.Api.Messaging._Abstractions;
-using WTE.TintTrack.Api.Messaging.Business.Request;
+using WTE.TintTrack.Api.Messaging.Business.Requests.PropertyAsset;
 using WTE.TintTrack.Business.Application.DTOs;
 using WTE.TintTrack.Business.Domain.Interfaces.Repositories;
 
 namespace WTE.TintTrack.Api.Messaging._CRUDExtenders;
 
-public class PropertyCRUDExtender(ILogger<PropertyCRUDExtender> logger, IMapper mapper, IPropertyRepository repository)
-    : CRUDExtenderBase<IPropertyRepository, PropertyDto, CreatePropertyRequest, UpdatePropertyRequest>(logger, mapper, repository)
+public class PropertyCRUDExtender(ILogger<PropertyCRUDExtender> logger, IMapper mapper, IPropertyAssetRepository repository)
+    : CRUDExtenderBase<IPropertyAssetRepository, PropertyAssetDto, CreatePropertyAssetRequest, UpdatePropertyAssetRequest>(logger, mapper, repository)
 {
-    public override PropertyDto TransformForUpdate(PropertyDto entityDto, UpdatePropertyRequest entityUpdateRequest)
+    public override PropertyAssetDto TransformForUpdate(PropertyAssetDto entityDto, UpdatePropertyAssetRequest entityUpdateRequest)
     {
         entityDto = base.TransformForUpdate(entityDto, entityUpdateRequest);
 
@@ -33,7 +32,7 @@ public class PropertyCRUDExtender(ILogger<PropertyCRUDExtender> logger, IMapper 
         return entityDto;
     }
 
-    public override async Task<bool> ExistAsync(PropertyDto entity)
+    public override async Task<bool> ExistAsync(PropertyAssetDto entity)
     {
         return await _repository.AnyAsync(p => p.Code == entity.Code);
     }

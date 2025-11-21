@@ -9,6 +9,13 @@ public class ApplicationSettings
 
     public string TenantConnStrTemplate {  get; set; }  
 
+    /// <summary>
+    /// Regex pattern for resolving tenant from subdomain.
+    /// Default: "^(?&lt;tenant&gt;[a-zA-Z0-9-]+)\.yourapp\.com$"
+    /// Placeholder {TENANT} will be replaced with actual tenant code during matching.
+    /// </summary>
+    public string? TenantDomainPattern { get; set; }
+
     public required IEnumerable<EmailContact> ContactUsRecipients { get; set; } = [];
 
     public required EmailContact NoReplyEmailAddress { get; set; }

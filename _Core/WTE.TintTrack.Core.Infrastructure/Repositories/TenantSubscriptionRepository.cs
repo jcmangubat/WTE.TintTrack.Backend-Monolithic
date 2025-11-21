@@ -55,6 +55,19 @@ public class TenantSubscriptionRepository(ApplicationDbContext dbContext)
             .FirstOrDefaultAsync(ts => ts.Id == tenantSubscriptionId);
     }
 
+    /// <summary>
+    /// Gets a subscription by its unique identifier with invoices and payments included.
+    /// </summary>
+    /// <param name="subscriptionId">The subscription's ID.</param>
+    /// <returns>The TenantSubscription with invoices and payments if found; otherwise, null.</returns>
+    public async Task<TenantSubscription?> GetByIdWithInvoicesAndPaymentsAsync(Guid subscriptionId)
+    {
+        return await _dbContext.TenantSubscriptions
+            .Include(ts => ts.SubscriptionPlan)
+            .Include(ts => ts.TenantSubscriptionInvoices)
+                .ThenInclude(inv => inv.TenantSubscriptionPayments)
+            .FirstOrDefaultAsync(ts => ts.Id == subscriptionId);
+    }
 
     /// <summary>
     /// Deletes a TenantSubscription by its ID.

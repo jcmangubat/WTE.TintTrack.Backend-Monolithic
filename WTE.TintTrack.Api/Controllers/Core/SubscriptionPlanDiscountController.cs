@@ -10,6 +10,12 @@ using WTE.TintTrack.Core.Application.Interfaces;
 
 namespace WTE.TintTrack.Api.Controllers.Core;
 
+/// <summary>
+/// Controller for handling subscription plan discount operations.
+/// </summary>
+/// <remarks>
+/// This controller manages promotional discounts and special pricing offers for subscription plans. It provides operations for retrieving discounts associated with specific subscription plans, retrieving discount details by code, and deleting discount records, enabling administrators to create and manage promotional pricing strategies for tenant subscriptions.
+/// </remarks>
 [ApiController]
 [Route("api/[controller]")]
 //[ApiExplorerSettings(GroupName = "coremodules")]

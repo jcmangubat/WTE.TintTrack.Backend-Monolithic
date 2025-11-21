@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Mime;
 using WTE.TintTrack.Api.Helpers.ControllerAbstractions;
-using WTE.TintTrack.Api.Messaging.Core.Request;
+using WTE.TintTrack.Api.Messaging.Core.Requests;
 using WTE.TintTrack.Api.Messaging.Core.Responses;
 using WTE.TintTrack.Application.Shared.Interfaces;
 using WTE.TintTrack.Application.Shared.Messaging;
@@ -16,8 +16,11 @@ using WTE.TintTrack.Core.Application.Interfaces;
 namespace WTE.TintTrack.Api.Controllers.Core;
 
 /// <summary>
-/// Controller for managing user-tenant associations.
+/// Controller for handling user-tenant association operations.
 /// </summary>
+/// <remarks>
+/// This controller manages the relationships between users and tenants, enabling multi-tenant functionality where users can belong to multiple tenants with different roles. It provides operations for retrieving user-tenant associations, getting tenants for users, getting users for tenants, checking user membership in tenants, adding users to tenants, updating associations, removing users from tenants, and managing user roles within tenants. The controller integrates with user services, tenant services, and user-tenant services to support role-based access control, tenant membership management, and multi-tenant user administration.
+/// </remarks>
 [ApiController]
 [Route("api/[controller]")]
 //[ApiExplorerSettings(GroupName = "coremodules")]

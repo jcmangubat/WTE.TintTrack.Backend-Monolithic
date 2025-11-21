@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Mime;
 using WTE.TintTrack.Api.Helpers.ControllerAbstractions;
-using WTE.TintTrack.Api.Messaging.Core.Request;
+using WTE.TintTrack.Api.Messaging.Core.Requests;
 using WTE.TintTrack.Api.Messaging.Core.Responses;
 using WTE.TintTrack.Application.Shared.Interfaces;
 using WTE.TintTrack.Application.Shared.Messaging;
@@ -13,6 +13,12 @@ using WTE.TintTrack.Core.Application.Interfaces;
 
 namespace WTE.TintTrack.Api.Controllers.Core;
 
+/// <summary>
+/// Controller for handling subscription plan feature operations.
+/// </summary>
+/// <remarks>
+/// This controller manages the association between subscription plans and features, allowing administrators to configure which features are available in each subscription tier. It provides operations for retrieving features by subscription plan, managing feature-plan associations, adding features to plans, removing features from plans, and deleting feature records, enabling flexible subscription plan configuration and feature management.
+/// </remarks>
 [ApiController]
 [Route("api/[controller]")]
 //[ApiExplorerSettings(GroupName = "coremodules")]

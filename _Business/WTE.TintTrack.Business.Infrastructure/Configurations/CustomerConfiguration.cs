@@ -3,6 +3,7 @@ using SMEAppHouse.Core.Patterns.EF.EntityConfigurationAbstractions;
 using SMEAppHouse.Core.Patterns.EF.Helpers;
 using WTE.TintTrack.Business.Domain.Entities;
 using WTE.TintTrack.Common.Constants;
+using Microsoft.EntityFrameworkCore;
 
 namespace WTE.TintTrack.Business.Infrastructure.Configurations;
 
@@ -14,29 +15,37 @@ public class CustomerConfiguration(string schema = "dbo")
         base.OnModelCreating(entityBuilder);
 
         entityBuilder.DefineDbField(p => p.Code, true, FieldLengths.Customer.Code);
-        entityBuilder.DefineDbField(p => p.Name, true, FieldLengths.General.Name);
-        entityBuilder.DefineDbField(p => p.Company, false, FieldLengths.General.Name);
-        entityBuilder.DefineDbField(p => p.Phone, false, FieldLengths.General.PhoneNumber);
-        entityBuilder.DefineDbField(p => p.Phone2, false, FieldLengths.General.PhoneNumber);
-        entityBuilder.DefineDbField(p => p.Email, false, FieldLengths.General.EmailAddress);
+        entityBuilder.DefineDbField(p => p.Name, true, FieldLengths.Customer.Name);
+        entityBuilder.DefineDbField(p => p.IndustryType, false, FieldLengths.Customer.IndustryType);
+        entityBuilder.DefineDbField(p => p.MainPhone, false, FieldLengths.Customer.MainPhone);
+        entityBuilder.DefineDbField(p => p.GeneralEmail, false, FieldLengths.General.EmailAddress);
+        entityBuilder.DefineDbField(p => p.Website, false, FieldLengths.Customer.Website);
         entityBuilder.DefineDbField(p => p.CustomerStatus, true);
-        entityBuilder.DefineDbField(p => p.Tags, false, FieldLengths.General.ExtraLong);
 
-        entityBuilder.DefineDbField(p => p.StreetAddress, false, FieldLengths.GeneralAddress.StreetAddress);
-        entityBuilder.DefineDbField(p => p.AddressLine2, false, FieldLengths.GeneralAddress.AddressLine2);
-        entityBuilder.DefineDbField(p => p.City, false, FieldLengths.GeneralAddress.City);
-        entityBuilder.DefineDbField(p => p.StateOrRegion, false, FieldLengths.GeneralAddress.StateOrRegionOrProvince);
-        entityBuilder.DefineDbField(p => p.PostalCode, false, FieldLengths.GeneralAddress.PostalOrZIPCode);
-        entityBuilder.DefineDbField(p => p.CountryISOCode, false, FieldLengths.GeneralAddress.CountryISOCode);
+        entityBuilder.DefineDbField(p => p.Notes, false, FieldLengths.Customer.Notes);
+        entityBuilder.DefineDbField(p => p.Tags, false, FieldLengths.General.ExtraLong);
 
         entityBuilder.DefineDbField(p => p.IsImported, false);
         entityBuilder.DefineDbField(p => p.TaxExemptionReason, false);
-        entityBuilder.DefineDbField(p => p.CreatedBy, false, FieldLengths.General.LENGTH120);
 
-        /*// Navigation properties for related entities
-        public virtual ICollection<CustomerContact> CustomerContacts { get; set; } = new HashSet<CustomerContact>();
-        public virtual ICollection<Quote> Quotes { get; set; } = new HashSet<Quote>();
-        public virtual ICollection<Project> Projects { get; set; } = new HashSet<Project>();
-        public virtual ICollection<CustomerProperty> CustomerProperties { get; set; } = new HashSet<CustomerProperty>();*/
+        entityBuilder.HasMany(p => p.Addresses)
+                        .WithOne(p => p.Customer)
+                        .HasForeignKey(p => p.CustomerId)
+                        .OnDelete(DeleteBehavior.SetNull);
+
+        entityBuilder.HasMany(p => p.PropertyAssets)
+                        .WithOne(p => p.Customer)
+                        .HasForeignKey(p => p.CustomerId)
+                        .OnDelete(DeleteBehavior.Cascade);
+
+        entityBuilder.HasMany(p => p.TintMaterialPriceOverrides)
+                        .WithOne(p => p.Customer)
+                        .HasForeignKey(p => p.CustomerId)
+                        .OnDelete(DeleteBehavior.Cascade);
+
+        entityBuilder.HasMany(p => p.CustomerContacts)
+                        .WithOne(p => p.Customer)
+                        .HasForeignKey(p => p.CustomerId)
+                        .OnDelete(DeleteBehavior.Cascade);
     }
 }

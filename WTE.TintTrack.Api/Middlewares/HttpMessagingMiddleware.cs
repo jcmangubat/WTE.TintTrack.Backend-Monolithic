@@ -16,35 +16,47 @@ public class HttpMessagingMiddleware(RequestDelegate next, ILogger<HttpMessaging
 
     public async Task InvokeAsync(HttpContext httpContext)
     {
-        try
+        // Get correlation ID from context if available
+        var correlationId = httpContext.Items["CorrelationId"]?.ToString() ?? "Unknown";
+        
+        using (_logger.BeginScope(new Dictionary<string, object>
         {
-            // Call the next middleware in the pipeline
-            await _next(httpContext);
-
-            // Check if the user is unauthorized
-            if (httpContext.Response.StatusCode == StatusCodes.Status403Forbidden)
+            ["CorrelationId"] = correlationId,
+            ["TenantCode"] = httpContext.RequestServices.GetService<WTE.TintTrack.Common.Interfaces.ITenantContext>()?.TenantCode ?? "Unknown"
+        }))
+        {
+            try
             {
-                // Handle the authorization failure
-                httpContext.Response.ContentType = "application/json";
-                await httpContext.Response.WriteAsync((string)JsonConvert.SerializeObject(new
-                {
-                    httpContext.Response.StatusCode,
-                    Message = "You are not authorized to access this resource.",
-                    Success = false,
-                    Errors = new { },
-                    Data = new { }
-                }));
+                // Call the next middleware in the pipeline
+                await _next(httpContext);
 
-                return;
+                // Check if the user is unauthorized
+                if (httpContext.Response.StatusCode == StatusCodes.Status403Forbidden)
+                {
+                    // Handle the authorization failure
+                    httpContext.Response.ContentType = "application/json";
+                    await httpContext.Response.WriteAsync((string)JsonConvert.SerializeObject(new
+                    {
+                        httpContext.Response.StatusCode,
+                        Message = "You are not authorized to access this resource.",
+                        Success = false,
+                        Errors = new { },
+                        Data = new { },
+                        CorrelationId = correlationId
+                    }));
+
+                    return;
+                }
             }
-        }
-        catch (Exception ex)
-        {
-            await HandleExceptionAsync(httpContext, ex);
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Unhandled exception in request pipeline. CorrelationId: {CorrelationId}", correlationId);
+                await HandleExceptionAsync(httpContext, ex, correlationId);
+            }
         }
     }
 
-    private static Task HandleExceptionAsync(HttpContext context, Exception exception)
+    private static Task HandleExceptionAsync(HttpContext context, Exception exception, string? correlationId = null)
     {
         if (context.Response.HasStarted)
             return Task.CompletedTask;
@@ -73,7 +85,8 @@ public class HttpMessagingMiddleware(RequestDelegate next, ILogger<HttpMessaging
                     exception.Message,
                     context.Response.StatusCode,
                     customValidationEx.Errors,
-                    Data = new { }
+                    Data = new { },
+                    CorrelationId = correlationId
                 };
                 return context.Response.WriteAsync((string)JsonConvert.SerializeObject(errorDetails, jsonSettings));
 
@@ -85,7 +98,8 @@ public class HttpMessagingMiddleware(RequestDelegate next, ILogger<HttpMessaging
                     Success = false,
                     exception.Message,
                     context.Response.StatusCode,
-                    Data = new { }
+                    Data = new { },
+                    CorrelationId = correlationId
                 };
                 return context.Response.WriteAsync((string)JsonConvert.SerializeObject(errorDetails, jsonSettings));
 
@@ -97,7 +111,8 @@ public class HttpMessagingMiddleware(RequestDelegate next, ILogger<HttpMessaging
                     Success = false,
                     exception.Message,
                     context.Response.StatusCode,
-                    Data = new { }
+                    Data = new { },
+                    CorrelationId = correlationId
                 };
                 return context.Response.WriteAsync((string)JsonConvert.SerializeObject(errorDetails, jsonSettings));
             case ServiceOperationException userSignInEx:
@@ -116,7 +131,8 @@ public class HttpMessagingMiddleware(RequestDelegate next, ILogger<HttpMessaging
                     Success = false,
                     exception.Message,
                     context.Response.StatusCode,
-                    Data = outputDict
+                    Data = outputDict,
+                    CorrelationId = correlationId
                 };
                 return context.Response.WriteAsync((string)JsonConvert.SerializeObject(errorDetails, jsonSettings));
 
@@ -127,7 +143,8 @@ public class HttpMessagingMiddleware(RequestDelegate next, ILogger<HttpMessaging
                     Success = false,
                     exception.Message,
                     context.Response.StatusCode,
-                    Data = new { }
+                    Data = new { },
+                    CorrelationId = correlationId
                 };
                 return context.Response.WriteAsync((string)JsonConvert.SerializeObject(errorDetails, jsonSettings));
 
@@ -138,7 +155,8 @@ public class HttpMessagingMiddleware(RequestDelegate next, ILogger<HttpMessaging
                     Success = false,
                     exception.Message,
                     context.Response.StatusCode,
-                    Data = new { }
+                    Data = new { },
+                    CorrelationId = correlationId
                 };
                 return context.Response.WriteAsync((string)JsonConvert.SerializeObject(errorDetails, jsonSettings));
 
@@ -150,7 +168,8 @@ public class HttpMessagingMiddleware(RequestDelegate next, ILogger<HttpMessaging
                     Message = "Validation errors occurred.",
                     StatusCode = HttpStatusCode.BadRequest,
                     Data = new { },
-                    Errors = validationEx.Errors.ToDictionary()
+                    Errors = validationEx.Errors.ToDictionary(),
+                    CorrelationId = correlationId
                 };
                 return context.Response.WriteAsync((string)JsonConvert.SerializeObject(errorDetails, jsonSettings));
 
@@ -161,7 +180,8 @@ public class HttpMessagingMiddleware(RequestDelegate next, ILogger<HttpMessaging
                     Success = false,
                     Message = "An unexpected error occurred. Please try again later.",
                     context.Response.StatusCode,
-                    Data = new { }
+                    Data = new { },
+                    CorrelationId = correlationId
                 };
                 return context.Response.WriteAsync((string)JsonConvert.SerializeObject(errorDetails, jsonSettings));
         }

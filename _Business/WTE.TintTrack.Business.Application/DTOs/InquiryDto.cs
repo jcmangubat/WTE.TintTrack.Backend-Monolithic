@@ -1,10 +1,17 @@
 ﻿using SMEAppHouse.Core.Patterns.EF.DtoModelAbstraction;
+using WTE.TintTrack.Domain.Shared;
 using static WTE.TintTrack.Common.Constants.Consts;
 
 namespace WTE.TintTrack.Business.Application.DTOs;
 
-public class InquiryDto : GuidKeyedAuditableModel
+/// <summary>
+/// Represents the initial consultation or inquiry from a customer regarding tint services.
+/// Tracks details such as the customer’s needs, preferred service type, and consultation outcome.
+/// </summary>
+public class InquiryDto : GuidKeyedAuditableModel, ICodedEntity
 {
+    public required string Code { get; set; }
+
     /// <summary>
     /// Gets or sets the method by which the customer initiated the inquiry (e.g., Phone, Website, In-Person).
     /// </summary>
@@ -19,8 +26,7 @@ public class InquiryDto : GuidKeyedAuditableModel
     /// Gets or sets additional details about the consultation, such as customer preferences and budget.
     /// </summary>
     public required string Details { get; set; }
-
-    public required string Subject{ get; set; }
+    public required string Subject { get; set; }
 
     /// <summary>
     /// Gets or sets the type of tinting service the customer is interested in (e.g., Car, House, Office).
@@ -48,16 +54,20 @@ public class InquiryDto : GuidKeyedAuditableModel
     public bool? FollowUpNeeded { get; set; }
 
     /// <summary>
-    /// Gets or sets the identifier for the proposal that may result from this consultation.
-    /// </summary>
-    public string? ProposalCode { get; set; }
-
-    /// <summary>
     /// Gets or sets the user code of the sales representative handling this consultation.
     /// It can be null if a user has not handled this customer inquiry
     /// </summary>
     public string? SalesRepUserCode { get; set; }
 
-    public Guid? CustomerId { get; set; }
-    public virtual CustomerDto? Customer { get; set; }
+    public IEnumerable<string>? TintServiceCodes { get; set; }
+
+    public required Guid CustomerContactId { get; set; }
+    public virtual CustomerContactDto CustomerContact { get; set; }
+
+    //public ICollection<Proposal> Proposals { get; set; } = new HashSet<Proposal>();
+
+    //public ICollection<Quote> Quotes { get; set; } = new HashSet<Quote>();
+
+    //public ICollection<Estimate> Estimates { get; set; } = new HashSet<Estimate>();
 }
+

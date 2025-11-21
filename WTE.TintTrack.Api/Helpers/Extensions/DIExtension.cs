@@ -13,7 +13,6 @@ using Microsoft.OData.ModelBuilder;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.Community.OData.DependencyInjection;
-using System.Reflection;
 using System.Security.Claims;
 using System.Text;
 using WTE.TintTrack.Api.Helpers.Configurations;
@@ -22,98 +21,35 @@ using WTE.TintTrack.Api.Helpers.Filters.Swagger;
 using WTE.TintTrack.Api.Messaging._CRUDExtenders;
 using WTE.TintTrack.Api.Messaging._Validators.Business;
 using WTE.TintTrack.Api.Messaging._Validators.Core;
-using WTE.TintTrack.Api.Messaging.Business.Request;
+using WTE.TintTrack.Api.Messaging.Business.Requests.Contact;
+using WTE.TintTrack.Api.Messaging.Business.Requests.Customer;
+using WTE.TintTrack.Api.Messaging.Business.Requests.Inquiry;
+using WTE.TintTrack.Api.Messaging.Business.Requests.PropertyAsset;
 using WTE.TintTrack.Application.Shared.Interfaces;
 using WTE.TintTrack.Application.Shared.Messaging;
 using WTE.TintTrack.Business.Application.DTOs;
-using WTE.TintTrack.Business.Application.DTOs.PropertySpecifications;
-using WTE.TintTrack.Business.Application.Interfaces;
-using WTE.TintTrack.Business.Application.Services;
-using WTE.TintTrack.Business.Domain.Interfaces.Repositories;
+using WTE.TintTrack.Business.Application.DTOs.PropertySpecificationModels;
 using WTE.TintTrack.Business.Infrastructure;
-using WTE.TintTrack.Business.Infrastructure.Repositories;
+using WTE.TintTrack.Common.Events;
 using WTE.TintTrack.Common.Interfaces;
 using WTE.TintTrack.Common.Models;
-using WTE.TintTrack.Core.Application.Interfaces;
+using WTE.TintTrack.Infrastructure.Shared.Services;
 using WTE.TintTrack.Core.Application.Services;
 using WTE.TintTrack.Core.Application.Validators;
 using WTE.TintTrack.Core.Domain.Entities;
-using WTE.TintTrack.Core.Domain.Interfaces.Repositories;
 using WTE.TintTrack.Core.Domain.Interfaces.Services;
 using WTE.TintTrack.Core.Infrastructure;
-using WTE.TintTrack.Core.Infrastructure.Repositories;
-using WTE.TintTrack.Infrastructure.Shared.Services;
 using WTE.TintTrack.Infrastructure.Shared.Services.ImageKit;
 using WTE.TintTrack.Infrastructure.Shared.Services.ImageKit.DTOs;
 using WTE.TintTrack.Infrastructure.Shared.Services.SmartyStreets;
+using WTE.TintTrack.Integration;
 using static WTE.TintTrack.Common.Constants.Consts;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace WTE.TintTrack.Api.Helpers.Extensions;
 
 public static class DIExtension
 {
-    /// <summary>
-    /// Registers the DbContexts for the application.
-    /// </summary>
-    /// <param name="services"></param>
-    /// <param name="configuration"></param>
-    /// <exception cref="InvalidOperationException"></exception>
-    public static void AddDbContexts_OLD(this IServiceCollection services, IConfiguration configuration)
-    {
-        // Check if the environment is for testing
-        var isTesting = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Testing";
-
-        if (isTesting)
-        {
-            // Use an in-memory database for testing
-            services.AddDbContext<ApplicationDbContext>(options =>
-                {
-                    options.UseInMemoryDatabase("WTETintTrackCRMMasterConnection_InMemory");
-                    options.LogTo(Console.WriteLine, LogLevel.Debug);
-                });
-
-            return;
-        }
-        else
-        {
-            // Main application database setup
-            var connectionString = configuration.GetConnectionString("WTETintTrackCRMMasterConnection") ??
-            throw new InvalidOperationException("Connection string 'WTETintTrackCRMMasterConnection' is not found.");
-
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(connectionString,
-                    options =>
-                    {
-                        options.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName);
-                        options.EnableRetryOnFailure();
-                        options.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
-                    }
-                )
-                .ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.MultipleCollectionIncludeWarning))
-                .ConfigureWarnings(warnings => warnings.Ignore(RelationalEventId.PendingModelChangesWarning))
-            );
-        }
-
-        var tenantConnectionString = configuration.GetConnectionString("WTETintTrackCRMTenantConnection") ??
-            throw new InvalidOperationException("Connection string 'WTETintTrackCRMTenantConnection' is not found.");
-        services.AddDbContext<TenantDbContext>(options =>
-                options.UseSqlServer(tenantConnectionString,
-                    options =>
-                    {
-                        options.MigrationsAssembly(typeof(TenantDbContext).Assembly.FullName);
-                        options.EnableRetryOnFailure();
-                        options.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
-                    })
-                    .ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning)));
-
-        // line below adds a developer-friendly exception filter for detailed
-        // diagnostics of database errors during development. This provides helpful
-        // error information in the development environment for EF migrations errors
-        services.AddDatabaseDeveloperPageExceptionFilter();
-
-        services.AddScoped<ITenantDatabaseCreator, TenantDatabaseCreator>();
-        services.AddScoped<ITenantProviderService, TenantProviderService>();
-    }
 
     /// <summary>
     /// Registers the DbContexts for the application.
@@ -131,7 +67,7 @@ public static class DIExtension
             // Use an in-memory database for testing
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseInMemoryDatabase("WTETintTrackCRMMasterConnection_InMemory");
+                options.UseInMemoryDatabase("TintTrackCRMMasterConnection_InMemory");
                 options.LogTo(Console.WriteLine, LogLevel.Debug);
             });
 
@@ -142,8 +78,8 @@ public static class DIExtension
         var dbProvider = configuration["DatabaseProvider"] ?? "SqlServer";
 
         // Master database setup
-        var masterConnectionString = configuration.GetConnectionString("WTETintTrackCRMMasterConnection") ??
-                                     throw new InvalidOperationException("Connection string 'WTETintTrackCRMMasterConnection' is not found.");
+        var masterConnectionString = configuration.GetConnectionString("TintTrackCRMMasterConnection") ??
+                                     throw new InvalidOperationException("Connection string 'TintTrackCRMMasterConnection' is not found.");
 
         services.AddDbContext<ApplicationDbContext>(options =>
         {
@@ -173,33 +109,72 @@ public static class DIExtension
                    .ConfigureWarnings(warnings => warnings.Ignore(RelationalEventId.PendingModelChangesWarning));
         });
 
-        // Tenant database setup
-        var tenantConnectionString = configuration.GetConnectionString("WTETintTrackCRMTenantConnection") ??
-                                     throw new InvalidOperationException("Connection string 'WTETintTrackCRMTenantConnection' is not found.");
+        // Register Tenant Context and Provider Service BEFORE TenantDbContext
+        // These are needed for dynamic connection string resolution
+        services.AddScoped<ITenantProviderService, TenantProviderService>();
+        services.AddScoped<ITenantContext, Core.Application.Services.TenantContext>();
 
-        services.AddDbContext<TenantDbContext>(options =>
+        // Tenant database setup - Dynamic connection string resolution per tenant
+        // Note: The connection string is resolved dynamically using ITenantContext
+        // which uses TenantConnStrTemplate from ApplicationSettings (e.g., "Database=WTE.TintTrackCRM.{TENANTCODE}-DEV")
+        // 
+        // IMPORTANT: For one-database-per-tenant architecture:
+        // - At runtime: TenantContextMiddleware resolves tenant, then TenantDbContext uses tenant-specific connection string
+        // - For migrations: Uses default connection string from appsettings.json (TintTrackCRMTenantConnection)
+        services.AddDbContext<TenantDbContext>((serviceProvider, options) =>
         {
-            if (dbProvider.Equals("MariaDB", StringComparison.OrdinalIgnoreCase))
+            // Try to resolve tenant connection string dynamically at runtime
+            // This will work when TenantContextMiddleware has already resolved the tenant
+            string? connectionString = null;
+            
+            try
             {
-                /*options.UseMySql(tenantConnectionString,
-                    new MariaDbServerVersion(new Version(10, 5, 9)),
-                    mySqlOptions =>
-                    {
-                        mySqlOptions.MigrationsAssembly(typeof(TenantDbContext).Assembly.FullName);
-                        mySqlOptions.EnableRetryOnFailure();
-                        mySqlOptions.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
-                    });*/
+                var tenantContext = serviceProvider.GetRequiredService<ITenantContext>();
+                
+                // If tenant is already resolved (by TenantContextMiddleware), use its connection string
+                // This ensures each tenant gets their own database
+                if (tenantContext.IsResolved && !string.IsNullOrEmpty(tenantContext.TenantConnectionString))
+                {
+                    connectionString = tenantContext.TenantConnectionString;
+                }
             }
-            else
+            catch
             {
-                options.UseSqlServer(tenantConnectionString,
-                    sqlOptions =>
-                    {
-                        sqlOptions.MigrationsAssembly(typeof(TenantDbContext).Assembly.FullName);
-                        sqlOptions.EnableRetryOnFailure();
-                        sqlOptions.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
-                    });
+                // Tenant context not available (e.g., during migrations, design-time, or before middleware runs)
+                // Will fall back to OnConfiguring method in TenantDbContext or default connection string
             }
+
+            // Configure connection string if tenant is resolved
+            // Otherwise, OnConfiguring will handle it (for migrations/design-time scenarios)
+            if (!string.IsNullOrEmpty(connectionString))
+            {
+                // Configure database provider with tenant-specific connection string
+                if (dbProvider.Equals("MariaDB", StringComparison.OrdinalIgnoreCase))
+                {
+                    /*options.UseMySql(connectionString,
+                        new MariaDbServerVersion(new Version(10, 5, 9)),
+                        mySqlOptions =>
+                        {
+                            mySqlOptions.MigrationsAssembly(typeof(TenantDbContext).Assembly.FullName);
+                            mySqlOptions.EnableRetryOnFailure();
+                            mySqlOptions.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
+                        });*/
+                }
+                else
+                {
+                    options.UseSqlServer(connectionString,
+                        sqlOptions =>
+                        {
+                            sqlOptions.MigrationsAssembly(typeof(TenantDbContext).Assembly.FullName);
+                            sqlOptions.EnableRetryOnFailure();
+                            sqlOptions.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
+                        });
+                }
+            }
+            // Note: If connectionString is null/empty, OnConfiguring in TenantDbContext will handle it
+            // using ITenantProviderService (for migrations and design-time scenarios)
+            // However, ITenantProviderService needs to be injected into TenantDbContext constructor
+            // which requires using a factory pattern or ensuring it's available in the service provider
 
             options.ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.MultipleCollectionIncludeWarning));
         });
@@ -207,197 +182,274 @@ public static class DIExtension
         // Add developer-friendly exception filter for EF migrations errors
         services.AddDatabaseDeveloperPageExceptionFilter();
 
-        services.AddScoped<ITenantDatabaseCreator, TenantDatabaseCreator>();
-        services.AddScoped<ITenantProviderService, TenantProviderService>();
-    }
-
-    public static void AddSwaggerConfigurationX(this IServiceCollection services)
-    {
-        services.AddEndpointsApiExplorer();
-
-        var apiDescriptionPath = Path.Combine(Directory.GetCurrentDirectory(), "Description.txt");
-        var apiDescriptionContent = File.Exists(apiDescriptionPath) ?
-                                    File.ReadAllText(apiDescriptionPath) :
-                                    "TintTrack is a cloud-based, multi-tenant SaaS platform to be specifically developed for glass tint shops to manage all aspects of their business operations efficiently.";
-
-        services.AddSwaggerGen(c =>
+        services.AddScoped<ITenantDatabaseCreator>(sp =>
         {
-            var apiDescriptionPath = Path.Combine(Directory.GetCurrentDirectory(), "Description.txt");
-            var apiDescriptionContent = File.Exists(apiDescriptionPath) ?
-                                        File.ReadAllText(apiDescriptionPath) :
-                                        "TintTrack is a cloud-based, multi-tenant SaaS platform to be specifically developed for glass tint shops to manage all aspects of their business operations efficiently.";
-
-            c.OperationFilter<AuthorizeCheckOperationFilter>();
-
-            c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
-
-            c.SwaggerDoc("v1", new OpenApiInfo
-            {
-                Title = "WTE TintTrack Core and Business API",
-                Version = "v1",
-                Description = apiDescriptionContent,
-                Contact = new OpenApiContact
-                {
-                    Name = "Window Tints Everything",
-                    Email = "info@wteverything.com",
-                    Url = new Uri("https://windowtintseverything.com")
-                }
-            });
-
-            // Register derived types explicitly
-            c.SchemaFilter<PolymorphismSchemaFilter>();
-
-            // Enable polymorphism
-            c.UseAllOfToExtendReferenceSchemas();
-
-            // Enable grouping by `ApiExplorerSettings`
-            c.DocInclusionPredicate((documentName, apiDescription) =>
-            {
-                if (string.IsNullOrEmpty(apiDescription.GroupName))
-                    return false;
-
-                return apiDescription.GroupName == documentName;
-            });
-
-            // Define the security scheme (JWT Bearer)
-            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-            {
-                Description = "JWT Authorization header using the Bearer scheme (Example: 'Bearer 12345abcdef')",
-                Name = "Authorization",
-                In = ParameterLocation.Header,
-                Type = SecuritySchemeType.Http,
-                Scheme = "Bearer"
-            });
-
-            // Add a requirement for authentication
-            c.AddSecurityRequirement(new OpenApiSecurityRequirement
-            {
-                {
-                    new OpenApiSecurityScheme
-                    {
-                        Reference = new OpenApiReference
-                        {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "Bearer"
-                        }
-                    },
-                    Array.Empty<string>()
-                }
-            });
-
-            //Include XML comments generated during compile of this project.
-            var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-            var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-            c.IncludeXmlComments(xmlPath);
+            var logger = sp.GetRequiredService<ILogger<TenantDatabaseCreator>>();
+            return new TenantDatabaseCreator(logger);
         });
+        
+        // Register Tenant Migration Service for managing migrations across all tenant databases
+        services.AddScoped<TenantMigrationService>();
 
-        // Configure Swagger with OData
-        services.AddSwaggerGenOData(opt =>
+        // Register Domain Event Dispatcher
+        services.AddScoped<IDomainEventDispatcher, Common.Infrastructure.Events.DomainEventDispatcher>();
+
+        // Register Unit of Work implementations
+        services.AddScoped<IApplicationUnitOfWork>(sp =>
         {
-            opt.SwaggerDoc("v1", "odata", new OpenApiInfo
-            {
-                Title = "WTE TintTrack Core and Business API",
-                Version = "v1",
-                Description = apiDescriptionContent,
-                Contact = new OpenApiContact
-                {
-                    Name = "Window Tints Everything",
-                    Email = "info@wteverything.com",
-                    Url = new Uri("https://windowtintseverything.com")
-                }
-            });
+            var context = sp.GetRequiredService<ApplicationDbContext>();
+            var dispatcher = sp.GetService<IDomainEventDispatcher>();
+            return new Core.Infrastructure.UnitOfWork(context, dispatcher);
+        });
+        services.AddScoped<ITenantUnitOfWork>(sp =>
+        {
+            var context = sp.GetRequiredService<TenantDbContext>();
+            var dispatcher = sp.GetService<IDomainEventDispatcher>();
+            return new Business.Infrastructure.TenantUnitOfWork(context, dispatcher);
         });
     }
 
-
+    /// <summary>
+    /// Configures Swagger/OpenAPI documentation with API versioning support
+    /// </summary>
+    /// <param name="services">The service collection</param>
     public static void AddSwaggerConfiguration(this IServiceCollection services)
     {
+        // Register API Explorer for Swagger generation
         services.AddEndpointsApiExplorer();
 
-        var apiDescriptionPath = Path.Combine(Directory.GetCurrentDirectory(), "Description.txt");
-        var apiDescriptionContent = File.Exists(apiDescriptionPath) ?
-                                    File.ReadAllText(apiDescriptionPath) :
-                                    "TintTrack is a cloud-based, multi-tenant SaaS platform...";
+        // Load API description from file or use default
+        var apiDescriptionContent = LoadApiDescription();
 
-        var openApiInfo = new OpenApiInfo
+        // Configure Swagger with versioned API support
+        // Note: AddVersionedApiExplorer must be called before AddSwaggerGen
+        services.AddSwaggerGen(options =>
+        {
+            ConfigureSwaggerOptions(options, apiDescriptionContent);
+        });
+
+        // Configure Swagger for OData endpoints
+        ConfigureSwaggerOData(services, apiDescriptionContent);
+    }
+
+    /// <summary>
+    /// Loads API description from Description.txt file or returns default description
+    /// </summary>
+    private static string LoadApiDescription()
+    {
+        var apiDescriptionPath = Path.Combine(Directory.GetCurrentDirectory(), "Description.txt");
+        if (File.Exists(apiDescriptionPath))
+        {
+            try
+            {
+                return File.ReadAllText(apiDescriptionPath);
+            }
+            catch
+            {
+                // Fall through to default if file read fails
+            }
+        }
+
+        return "TintTrack is a cloud-based, multi-tenant SaaS platform specifically developed for glass tint shops to manage all aspects of their business operations efficiently.";
+    }
+
+    /// <summary>
+    /// Configures Swagger options with versioning, security, and documentation
+    /// </summary>
+    private static void ConfigureSwaggerOptions(SwaggerGenOptions options, string apiDescriptionContent)
+    {
+        // Register operation filters
+        options.OperationFilter<AuthorizeCheckOperationFilter>();
+        options.OperationFilter<GenericTypeDescriptionFilter>();
+        
+        // Include XML documentation comments FIRST (this sets tag descriptions from summary)
+        IncludeXmlComments(options);
+        
+        // Register document filter to include controller remarks in tag descriptions
+        // This runs AFTER IncludeXmlComments, so it can append remarks to existing descriptions
+        options.DocumentFilter<ControllerRemarksTagFilter>();
+
+        // Resolve conflicting actions by taking the first one
+        options.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
+
+        // Configure API versioning integration
+        // The versioned API explorer automatically groups controllers by version
+        // We need to include actions that match the version group
+        options.DocInclusionPredicate((version, desc) =>
+        {
+            // The versioned API explorer provides the version group name (e.g., "v1.0")
+            // We need to check if the action belongs to this version group
+            if (!desc.TryGetMethodInfo(out var methodInfo))
+                return false;
+
+            // Get the controller type
+            var controllerType = methodInfo.DeclaringType;
+            if (controllerType == null)
+                return false;
+
+            // Check for ApiVersion attribute on controller
+            var controllerVersions = controllerType
+                .GetCustomAttributes(true)
+                .OfType<Microsoft.AspNetCore.Mvc.ApiVersionAttribute>()
+                .SelectMany(attr => attr.Versions)
+                .ToList();
+
+            // If controller has no version attribute, include it in v1 (default version)
+            if (!controllerVersions.Any())
+            {
+                return version == "v1" || version == "v1.0";
+            }
+
+            // Check for MapToApiVersion attribute on action
+            var actionVersions = methodInfo
+                .GetCustomAttributes(true)
+                .OfType<Microsoft.AspNetCore.Mvc.MapToApiVersionAttribute>()
+                .SelectMany(attr => attr.Versions)
+                .ToList();
+
+            // Match version format: "v1.0" matches ApiVersion(1, 0), "v1" also matches ApiVersion(1, 0)
+            var versionToMatch = version.Replace("v", "").Split('.').Select(int.Parse).ToList();
+            var majorVersion = versionToMatch.Count > 0 ? versionToMatch[0] : 1;
+            var minorVersion = versionToMatch.Count > 1 ? versionToMatch[1] : 0;
+
+            var versionMatch = controllerVersions.Any(v => v.MajorVersion == majorVersion && v.MinorVersion == minorVersion) ||
+                              (actionVersions.Any() && actionVersions.Any(v => v.MajorVersion == majorVersion && v.MinorVersion == minorVersion));
+
+            return versionMatch;
+        });
+
+        // Configure Swagger documents for each API version
+        // The versioned API explorer will create groups like "v1.0" based on GroupNameFormat ('v'VV)
+        // We create documents for both "v1" (default) and "v1.0" (versioned) to ensure compatibility
+        options.SwaggerDoc("v1", CreateOpenApiInfo("v1", apiDescriptionContent));
+        options.SwaggerDoc("v1.0", CreateOpenApiInfo("v1.0", apiDescriptionContent));
+
+        // Configure schema filters for polymorphism
+        options.SchemaFilter<PolymorphismSchemaFilter>();
+
+        // Register derived property asset DTOs explicitly for proper schema generation
+        RegisterPropertyAssetDtoTypes(options);
+
+        // Enable polymorphism support
+        options.UseAllOfToExtendReferenceSchemas();
+
+        // Configure JWT Bearer authentication
+        ConfigureJwtBearerSecurity(options);
+    }
+
+    /// <summary>
+    /// Creates OpenApiInfo for a specific API version
+    /// </summary>
+    private static OpenApiInfo CreateOpenApiInfo(string version, string description)
+    {
+        return new OpenApiInfo
         {
             Title = "WTE TintTrack Core and Business API",
-            Version = "v1",
-            Description = apiDescriptionContent,
+            Version = version,
+            Description = description,
             Contact = new OpenApiContact
             {
                 Name = "Window Tints Everything",
                 Email = "info@wteverything.com",
                 Url = new Uri("https://windowtintseverything.com")
+            },
+            License = new OpenApiLicense
+            {
+                Name = "Proprietary",
+                Url = new Uri("https://windowtintseverything.com")
             }
         };
+    }
 
-        services.AddSwaggerGen(c =>
+    /// <summary>
+    /// Registers property asset DTO types for Swagger schema generation
+    /// </summary>
+    private static void RegisterPropertyAssetDtoTypes(SwaggerGenOptions options)
+    {
+        options.MapType<ArchitecturalPropertyAssetDto>(() => new OpenApiSchema { Type = "object" });
+        options.MapType<AutomotivePropertyAssetDto>(() => new OpenApiSchema { Type = "object" });
+        options.MapType<ResidentialPropertyAssetDto>(() => new OpenApiSchema { Type = "object" });
+        options.MapType<CommercialPropertyAssetDto>(() => new OpenApiSchema { Type = "object" });
+        options.MapType<SpecialtyPropertyAssetDto>(() => new OpenApiSchema { Type = "object" });
+        options.MapType<GlassFilmPropertyAssetDto>(() => new OpenApiSchema { Type = "object" });
+        options.MapType<EnergyEfficientPropertyAssetDto>(() => new OpenApiSchema { Type = "object" });
+        options.MapType<CustomPropertyAssetDto>(() => new OpenApiSchema { Type = "object" });
+        options.MapType<SignagePropertyAssetDto>(() => new OpenApiSchema { Type = "object" });
+        options.MapType<OutdoorPropertyAssetDto>(() => new OpenApiSchema { Type = "object" });
+        options.MapType<OtherPropertyAssetDto>(() => new OpenApiSchema { Type = "object" });
+    }
+
+    /// <summary>
+    /// Configures JWT Bearer authentication for Swagger
+    /// </summary>
+    private static void ConfigureJwtBearerSecurity(SwaggerGenOptions options)
+    {
+        // Define the security scheme
+        options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
         {
-            c.OperationFilter<AuthorizeCheckOperationFilter>();
-            c.OperationFilter<GenericTypeDescriptionFilter>();
-
-            c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
-
-            c.SwaggerDoc("v1", openApiInfo);
-
-            // Register derived types explicitly
-            c.SchemaFilter<PolymorphismSchemaFilter>();
-
-            // Add derived DTOs explicitly
-            c.MapType<ArchitecturalPropertyDto>(() => new OpenApiSchema { Type = "object" });
-            c.MapType<AutomotivePropertyDto>(() => new OpenApiSchema { Type = "object" });
-            c.MapType<ResidentialPropertyDto>(() => new OpenApiSchema { Type = "object" });
-            c.MapType<CommercialPropertyDto>(() => new OpenApiSchema { Type = "object" });
-            c.MapType<SpecialtyPropertyDto>(() => new OpenApiSchema { Type = "object" });
-            c.MapType<GlassFilmPropertyDto>(() => new OpenApiSchema { Type = "object" });
-            c.MapType<EnergyEfficientPropertyDto>(() => new OpenApiSchema { Type = "object" });
-            c.MapType<CustomPropertyDto>(() => new OpenApiSchema { Type = "object" });
-            c.MapType<SignagePropertyDto>(() => new OpenApiSchema { Type = "object" });
-            c.MapType<OutdoorPropertyDto>(() => new OpenApiSchema { Type = "object" });
-            c.MapType<OtherPropertyDto>(() => new OpenApiSchema { Type = "object" });
-
-            // Enable polymorphism
-            c.UseAllOfToExtendReferenceSchemas();
-
-            // Enable grouping by `ApiExplorerSettings`
-            c.DocInclusionPredicate((documentName, apiDescription) =>
-            {
-                return string.IsNullOrEmpty(apiDescription.GroupName) || apiDescription.GroupName == documentName;
-            });
-
-            // Define the security scheme (JWT Bearer)
-            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-            {
-                Description = "JWT Authorization header using the Bearer scheme (Example: 'Bearer 12345abcdef')",
-                Name = "Authorization",
-                In = ParameterLocation.Header,
-                Type = SecuritySchemeType.Http,
-                Scheme = "Bearer"
-            });
-
-            // Define the security scheme (JWT Bearer)
-            c.AddSecurityRequirement(new OpenApiSecurityRequirement
-            {
-                {
-                    new OpenApiSecurityScheme
-                    {
-                        Reference = new OpenApiReference
-                        {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "Bearer"
-                        }
-                    },
-                    Array.Empty<string>()
-                }
-            });
-
-            //Include XML comments generated during compile of this project.
-            var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-            var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-            if (File.Exists(xmlPath))
-                c.IncludeXmlComments(xmlPath);
+            Description = "JWT Authorization header using the Bearer scheme. Example: 'Bearer {token}'",
+            Name = "Authorization",
+            In = ParameterLocation.Header,
+            Type = SecuritySchemeType.Http,
+            Scheme = "Bearer",
+            BearerFormat = "JWT"
         });
+
+        // Apply security requirement globally
+        options.AddSecurityRequirement(new OpenApiSecurityRequirement
+        {
+            {
+                new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+                },
+                Array.Empty<string>()
+            }
+        });
+    }
+
+    /// <summary>
+    /// Includes XML documentation comments from all relevant assemblies
+    /// </summary>
+    /// <remarks>
+    /// This method configures Swagger to include XML documentation comments including summary, remarks, param, returns, and other XML documentation tags.
+    /// The includeControllerXmlComments parameter ensures that controller-level XML comments (including remarks) are included in the Swagger documentation.
+    /// Remarks are automatically included in the description field of the Swagger UI.
+    /// </remarks>
+    private static void IncludeXmlComments(SwaggerGenOptions options)
+    {
+        var baseDirectory = AppContext.BaseDirectory;
+        var assemblies = new[]
+        {
+            "WTE.TintTrack.Api",
+            "WTE.TintTrack.Core.Application",
+            "WTE.TintTrack.Business.Application"
+        };
+
+        foreach (var assemblyName in assemblies)
+        {
+            var xmlFile = $"{assemblyName}.xml";
+            var xmlPath = Path.Combine(baseDirectory, xmlFile);
+            
+            if (File.Exists(xmlPath))
+            {
+                // includeControllerXmlComments: true ensures controller XML comments (including remarks) are included
+                // Remarks are automatically included in the Swagger description field
+                options.IncludeXmlComments(xmlPath, includeControllerXmlComments: true);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Configures Swagger for OData endpoints
+    /// </summary>
+    private static void ConfigureSwaggerOData(IServiceCollection services, string apiDescriptionContent)
+    {
+        var openApiInfo = CreateOpenApiInfo("v1", apiDescriptionContent);
 
         services.AddSwaggerGenOData(opt =>
         {
@@ -405,7 +457,7 @@ public static class DIExtension
         });
     }
 
-    public static void SetupDuendeIdentity(this IServiceCollection services, IConfiguration configuration, ILogger<Startup> logger)
+    public static void SetupDuendeIdentity(this IServiceCollection services, IConfiguration configuration, ILogger<Startup>? logger = null)
     {
         // Bind the IdentityServer section to the settings class
         var identityServerSettings = new IdentityServerSettings();
@@ -449,7 +501,7 @@ public static class DIExtension
             .AddInMemoryApiScopes(IdentityConfig.GetApiScopes())
             .AddDeveloperSigningCredential();// Use in development only; switch to a persistent key in production
 
-        // JWT Bearer authentication
+        // JWT Bearer authentication - use ILoggerFactory to resolve logger at runtime
         services.AddAuthentication(options =>
             {
                 // ensures that for API requests, JWT Bearer is used, avoiding cookie-based redirects.
@@ -471,11 +523,13 @@ public static class DIExtension
                 };
 
                 // We want to avoid redirection and return a 401 Unauthorized if the token is invalid or missing.
+                // Logger will be resolved from HttpContext.RequestServices at runtime when events fire
                 options.Events = new JwtBearerEvents
                 {
                     OnAuthenticationFailed = context =>
                     {
-                        logger.LogError(context.Exception, "Authentication failed.");
+                        var logger = context.HttpContext.RequestServices.GetService<ILogger<Startup>>();
+                        logger?.LogError(context.Exception, "Authentication failed.");
                         if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
                             context.Response.Headers.Append("Token-Expired", "true");
 
@@ -485,7 +539,8 @@ public static class DIExtension
                     {
                         context.HandleResponse();
 
-                        logger.LogWarning($"Unauthorized access attempt to {context.Request.Path}. Details -> {context.Error} : {context.ErrorDescription}");
+                        var logger = context.HttpContext.RequestServices.GetService<ILogger<Startup>>();
+                        logger?.LogWarning($"Unauthorized access attempt to {context.Request.Path}. Details -> {context.Error} : {context.ErrorDescription}");
 
                         var apiMessageResponse = new DefaultApiResponse<string>
                         {
@@ -558,57 +613,11 @@ public static class DIExtension
     /// <param name="services"></param>
     public static void RegisterRepositories(this IServiceCollection services)
     {
-        // Register core-service-specific repositories
-        services.AddScoped<IUserRepository, UserRepository>();
-        services.AddScoped<IUserBillingProfileRepository, UserBillingProfileRepository>();
-        services.AddScoped<IUserTenantRepository, UserTenantRepository>();
-        services.AddScoped<IUserTenantInvitationRepository, UserTenantInvitationRepository>();
-        services.AddScoped<ITokenRepository, TokenRepository>();
-        services.AddScoped<IPermissionRepository, PermissionRepository>();
-        services.AddScoped<IRolePermissionRepository, RolePermissionRepository>();
-
-        services.AddScoped<ISubscriptionPlanRepository, SubscriptionPlanRepository>();
-        services.AddScoped<ISubscriptionPlanFeatureRepository, SubscriptionPlanFeatureRepository>();
-        services.AddScoped<ISubscriptionPlanFeatureAssociationRepository, SubscriptionPlanFeatureAssociationRepository>();
-        services.AddScoped<ISubscriptionPlanDiscountRepository, SubscriptionPlanDiscountRepository>();
-
-        services.AddScoped<ITenantRepository, TenantRepository>();
-        services.AddScoped<IUserTenantInvitationRepository, UserTenantInvitationRepository>();
-        services.AddScoped<ITenantSubscriptionRepository, TenantSubscriptionRepository>();
-        services.AddScoped<ITenantSubscriptionInvoiceRepository, TenantSubscriptionInvoiceRepository>();
-        services.AddScoped<ITenantSubscriptionPaymentRepository, TenantSubscriptionPaymentRepository>();
-
-        // Register business-service-specific repositories
-        services.AddScoped<IAuditLogRepository, AuditLogRepository>();
-        services.AddScoped<IInquiryRepository, InquiryRepository>();
-        services.AddScoped<ICustomerOwnershipRepository, CustomerOwnershipRepository>();
-        services.AddScoped<ICustomerRepository, CustomerRepository>();
-        services.AddScoped<IPropertyRepository, PropertyRepository>();
-        services.AddScoped<IContactRepository, ContactRepository>();
-        services.AddScoped<ICustomerContactRepository, CustomerContactRepository>();
-        services.AddScoped<IQuoteRepository, QuoteRepository>();
-        services.AddScoped<IProposalRepository, ProposalRepository>();
-        services.AddScoped<IProjectRepository, ProjectRepository>();
-        services.AddScoped<IInvoiceRepository, InvoiceRepository>();
+        // Use modular registration methods
+        services.AddCoreRepositories();
+        services.AddBusinessRepositories();
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="services"></param>
-    /// <param name="configuration"></param>
-    public static void RegisterSMTPAndApplicationSettings(this IServiceCollection services, IConfiguration configuration)
-    {
-        // SMTPSettings
-        services.Configure<SMTPSettings>(configuration.GetSection("Smtp"));
-        services.AddSingleton(resolver =>
-            resolver.GetRequiredService<IOptions<SMTPSettings>>().Value);
-
-        // Bind the ApplicationSettings section to the ApplicationSettings class
-        services.Configure<ApplicationSettings>(configuration.GetSection("ApplicationSettings"));
-        services.AddSingleton(resolver =>
-            resolver.GetRequiredService<IOptions<ApplicationSettings>>().Value);
-    }
 
     /// <summary>
     /// 
@@ -625,6 +634,13 @@ public static class DIExtension
         // Error, Warning Or Information messages provider service
         services.AddSingleton<IMessageProviderService, MessageProviderService>();
 
+        // Caching
+        services.AddMemoryCache();
+        services.AddScoped<ICacheService, CacheService>();
+
+        // Rate Limiting
+        services.AddScoped<IRateLimiter, RateLimiter>();
+
         // ImageKitIO
         services.Configure<ImageKitCredentials>(configuration.GetSection("ImageKitIO"));
         services.AddSingleton(resolver =>
@@ -636,36 +652,9 @@ public static class DIExtension
         services.AddSingleton<IImageKitUploadService, ImageKitUploadService>();
         services.AddTransient<IAddressValidatorService, SmartyStreetsAddressValidatorService>();
 
-        // Core domain services
-        services.AddScoped<IUserService, UserService>();
-        services.AddScoped<ITokenService, TokenService>();
-        services.AddScoped<IUserTenantService, UserTenantService>();
-        services.AddScoped<IUserTenantInvitationService, UserTenantInvitationService>();
-        services.AddScoped<IUserBillingProfileService, UserBillingProfileService>();
-        services.AddScoped<IRolePermissionService, RolePermissionService>();
-
-        services.AddScoped<ISubscriptionPlanService, SubscriptionPlanService>();
-        services.AddScoped<ISubscriptionPlanDiscountService, SubscriptionPlanDiscountService>();
-        services.AddScoped<ISubscriptionPlanFeatureService, SubscriptionPlanFeatureService>();
-
-        services.AddScoped<ITenantService, TenantService>();
-        services.AddScoped<ITenantSubscriptionService, TenantSubscriptionService>();
-        services.AddScoped<ITenantSubscriptionInvoiceService, TenantSubscriptionInvoiceService>();
-        services.AddScoped<ITenantSubscriptionPaymentService, TenantSubscriptionPaymentService>();
-
-        // Business domain services
-        services.AddScoped<IAuditLogService, AuditLogService>();
-        services.AddScoped<IContactService, ContactService>();
-        services.AddScoped<ICustomerContactService, CustomerContactService>();
-        services.AddScoped<IInquiryService, InquiryService>();
-        services.AddScoped<ICustomerOwnershipService, CustomerOwnershipService>();
-        services.AddScoped<ICustomerService, CustomerService>();
-
-        services.AddScoped<IInvoiceService, InvoiceService>();
-        services.AddScoped<IProjectService, ProjectService>();
-        services.AddScoped<IPropertyService, PropertyService>();
-        services.AddScoped<IProposalService, ProposalService>();
-        services.AddScoped<IQuoteService, QuoteService>();
+        // Use modular registration methods for domain services
+        services.AddCoreServices();
+        services.AddBusinessServices();
     }
 
     /// <summary>
@@ -720,11 +709,12 @@ public static class DIExtension
         services.AddValidatorsFromAssemblyContaining<UpdateCustomerRequestValidator>();
         services.AddValidatorsFromAssemblyContaining<CreateContactRequestValidator>();
         services.AddValidatorsFromAssemblyContaining<UpdateContactRequestValidator>();
-        services.AddValidatorsFromAssemblyContaining<AddCustomerContactRequestValidator>();
+        services.AddValidatorsFromAssemblyContaining<CreateCustomerContactRequestValidator>();
+        services.AddValidatorsFromAssemblyContaining<CreatePropertyAssetRequestValidator>();
+        services.AddValidatorsFromAssemblyContaining<UpdatePropertyAssetRequestValidator>();
+
         services.AddValidatorsFromAssemblyContaining<CreateInquiryRequestValidator>();
         services.AddValidatorsFromAssemblyContaining<UpdateInquiryRequestValidator>();
-        services.AddValidatorsFromAssemblyContaining<CreatePropertyRequestValidator>();
-        services.AddValidatorsFromAssemblyContaining<UpdatePropertyRequestValidator>();
     }
 
     public static IEdmModel GetBusinessEdmModel()
@@ -779,8 +769,8 @@ public static class DIExtension
     {
         services.AddTransient<ICRUDExtender<CustomerDto, CreateCustomerRequest, UpdateCustomerRequest>, CustomerCRUDExtender>();
         services.AddTransient<ICRUDExtender<ContactDto, CreateContactRequest, UpdateContactRequest>, ContactCRUDExtender>();
+        services.AddTransient<ICRUDExtender<PropertyAssetDto, CreatePropertyAssetRequest, UpdatePropertyAssetRequest>, PropertyCRUDExtender>();
         services.AddTransient<ICRUDExtender<InquiryDto, CreateInquiryRequest, UpdateInquiryRequest>, InquiryCRUDExtender>();
-        services.AddTransient<ICRUDExtender<PropertyDto, CreatePropertyRequest, UpdatePropertyRequest>, PropertyCRUDExtender>();
 
         return services;
     }
@@ -839,6 +829,30 @@ public static class DIExtension
                 .IsTopSupported(true)
                 .IsComputeSupported(true);
 
+        builder.EntitySet<PropertyAssetDto>("PropertyAssets")
+                .HasSelectSupport()
+                .IsSupported(true)
+                .IsSkipSupported(true)
+                .IsSearchable(true)
+                .IsExpandable(true)
+                .IsFilterable(true)
+                .IsCountable(true)
+                .IsSortable(true)
+                .IsTopSupported(true)
+                .IsComputeSupported(true);
+
+/*        builder.EntitySet<ProposalDto>("Proposals")
+                .HasSelectSupport()
+                .IsSupported(true)
+                .IsSkipSupported(true)
+                .IsSearchable(true)
+                .IsExpandable(true)
+                .IsFilterable(true)
+                .IsCountable(true)
+                .IsSortable(true)
+                .IsTopSupported(true)
+                .IsComputeSupported(true);*/
+
         builder.EntitySet<InquiryDto>("CustomerInquiries")
                 .HasSelectSupport()
                 .IsSupported(true)
@@ -851,7 +865,7 @@ public static class DIExtension
                 .IsTopSupported(true)
                 .IsComputeSupported(true);
 
-        builder.EntitySet<CustomerOwnershipDto>("CustomerOwnerships")
+        /*builder.EntitySet<CustomerOwnershipDto>("CustomerOwnerships")
                 .HasSelectSupport()
                 .IsSupported(true)
                 .IsSkipSupported(true)
@@ -861,9 +875,10 @@ public static class DIExtension
                 .IsCountable(true)
                 .IsSortable(true)
                 .IsTopSupported(true)
-                .IsComputeSupported(true);
+                .IsComputeSupported(true);*/
 
-        builder.EntitySet<InvoiceDto>("Invoices")
+
+        /*builder.EntitySet<InvoiceDto>("Invoices")
                 .HasSelectSupport()
                 .IsSupported(true)
                 .IsSkipSupported(true)
@@ -885,31 +900,9 @@ public static class DIExtension
                 .IsCountable(true)
                 .IsSortable(true)
                 .IsTopSupported(true)
-                .IsComputeSupported(true);
-        ;
-        builder.EntitySet<PropertyDto>("Properties")
-                .HasSelectSupport()
-                .IsSupported(true)
-                .IsSkipSupported(true)
-                .IsSearchable(true)
-                .IsExpandable(true)
-                .IsFilterable(true)
-                .IsCountable(true)
-                .IsSortable(true)
-                .IsTopSupported(true)
-                .IsComputeSupported(true);
+                .IsComputeSupported(true);*/
 
-        builder.EntitySet<ProposalDto>("Proposals")
-                .HasSelectSupport()
-                .IsSupported(true)
-                .IsSkipSupported(true)
-                .IsSearchable(true)
-                .IsExpandable(true)
-                .IsFilterable(true)
-                .IsCountable(true)
-                .IsSortable(true)
-                .IsTopSupported(true)
-                .IsComputeSupported(true);
+        /*
 
         builder.EntitySet<QuoteDto>("Quotes")
                 .HasSelectSupport()
@@ -921,7 +914,7 @@ public static class DIExtension
                 .IsCountable(true)
                 .IsSortable(true)
                 .IsTopSupported(true)
-                .IsComputeSupported(true);
+                .IsComputeSupported(true);*/
 
 
         return builder.GetEdmModel();

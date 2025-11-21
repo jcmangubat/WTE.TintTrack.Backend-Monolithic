@@ -4,6 +4,7 @@ using System.Security.Claims;
 using WTE.TintTrack.Application.Shared.Interfaces;
 using WTE.TintTrack.Application.Shared.Messaging.Interface;
 using WTE.TintTrack.Common.Exceptions;
+using WTE.TintTrack.Common.Models;
 using static WTE.TintTrack.Common.Constants.Consts;
 
 namespace WTE.TintTrack.Api.Helpers.ControllerAbstractions;
@@ -26,6 +27,26 @@ public class LoggingMappedControllerBase<TController>(ILogger<TController> logge
         {
             StatusCode = response.StatusCode
         };
+
+    /// <summary>
+    /// Creates a standardized API response with correlation ID
+    /// </summary>
+    protected IActionResult CreateStandardizedResponse<T>(T? data, string? message = null, int statusCode = StatusCodes.Status200OK)
+    {
+        var correlationId = HttpContext.Items["CorrelationId"]?.ToString();
+        var response = ApiResponse<T>.SuccessResponse(data, message, correlationId);
+        return new ObjectResult(response) { StatusCode = statusCode };
+    }
+
+    /// <summary>
+    /// Creates a standardized error response with correlation ID
+    /// </summary>
+    protected IActionResult CreateErrorResponse(string message, string? errorCode = null, Dictionary<string, string[]>? errors = null, int statusCode = StatusCodes.Status400BadRequest)
+    {
+        var correlationId = HttpContext.Items["CorrelationId"]?.ToString();
+        var response = ApiResponse.ErrorResponse(message, errorCode, errors, correlationId);
+        return new ObjectResult(response) { StatusCode = statusCode };
+    }
 
     /// <summary>
     /// Get the authenticated user's email from the token claims

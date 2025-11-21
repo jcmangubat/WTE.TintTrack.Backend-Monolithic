@@ -5,8 +5,19 @@ using System.Reflection;
 
 namespace WTE.TintTrack.Business.DataImporter;
 
+/// <summary>
+/// Utility class for loading CSV files into strongly-typed models
+/// </summary>
 public static class CSVDataLoader
 {
+    /// <summary>
+    /// Loads CSV data into a list of strongly-typed models
+    /// </summary>
+    /// <typeparam name="TCSVDataModel">The model type to deserialize CSV rows into</typeparam>
+    /// <param name="csvFile">Path to the CSV file</param>
+    /// <returns>List of deserialized models</returns>
+    /// <exception cref="FileNotFoundException">Thrown when CSV file is not found</exception>
+    /// <exception cref="Exception">Thrown when CSV parsing fails</exception>
     public static List<TCSVDataModel> LoadCSV<TCSVDataModel>(string csvFile) where TCSVDataModel : class, new()
     {
         try
@@ -89,6 +100,9 @@ public static class CSVDataLoader
                         }
                         catch (Exception ex)
                         {
+                            // Log the error with context before re-throwing
+                            // Note: Using Console.WriteLine as this is a utility class without logging dependencies
+                            Console.Error.WriteLine($"Error processing property '{property.Name}': {ex.Message}");
                             throw;
                         }
                     }
@@ -101,13 +115,18 @@ public static class CSVDataLoader
         }
         catch (FileNotFoundException ex)
         {
+            // Re-throw file not found exceptions as-is
             throw;
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"An error occurred: {ex.Message}");
+            // Log the error with full details before re-throwing
+            // Note: Using Console.Error for error output as this is a utility class without logging dependencies
+            Console.Error.WriteLine($"An error occurred while loading CSV file '{csvFile}': {ex.Message}");
+            Console.Error.WriteLine($"Stack trace: {ex.StackTrace}");
+            // Re-throw to make error handling explicit
+            throw;
         }
-        return null;
     }
 
     internal static object GetDefaultValue(Type type)

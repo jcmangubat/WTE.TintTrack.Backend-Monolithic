@@ -9,9 +9,15 @@ public class EnumControllerBase : ControllerBase
 
     public EnumControllerBase()
     {
-        // Load the XML documentation file (adjust the path as needed)
-        var xmlPath = AppDomain.CurrentDomain.BaseDirectory + "YourAssemblyName.xml";
-        if (System.IO.File.Exists(xmlPath))
+        // Load the XML documentation file for API documentation
+        // Note: This is a placeholder implementation. Override in derived classes if needed.
+        var xmlPath = Path.Combine(
+            AppDomain.CurrentDomain.BaseDirectory, 
+            "WTE.TintTrack.Api.xml");
+        
+        if (File.Exists(xmlPath))
+        {
             _xmlComments = XDocument.Load(xmlPath);
+        }
     }
 }

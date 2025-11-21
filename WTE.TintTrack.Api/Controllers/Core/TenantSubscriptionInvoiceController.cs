@@ -4,7 +4,7 @@ using FluentValidation.Results;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WTE.TintTrack.Api.Helpers.ControllerAbstractions;
-using WTE.TintTrack.Api.Messaging.Core.Request;
+using WTE.TintTrack.Api.Messaging.Core.Requests;
 using WTE.TintTrack.Api.Messaging.Core.Responses;
 using WTE.TintTrack.Application.Shared.Interfaces;
 using WTE.TintTrack.Application.Shared.Messaging;
@@ -15,10 +15,10 @@ using static WTE.TintTrack.Common.Constants.Consts;
 namespace WTE.TintTrack.Api.Controllers.Core;
 
 /// <summary>
-/// Controller for handling tenant subscription invoices.
+/// Controller for handling tenant subscription invoice operations.
 /// </summary>
 /// <remarks>
-/// Constructor for the TenantSubscriptionInvoiceController.
+/// This controller manages invoices associated with tenant subscriptions, providing comprehensive billing functionality for subscription-based services. It enables tenants to retrieve their invoices, administrators to create and manage invoices, and supports invoice tracking by invoice number. The controller integrates with user services, billing profile services, tenant subscription services, and invoice services to generate invoices, track payment status, manage invoice details including amounts, due dates, late fees, and invoice status, providing a complete invoicing solution for subscription billing.
 /// </remarks>
 [ApiController]
 [Route("api/[controller]")]

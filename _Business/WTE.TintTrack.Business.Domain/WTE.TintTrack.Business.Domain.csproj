@@ -1,23 +1,43 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Remove="Entities\old\**" />
+    <Compile Remove="Entities\SalesAndQuotingEntities\**" />
+    <Compile Remove="Interfaces\Repositories\old\**" />
+    <Compile Remove="Interfaces\Repositories\SalesAndQuotingRepos\**" />
     <Compile Remove="Interfaces\Repositories\_old\**" />
+    <Compile Remove="Entities\PropertySpecifications\**" />
+    <Compile Remove="Shared\**" />
     <EmbeddedResource Remove="Entities\old\**" />
+    <EmbeddedResource Remove="Entities\SalesAndQuotingEntities\**" />
+    <EmbeddedResource Remove="Interfaces\Repositories\old\**" />
+    <EmbeddedResource Remove="Interfaces\Repositories\SalesAndQuotingRepos\**" />
     <EmbeddedResource Remove="Interfaces\Repositories\_old\**" />
+    <EmbeddedResource Remove="Entities\PropertySpecifications\**" />
+    <EmbeddedResource Remove="Shared\**" />
     <None Remove="Entities\old\**" />
+    <None Remove="Entities\SalesAndQuotingEntities\**" />
+    <None Remove="Interfaces\Repositories\old\**" />
+    <None Remove="Interfaces\Repositories\SalesAndQuotingRepos\**" />
     <None Remove="Interfaces\Repositories\_old\**" />
+    <None Remove="Entities\PropertySpecifications\**" />
+    <None Remove="Shared\**" />
   </ItemGroup>
 
   <ItemGroup>
     <Compile Remove="Entities\ApplicationRole.cs" />
     <Compile Remove="Entities\ApplicationUser.cs" />
+    <Compile Remove="Entities\CustomerOwnership.cs" />
+    <Compile Remove="Entities\Project.cs" />
+    <Compile Remove="Entities\ProjectTask.cs" />
+    <Compile Remove="Entities\ProjectTaskAssignee.cs" />
+    <Compile Remove="Entities\ProjectTaskMaterial.cs" />
     <Compile Remove="Entities\PropertyDetails.cs" />
     <Compile Remove="Entities\SubscriptionPlan.cs" />
     <Compile Remove="Entities\SubscriptionPlanFeature.cs" />
@@ -30,7 +50,9 @@
     <Compile Remove="Entities\UserTenant.cs" />
     <Compile Remove="Entities\UserTenantRole.cs" />
     <Compile Remove="Entities\Vehicle.cs" />
+    <Compile Remove="Extensions\InvoiceExtensions.cs" />
     <Compile Remove="Interfaces\Repositories\IContactOwnershipRepository.cs" />
+    <Compile Remove="Interfaces\Repositories\ICustomerOwnershipRepository.cs" />
     <Compile Remove="Interfaces\Repositories\ISubscriptionPlanFeatureRepository.cs" />
     <Compile Remove="Interfaces\Repositories\ISubscriptionPlanRepository.cs" />
     <Compile Remove="Interfaces\Repositories\ISubscriptionPromoDiscountRepository.cs" />
@@ -44,16 +66,49 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="EntitiesClassDiagram_01.cd" />
     <None Remove="Entities\Contact.cs~RF1395f25.TMP" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="SMEAppHouse.Core.Patterns.Repo" Version="9.0.4" />
+    <Compile Include="Entities\PropertySpecifications\ArchitecturalPropertyAsset.cs" />
+    <Compile Include="Entities\PropertySpecifications\AutomotivePropertyAsset.cs" />
+    <Compile Include="Entities\PropertySpecifications\CommercialPropertyAsset.cs" />
+    <Compile Include="Entities\PropertySpecifications\CustomPropertyAsset.cs" />
+    <Compile Include="Entities\PropertySpecifications\EnergyEfficientPropertyAsset.cs" />
+    <Compile Include="Entities\PropertySpecifications\GlassFilmPropertyAsset.cs" />
+    <Compile Include="Entities\PropertySpecifications\OtherPropertyAsset.cs" />
+    <Compile Include="Entities\PropertySpecifications\OutdoorPropertyAsset.cs" />
+    <Compile Include="Entities\PropertySpecifications\ResidentialPropertyAsset.cs" />
+    <Compile Include="Entities\PropertySpecifications\SignagePropertyAsset.cs" />
+    <Compile Include="Entities\PropertySpecifications\SpecialtyPropertyAsset.cs" />
+    <Compile Include="Entities\SalesAndQuotingEntities\Contract.cs" />
+    <Compile Include="Entities\SalesAndQuotingEntities\ContractMilestone.cs" />
+    <Compile Include="Entities\SalesAndQuotingEntities\Project.cs" />
+    <Compile Include="Entities\SalesAndQuotingEntities\ProjectMilestone.cs" />
+    <Compile Include="Entities\SalesAndQuotingEntities\WorkOrder.cs" />
+    <Compile Include="Entities\SalesAndQuotingEntities\WorkOrderAssignment.cs" />
+    <Compile Include="Entities\SalesAndQuotingEntities\WorkOrderItem.cs" />
+    <Compile Include="Entities\SalesAndQuotingEntities\WorkOrderLog.cs" />
+    <Compile Include="Entities\SalesAndQuotingEntities\WorkOrderLogPhoto.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.3">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="SMEAppHouse.Core.Patterns.Repo" Version="9.0.6" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\_Common\WTE.TintTrack.Common\WTE.TintTrack.Common.csproj" />
     <ProjectReference Include="..\..\_Common\WTE.TintTrack.Domain.Shared\WTE.TintTrack.Domain.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Extensions\" />
+    <Folder Include="Interfaces\Repositories\TintServiceRepos\" />
   </ItemGroup>
 
 </Project>

@@ -5,10 +5,10 @@ FIRST MIGRATION:
 dotnet ef migrations add InitialCreate 
 --output-dir Migrations 
 --context TenantDbContext 
---startup-project "F:\WindowTintsEverything\Projects\TintTrack\Backend\WTE.TintTrack.Api\WTE.TintTrack.Api.csproj" 
---project "F:\WindowTintsEverything\Projects\TintTrack\Backend\_Business\WTE.TintTrack.Business.Infrastructure\WTE.TintTrack.Business.Infrastructure.csproj"
+--startup-project "F:\WindowTintsEverything\Projects\TintTrack\GIT.Backend\WTE.TintTrack.Api\WTE.TintTrack.Api.csproj" 
+--project "F:\WindowTintsEverything\Projects\TintTrack\GIT.Backend\_Business\WTE.TintTrack.Business.Infrastructure\WTE.TintTrack.Business.Infrastructure.csproj"
 
->> dotnet ef migrations add InitialMigration --output-dir Migrations --context TenantDbContext --startup-project "F:\WindowTintsEverything\Projects\TintTrack\Backend\WTE.TintTrack.Api\WTE.TintTrack.Api.csproj" --project "F:\WindowTintsEverything\Projects\TintTrack\Backend\_Business\WTE.TintTrack.Business.Infrastructure\WTE.TintTrack.Business.Infrastructure.csproj"
+>> dotnet ef migrations add InitialMigration --output-dir Migrations --context TenantDbContext --startup-project "F:\WindowTintsEverything\Projects\TintTrack\GIT.Backend\WTE.TintTrack.Api\WTE.TintTrack.Api.csproj" --project "F:\WindowTintsEverything\Projects\TintTrack\GIT.Backend\_Business\WTE.TintTrack.Business.Infrastructure\WTE.TintTrack.Business.Infrastructure.csproj"
 
 If need to Undo while has not updated the db yet:
 ===================================
@@ -16,17 +16,17 @@ If need to Undo while has not updated the db yet:
 dotnet ef migrations remove
 --output-dir Migrations 
 --context TenantDbContext 
---startup-project "F:\WindowTintsEverything\Projects\TintTrack\Backend\WTE.TintTrack.Api\WTE.TintTrack.Api.csproj" 
---project "F:\WindowTintsEverything\Projects\TintTrack\Backend\_Business\WTE.TintTrack.Business.Infrastructure\WTE.TintTrack.Business.Infrastructure.csproj"
+--startup-project "F:\WindowTintsEverything\Projects\TintTrack\GIT.Backend\WTE.TintTrack.Api\WTE.TintTrack.Api.csproj" 
+--project "F:\WindowTintsEverything\Projects\TintTrack\GIT.Backend\_Business\WTE.TintTrack.Business.Infrastructure\WTE.TintTrack.Business.Infrastructure.csproj"
 --force
 
->> dotnet ef migrations remove --context TenantDbContext  --startup-project "F:\WindowTintsEverything\Projects\TintTrack\Backend\WTE.TintTrack.Api\WTE.TintTrack.Api.csproj"  --project "F:\WindowTintsEverything\Projects\TintTrack\Backend\_Business\WTE.TintTrack.Business.Infrastructure\WTE.TintTrack.Business.Infrastructure.csproj" --force
+>> dotnet ef migrations remove --context TenantDbContext  --startup-project "F:\WindowTintsEverything\Projects\TintTrack\GIT.Backend\WTE.TintTrack.Api\WTE.TintTrack.Api.csproj"  --project "F:\WindowTintsEverything\Projects\TintTrack\GIT.Backend\_Business\WTE.TintTrack.Business.Infrastructure\WTE.TintTrack.Business.Infrastructure.csproj" --force
 
 If need to update db:
 ===================================
 dotnet ef database update
 --context TenantDbContext 
---startup-project "F:\WindowTintsEverything\Projects\TintTrack\Backend\WTE.TintTrack.Api\WTE.TintTrack.Api.csproj" 
---project "F:\WindowTintsEverything\Projects\TintTrack\Backend\_Business\WTE.TintTrack.Business.Infrastructure\WTE.TintTrack.Business.Infrastructure.csproj"
+--startup-project "F:\WindowTintsEverything\Projects\TintTrack\GIT.Backend\WTE.TintTrack.Api\WTE.TintTrack.Api.csproj" 
+--project "F:\WindowTintsEverything\Projects\TintTrack\GIT.Backend\_Business\WTE.TintTrack.Business.Infrastructure\WTE.TintTrack.Business.Infrastructure.csproj"
 
->> dotnet ef database update --context TenantDbContext  --startup-project "F:\WindowTintsEverything\Projects\TintTrack\Backend\WTE.TintTrack.Api\WTE.TintTrack.Api.csproj" --project "F:\WindowTintsEverything\Projects\TintTrack\Backend\_Business\WTE.TintTrack.Business.Infrastructure\WTE.TintTrack.Business.Infrastructure.csproj"
+>> dotnet ef database update --context TenantDbContext  --startup-project "F:\WindowTintsEverything\Projects\TintTrack\GIT.Backend\WTE.TintTrack.Api\WTE.TintTrack.Api.csproj" --project "F:\WindowTintsEverything\Projects\TintTrack\GIT.Backend\_Business\WTE.TintTrack.Business.Infrastructure\WTE.TintTrack.Business.Infrastructure.csproj"

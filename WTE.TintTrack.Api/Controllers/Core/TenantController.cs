@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Mime;
 using WTE.TintTrack.Api.Helpers.ControllerAbstractions;
-using WTE.TintTrack.Api.Messaging.Core.Request;
+using WTE.TintTrack.Api.Messaging.Core.Requests;
 using WTE.TintTrack.Api.Messaging.Core.Responses;
 using WTE.TintTrack.Application.Shared.Interfaces;
 using WTE.TintTrack.Application.Shared.Messaging;
@@ -18,14 +18,14 @@ using static WTE.TintTrack.Common.Constants.Consts;
 namespace WTE.TintTrack.Api.Controllers.Core;
 
 /// <summary>
-/// Initializes a new instance of the <see cref="TenantController"/> class.
+/// Controller for handling tenant management operations.
 /// </summary>
-/// <param name="logger"></param>
-/// <param name="mapper"></param>
-/// <param name="registerTenantRequestValidator"></param>
-/// <param name="tenantService">The tenant service to handle tenant operations.</param>
+/// <remarks>
+/// This controller provides comprehensive tenant management functionality, including tenant registration, approval, validation, updates, and deletion. It supports retrieving tenants by code, by user, resolving tenants from context, managing tenant logos, and performing administrative operations. The controller integrates with user services and tenant services to provide multi-tenant support, enabling organizations to manage their tenant accounts, configure tenant settings, and control tenant access within the system.
+/// </remarks>
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/[controller]")]
 [ApiController]
-[Route("api/[controller]")]
 //[ApiExplorerSettings(GroupName = "coremodules")]
 [Produces(MediaTypeNames.Application.Json)]
 public class TenantController(ILogger<TenantController> logger, IMapper mapper,

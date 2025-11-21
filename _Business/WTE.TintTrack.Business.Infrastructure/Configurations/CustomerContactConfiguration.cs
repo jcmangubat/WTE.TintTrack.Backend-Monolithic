@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SMEAppHouse.Core.Patterns.EF.EntityConfigurationAbstractions;
 using SMEAppHouse.Core.Patterns.EF.Helpers;
 using WTE.TintTrack.Business.Domain.Entities;
@@ -14,14 +15,29 @@ public class CustomerContactConfiguration(string schema = "dbo")
 
         entityBuilder.DefineDbField(p => p.RelationshipType, true);
 
-        entityBuilder.HasOne(p => p.Customer)
-                        .WithMany(p => p.CustomerContacts)
-                        .HasForeignKey(p => p.CustomerId)
-                        .OnDelete(Microsoft.EntityFrameworkCore.DeleteBehavior.Cascade);
+        entityBuilder.HasMany(p => p.Inquiries)
+                        .WithOne(p => p.CustomerContact)
+                        .HasForeignKey(p => p.CustomerContactId)
+                        .OnDelete(DeleteBehavior.Cascade);
 
-        entityBuilder.HasOne(p => p.Contact)
-                        .WithMany(p => p.CustomerContacts)
-                        .HasForeignKey(p => p.ContactId)
-                        .OnDelete(Microsoft.EntityFrameworkCore.DeleteBehavior.Cascade);
+        //entityBuilder.HasMany(p => p.CommercialOfferRecipients)
+        //                .WithOne(p => p.CustomerContact)
+        //                .HasForeignKey(p => p.CustomerContactId)
+        //                .OnDelete(DeleteBehavior.Cascade);
+
+        //entityBuilder.HasMany(p => p.Proposals)
+        //                .WithOne(p => p.CustomerContact)
+        //                .HasForeignKey(p => p.CustomerContactId)
+        //                .OnDelete(DeleteBehavior.Cascade);
+
+        //entityBuilder.HasMany(p => p.Quotes)
+        //                .WithOne(p => p.CustomerContact)
+        //                .HasForeignKey(p => p.CustomerContactId)
+        //                .OnDelete(DeleteBehavior.Cascade);
+
+        //entityBuilder.HasMany(p => p.Estimates)
+        //                .WithOne(p => p.CustomerContact)
+        //                .HasForeignKey(p => p.CustomerContactId)
+        //                .OnDelete(DeleteBehavior.Cascade);
     }
 }

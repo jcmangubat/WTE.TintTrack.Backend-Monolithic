@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SMEAppHouse.Core.CodeKits.Extensions;
 using WTE.TintTrack.Api.Helpers.ControllerAbstractions;
-using WTE.TintTrack.Api.Messaging.Core.Request;
+using WTE.TintTrack.Api.Messaging.Core.Requests;
 using WTE.TintTrack.Api.Messaging.Core.Responses;
 using WTE.TintTrack.Application.Shared.Interfaces;
 using WTE.TintTrack.Application.Shared.Messaging;
@@ -15,8 +15,11 @@ using WTE.TintTrack.Core.Application.Interfaces;
 namespace WTE.TintTrack.Api.Controllers.Core;
 
 /// <summary>
-/// Controller for managing user billing profiles.
+/// Controller for handling user billing profile operations.
 /// </summary>
+/// <remarks>
+/// This controller manages user billing profiles, which store payment and billing information for users. It provides operations for retrieving billing profiles by user code, retrieving available billing profile types, and registering new billing profiles. The controller enables users to manage their payment methods, billing addresses, and billing preferences, supporting the subscription billing and payment processing functionality of the system.
+/// </remarks>
 [ApiController]
 [Route("api/[controller]")]
 //[ApiExplorerSettings(GroupName = "coremodules")]

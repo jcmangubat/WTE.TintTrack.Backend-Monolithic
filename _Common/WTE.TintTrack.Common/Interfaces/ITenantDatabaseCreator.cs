@@ -2,5 +2,5 @@
 
 public interface ITenantDatabaseCreator
 {
-    Task CreateDatabaseAsync(string connectionString);
+    Task CreateDatabaseAsync(string connectionString, CancellationToken cancellationToken = default);
 }

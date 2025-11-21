@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using WTE.TintTrack.Api.Messaging.Core.Request;
+using WTE.TintTrack.Api.Messaging.Core.Requests;
 using WTE.TintTrack.Api.Messaging.Core.Responses;
 using WTE.TintTrack.Core.Application.DTOs.CoreEntityRelated;
 

@@ -12,16 +12,11 @@ using WTE.TintTrack.Core.Application.Interfaces;
 namespace WTE.TintTrack.Api.Controllers.Core;
 
 /// <summary>
-/// Controller for managing tenant subscriptions.
+/// Controller for handling tenant subscription management operations.
 /// </summary>
 /// <remarks>
-/// Initializes a new instance of the TenantSubscriptionController class.
+/// This controller manages tenant subscriptions, which link tenants to subscription plans and track their subscription status. It provides operations for retrieving subscriptions by tenant, getting active subscriptions, registering new subscriptions, and deleting subscriptions. The controller integrates with tenant services, subscription plan services, and tenant subscription services to enable tenants to subscribe to plans, manage their subscription status, and administrators to oversee subscription management across the platform.
 /// </remarks>
-/// <param name="logger"></param>
-/// <param name="mapper"></param>
-/// <param name="tenantService"></param>
-/// <param name="tenantSubscriptionService">The service responsible for tenant subscriptions.</param>
-/// <param name="subscriptionPlanService"></param>
 [ApiController]
 [Route("api/[controller]")]
 //[ApiExplorerSettings(GroupName = "coremodules")]

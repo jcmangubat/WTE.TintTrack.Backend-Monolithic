@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Mime;
 using WTE.TintTrack.Api.Helpers.ControllerAbstractions;
-using WTE.TintTrack.Api.Messaging.Core.Request;
+using WTE.TintTrack.Api.Messaging.Core.Requests;
 using WTE.TintTrack.Api.Messaging.Core.Responses;
 using WTE.TintTrack.Application.Shared.Interfaces;
 using WTE.TintTrack.Application.Shared.Messaging;
@@ -20,8 +20,11 @@ using WTE.TintTrack.Core.Domain.Interfaces.Services;
 namespace WTE.TintTrack.Api.Controllers.Core;
 
 /// <summary>
-/// AuthController manages authentication and user-related operations.
+/// Controller for handling authentication and authorization operations.
 /// </summary>
+/// <remarks>
+/// This controller manages user authentication, token generation, password reset, and tenant switching operations. It provides endpoints for user login, logout, token refresh, password reset requests and confirmation, tenant switching, and token validation. The controller integrates with user services, token services, tenant services, and role permission services to provide secure authentication and authorization functionality, supporting multi-tenant scenarios and role-based access control.
+/// </remarks>
 [ApiController]
 [Route("api/auth")]
 //[ApiExplorerSettings(GroupName = "coremodules")]

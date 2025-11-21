@@ -10,5 +10,4 @@ public class Permission : GuidKeyedAuditableEntity
     public required string Name { get; set; } = default!;
     public required string Description { get; set; } = default!;
     public ICollection<RolePermission> RolePermissions { get; set; } = new HashSet<RolePermission>();
-    
 }

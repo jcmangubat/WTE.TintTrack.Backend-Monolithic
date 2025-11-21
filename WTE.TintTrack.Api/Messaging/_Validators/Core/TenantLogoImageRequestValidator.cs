@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using WTE.TintTrack.Api.Messaging.Core.Request;
+using WTE.TintTrack.Api.Messaging.Core.Requests;
 
 namespace WTE.TintTrack.Api.Messaging._Validators.Core;
 

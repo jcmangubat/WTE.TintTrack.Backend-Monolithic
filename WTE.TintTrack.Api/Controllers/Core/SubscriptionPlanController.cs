@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Mime;
 using WTE.TintTrack.Api.Helpers.ControllerAbstractions;
-using WTE.TintTrack.Api.Messaging.Core.Request;
+using WTE.TintTrack.Api.Messaging.Core.Requests;
 using WTE.TintTrack.Api.Messaging.Core.Responses;
 using WTE.TintTrack.Application.Shared.Interfaces;
 using WTE.TintTrack.Application.Shared.Messaging;
@@ -14,6 +14,12 @@ using WTE.TintTrack.Core.Application.Interfaces;
 
 namespace WTE.TintTrack.Api.Controllers.Core;
 
+/// <summary>
+/// Controller for handling subscription plan operations.
+/// </summary>
+/// <remarks>
+/// This controller manages subscription plans, which define the available service tiers and pricing options for tenants. It provides CRUD operations for creating, reading, updating, and deleting subscription plans, enabling administrators to configure and manage the different subscription offerings available to tenants in the system.
+/// </remarks>
 [ApiController]
 [Route("api/[controller]")]
 //[ApiExplorerSettings(GroupName = "coremodules")]

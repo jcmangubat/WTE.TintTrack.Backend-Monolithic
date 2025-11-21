@@ -1,17 +1,26 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="DTOs\old\**" />
+    <Compile Remove="DTOs\SalesAndQuotingModels\**" />
     <Compile Remove="EntityRecordValidators\**" />
+    <Compile Remove="Interfaces\old\**" />
     <Compile Remove="Services\old\**" />
+    <EmbeddedResource Remove="DTOs\old\**" />
+    <EmbeddedResource Remove="DTOs\SalesAndQuotingModels\**" />
     <EmbeddedResource Remove="EntityRecordValidators\**" />
+    <EmbeddedResource Remove="Interfaces\old\**" />
     <EmbeddedResource Remove="Services\old\**" />
+    <None Remove="DTOs\old\**" />
+    <None Remove="DTOs\SalesAndQuotingModels\**" />
     <None Remove="EntityRecordValidators\**" />
+    <None Remove="Interfaces\old\**" />
     <None Remove="Services\old\**" />
   </ItemGroup>
 
@@ -19,6 +28,10 @@
     <Compile Remove="DTOs\ApplicationRoleDto.cs" />
     <Compile Remove="DTOs\ApplicationUserDto.cs" />
     <Compile Remove="DTOs\ContactOwnershipDto.cs" />
+    <Compile Remove="DTOs\OfferDocumentDto.cs" />
+    <Compile Remove="DTOs\OfferDocumentHistoryDto.cs" />
+    <Compile Remove="DTOs\OfferDocumentRecipientDto.cs" />
+    <Compile Remove="DTOs\ProjectDto.cs" />
     <Compile Remove="DTOs\PropertyDetailsDto.cs" />
     <Compile Remove="DTOs\SubscriptionPlanDto.cs" />
     <Compile Remove="DTOs\SubscriptionPlanFeatureDto.cs" />
@@ -31,6 +44,11 @@
     <Compile Remove="DTOs\UserTenantDto.cs" />
     <Compile Remove="DTOs\UserTenantRoleDto.cs" />
     <Compile Remove="DTOs\VehicleDto.cs" />
+    <Compile Remove="Interfaces\ICustomerOwnershipService.cs" />
+    <Compile Remove="Interfaces\IInvoiceItemService.cs" />
+    <Compile Remove="Interfaces\IInvoiceService.cs" />
+    <Compile Remove="Interfaces\IProjectMilestoneService.cs" />
+    <Compile Remove="Interfaces\IProjectService.cs" />
     <Compile Remove="Interfaces\ISubscriptionPlanFeatureService.cs" />
     <Compile Remove="Interfaces\ISubscriptionPlanService.cs" />
     <Compile Remove="Interfaces\ISubscriptionPromoDiscountService.cs" />
@@ -41,7 +59,15 @@
     <Compile Remove="Interfaces\IUserService.cs" />
     <Compile Remove="Interfaces\IUserTenantService.cs" />
     <Compile Remove="Interfaces\IVehicleService.cs" />
+    <Compile Remove="Interfaces\IWorkOrderItemService.cs" />
+    <Compile Remove="Interfaces\IWorkOrderService.cs" />
     <Compile Remove="Mappings\CoreMappingProfile.cs" />
+    <Compile Remove="Services\CustomerOwnershipService.cs" />
+    <Compile Remove="Services\InvoiceService.cs" />
+    <Compile Remove="Services\ProjectMilestoneService.cs" />
+    <Compile Remove="Services\ProjectService.cs" />
+    <Compile Remove="Services\ProposalService.cs" />
+    <Compile Remove="Services\QuoteService.cs" />
     <Compile Remove="Services\SubscriptionPlanFeatureService.cs" />
     <Compile Remove="Services\SubscriptionPlanService.cs" />
     <Compile Remove="Services\SubscriptionPromoDiscountService.cs" />
@@ -55,13 +81,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="AutoMapper" Version="14.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\_Common\WTE.TintTrack.Common.Application\WTE.TintTrack.Application.Shared.csproj" />
     <ProjectReference Include="..\..\_Common\WTE.TintTrack.Common\WTE.TintTrack.Common.csproj" />
     <ProjectReference Include="..\WTE.TintTrack.Business.Domain\WTE.TintTrack.Business.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Interfaces\old\" />
   </ItemGroup>
 
 </Project>

@@ -149,36 +149,35 @@ public static class FieldLengths
         public const int Mobile = General.PhoneNumber;
         public const int AltPhone = General.PhoneNumber;
         public const int Email = General.EmailAddress;
-
-        public const int StreetAddress = GeneralAddress.StreetAddress;
-        public const int AddressLine2 = GeneralAddress.AddressLine2;
-        public const int City = GeneralAddress.City;
-        public const int StateOrRegion = GeneralAddress.StateOrRegionOrProvince;
-        public const int PostalCode = GeneralAddress.PostalOrZIPCode;
-        public const int CountryISOCode = GeneralAddress.CountryISOCode;
-
-        public const int Tags = General.ExtraLong;
-        public const int Website = General.URL;
         public const int JobTitle = General.LENGTH30;
+        public const int Tags = General.ExtraLong;
         public const int Notes = General.SummaryParagraph;
-
     }
 
     public static class Customer
     {
         public const int Code = 12;
         public const int Name = General.Name;
-        public const int Company = General.Name;
-        public const int Phone = General.PhoneNumber;
-        public const int Phone2 = General.PhoneNumber;
-        public const int Email = General.EmailAddress;
-        public const int StreetAddress = GeneralAddress.StreetAddress;
-        public const int AddressLine2 = GeneralAddress.AddressLine2;
+        public const int IndustryType = 40;
+        public const int GeneralEmail = General.EmailAddress;
+        public const int MainPhone = General.PhoneNumber;
+        public const int Website = General.URL;
+        public const int Tags = General.ExtraLong;
+        public const int Notes = General.SummaryParagraph;
+    }
+
+    public static class Address
+    {
+        public const int Code = General.CODE;
+        public const int Street = GeneralAddress.StreetAddress;
+        public const int AdditionalInfo = GeneralAddress.AddressLine2;
         public const int City = GeneralAddress.City;
         public const int StateOrRegion = GeneralAddress.StateOrRegionOrProvince;
         public const int PostalCode = GeneralAddress.PostalOrZIPCode;
+        public const int Country= General.CountryName;
         public const int CountryISOCode = GeneralAddress.CountryISOCode;
-        public const int CreatedBy = General.LENGTH120;
+        public const int Latitude = 12;
+        public const int Longitude = 12;
     }
 
     public static class Inquiry
@@ -188,6 +187,7 @@ public static class FieldLengths
         public const int SpecialRequests = General.SummaryParagraph;
         public const int ProposalCode = General.CODE;
         public const int SalesRepUserCode = ApplicationUser.UserCode;
+        public const int TintServiceCodes = General.SuperLong;
     }
 
 }

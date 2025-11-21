@@ -13,4 +13,11 @@ public class CustomerContactDto : GuidKeyedAuditableModel
     public virtual ContactDto Contact { get; set; }
 
     public required CustomerContactRelationshipTypesEnum RelationshipType { get; set; } // Relationship type: Primary, Billing, etc.
+
+    public ICollection<InquiryDto> Inquiries { get; set; } = new HashSet<InquiryDto>();
+    //public ICollection<OfferRecipient> CommercialOfferRecipients { get; set; } = new HashSet<OfferRecipient>();
+    //public ICollection<Proposal> Proposals { get; set; } = new HashSet<Proposal>();
+    //public ICollection<Quote> Quotes { get; set; } = new HashSet<Quote>();
+    //public ICollection<Estimate> Estimates { get; set; } = new HashSet<Estimate>();
 }
+

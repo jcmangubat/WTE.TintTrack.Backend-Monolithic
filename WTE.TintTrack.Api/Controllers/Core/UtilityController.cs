@@ -11,7 +11,12 @@ using static WTE.TintTrack.Common.Constants.Consts;
 
 namespace WTE.TintTrack.Api.Controllers.Core;
 
-
+/// <summary>
+/// Controller for handling utility and helper operations.
+/// </summary>
+/// <remarks>
+/// This controller provides utility endpoints for retrieving system enumerations, validating addresses, and accessing reference data. It includes endpoints for retrieving various enum types such as contact methods, customer levels, property types, tint types, project types, tenant statuses, billing profile types, user roles, subscription statuses, payment statuses, invoice statuses, and other system constants, enabling clients to access standardized reference data and perform utility operations.
+/// </remarks>
 [ApiController]
 [Route("api/[controller]")]
 [Produces(MediaTypeNames.Application.Json)]
@@ -169,13 +174,13 @@ public class UtilityController(ILogger<UtilityController> logger, IMapper mapper
     [ProducesResponseType<DefaultApiResponse<Dictionary<string, int>>>(StatusCodes.Status200OK)]
     public IActionResult GetTenantInvitationStatuses() => GetEnumDetails<TenantInvitationStatusEnum>();
 
-    /// <summary>
+    /*/// <summary>
     /// Retrieves the available contact types.
     /// </summary>
     /// <returns>A dictionary of contact types with their respective integer values.</returns>
     [HttpGet("ContactTypes")]
     [ProducesResponseType<DefaultApiResponse<Dictionary<string, int>>>(StatusCodes.Status200OK)]
-    public IActionResult GetContactTypes() => GetEnumDetails<ContactTypesEnum>();
+    public IActionResult GetContactTypes() => GetEnumDetails<ContactTypesEnum>();*/
 
     /// <summary>
     /// Retrieves the available tax exemption reasons.
@@ -215,9 +220,9 @@ public class UtilityController(ILogger<UtilityController> logger, IMapper mapper
     /// <returns>
     /// A dictionary where the keys are the names of the proposal member roles (as strings) and the values are their corresponding integer values.
     /// </returns>
-    [HttpGet("ProposalMemberRoles")]
+    [HttpGet("OfferDocumentRecipientRoles")]
     [ProducesResponseType<DefaultApiResponse<Dictionary<string, int>>>(StatusCodes.Status200OK)]
-    public IActionResult GetProposalMemberRoles() => GetEnumDetails<ProposalMemberRolesEnum>();
+    public IActionResult GetOfferDocumentRecipientRoles() => GetEnumDetails<OfferDocumentRecipientRolesEnum>();
 
     /// <summary>
     /// Retrieves the available length units.

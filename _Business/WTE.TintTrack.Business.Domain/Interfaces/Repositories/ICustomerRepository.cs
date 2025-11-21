@@ -4,6 +4,5 @@ using WTE.TintTrack.Business.Domain.Entities;
 namespace WTE.TintTrack.Business.Domain.Interfaces.Repositories;
 
 public interface ICustomerRepository : IRepositoryForKeyedEntity<Customer, Guid>
-{
-    
+{    
 }

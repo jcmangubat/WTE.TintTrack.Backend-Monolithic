@@ -7,6 +7,12 @@ using WTE.TintTrack.Business.Application.Interfaces;
 
 namespace WTE.TintTrack.Api.Controllers.Business;
 
+/// <summary>
+/// Controller for handling audit log operations.
+/// </summary>
+/// <remarks>
+/// This controller provides endpoints for managing audit logs, including retrieving audit logs by ID, by user, creating new audit log entries, and deleting audit logs. It supports operations for tracking system activities and user actions for compliance and debugging purposes.
+/// </remarks>
 [ApiController]
 ////[ApiExplorerSettings(GroupName = "businessmodules")]
 [Route("api/[controller]")]

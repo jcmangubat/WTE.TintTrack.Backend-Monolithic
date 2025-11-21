@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using System.Linq.Expressions;
 using WTE.TintTrack.Api.Messaging._Abstractions;
-using WTE.TintTrack.Api.Messaging.Business.Request;
+using WTE.TintTrack.Api.Messaging.Business.Requests.Customer;
 using WTE.TintTrack.Business.Application.DTOs;
 using WTE.TintTrack.Business.Domain.Interfaces.Repositories;
 
@@ -14,7 +14,7 @@ public class CustomerCRUDExtender(ILogger<CustomerCRUDExtender> logger, IMapper 
     {
         entityDto = base.TransformForUpdate(entityDto, entityUpdateRequest);
 
-        if (entityUpdateRequest.CustomerStatus != null) entityDto.CustomerStatus = entityUpdateRequest.CustomerStatus.Value;
+        /*if (entityUpdateRequest.CustomerStatus != null) entityDto.CustomerStatus = entityUpdateRequest.CustomerStatus.Value;
         if (entityUpdateRequest.AddressLine2 != null) entityDto.AddressLine2 = entityUpdateRequest.AddressLine2;
         if (entityUpdateRequest.CreatedBy != null) entityDto.CreatedBy = entityUpdateRequest.CreatedBy;
         if (entityUpdateRequest.City != null) entityDto.City = entityUpdateRequest.City;
@@ -26,7 +26,26 @@ public class CustomerCRUDExtender(ILogger<CustomerCRUDExtender> logger, IMapper 
         if (entityUpdateRequest.Company != null) entityDto.Company = entityUpdateRequest.Company;
         if (entityUpdateRequest.Name != null) entityDto.Name = entityUpdateRequest.Name;
         if (entityUpdateRequest.Phone != null) entityDto.Phone = entityUpdateRequest.Phone;
-        if (entityUpdateRequest.Phone2 != null) entityDto.Phone2 = entityUpdateRequest.Phone2;
+        if (entityUpdateRequest.Phone2 != null) entityDto.Phone2 = entityUpdateRequest.Phone2;*/
+
+        if (entityUpdateRequest.Code != null) entityDto.Code = entityUpdateRequest.Code;
+        if (entityUpdateRequest.Name != null) entityDto.Name = entityUpdateRequest.Name;
+        if (entityUpdateRequest.IndustryType != null) entityDto.IndustryType = entityUpdateRequest.IndustryType;
+        if (entityUpdateRequest.GeneralEmail != null) entityDto.GeneralEmail = entityUpdateRequest.GeneralEmail;
+        if (entityUpdateRequest.MainPhone != null) entityDto.MainPhone = entityUpdateRequest.MainPhone;
+        if (entityUpdateRequest.Website != null) entityDto.Website = entityUpdateRequest.Website;
+        if (entityUpdateRequest.CustomerStatus != null) entityDto.CustomerStatus = entityUpdateRequest.CustomerStatus.Value;
+        if (entityUpdateRequest.IsImported != null) entityDto.IsImported = entityUpdateRequest.IsImported.Value;
+        if (entityUpdateRequest.Notes != null) entityDto.Notes = entityUpdateRequest.Notes;
+        if (entityUpdateRequest.Tags != null) entityDto.Tags = entityUpdateRequest.Tags;
+        if (entityUpdateRequest.TaxExemptionReason != null) entityDto.TaxExemptionReason = entityUpdateRequest.TaxExemptionReason;
+
+        /*// Navigation properties for related entities
+        public virtual IEnumerable<CustomerContactDto> CustomerContacts { get; set; } = [];
+        public IEnumerable<string> ContactCodes { get; set; } = [];
+        public virtual IEnumerable<PropertyDto> CustomerProperties { get; set; } = [];
+        public IEnumerable<string> AddressCodes { get; set; } = [];
+        public virtual IEnumerable<AddressDto> Addresses { get; set; } = [];*/
 
         return entityDto;
     }
@@ -38,6 +57,6 @@ public class CustomerCRUDExtender(ILogger<CustomerCRUDExtender> logger, IMapper 
 
     public override Expression<Func<CustomerDto, object>>[]? GetIncludes() =>
     [
-        dto => dto.CustomerContacts
+        //dto => dto.CustomerContacts
     ];
 }

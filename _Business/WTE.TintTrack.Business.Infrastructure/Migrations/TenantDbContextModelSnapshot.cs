@@ -8,7 +8,7 @@ using WTE.TintTrack.Business.Infrastructure;
 
 #nullable disable
 
-namespace WTE.TintTrack.Business.Infrastructure.DataPersistence.Migrations
+namespace WTE.TintTrack.Business.Infrastructure.Migrations
 {
     [DbContext(typeof(TenantDbContext))]
     partial class TenantDbContextModelSnapshot : ModelSnapshot
@@ -18,12 +18,12 @@ namespace WTE.TintTrack.Business.Infrastructure.DataPersistence.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasDefaultSchema("dbo")
-                .HasAnnotation("ProductVersion", "9.0.0")
+                .HasAnnotation("ProductVersion", "9.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.AuditLog", b =>
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.Address", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -31,15 +31,44 @@ namespace WTE.TintTrack.Business.Infrastructure.DataPersistence.Migrations
                         .HasColumnName("Id")
                         .HasColumnOrder(0);
 
-                    b.Property<string>("Action")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)")
-                        .HasColumnName("Action");
+                    b.Property<string>("AdditionalInfo")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("AdditionalInfo");
 
-                    b.Property<DateTime>("ActionDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("ActionDate");
+                    b.Property<int>("AddressType")
+                        .HasColumnType("int")
+                        .HasColumnName("AddressType");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("City");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)")
+                        .HasColumnName("Code");
+
+                    b.Property<Guid?>("ContactId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("Country");
+
+                    b.Property<string>("CountryISOCode")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)")
+                        .HasColumnName("CountryISOCode");
+
+                    b.Property<Guid?>("CustomerId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("DateArchived")
                         .HasColumnType("DateTime2")
@@ -48,7 +77,7 @@ namespace WTE.TintTrack.Business.Infrastructure.DataPersistence.Migrations
                     b.Property<DateTime>("DateCreated")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("DateTime2")
-                        .HasDefaultValue(new DateTime(2024, 12, 16, 9, 59, 48, 998, DateTimeKind.Local).AddTicks(796))
+                        .HasDefaultValue(new DateTime(2025, 4, 28, 23, 22, 15, 43, DateTimeKind.Local).AddTicks(7296))
                         .HasColumnName("_dateCreated")
                         .HasColumnOrder(501);
 
@@ -66,18 +95,824 @@ namespace WTE.TintTrack.Business.Infrastructure.DataPersistence.Migrations
                         .HasColumnType("bit")
                         .HasColumnOrder(510);
 
+                    b.Property<string>("Latitude")
+                        .HasMaxLength(12)
+                        .HasColumnType("nvarchar(12)")
+                        .HasColumnName("Latitude");
+
+                    b.Property<string>("Longitude")
+                        .HasMaxLength(12)
+                        .HasColumnType("nvarchar(12)")
+                        .HasColumnName("Longitude");
+
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)")
+                        .HasColumnName("PostalCode");
+
                     b.Property<string>("ReasonArchived")
                         .HasMaxLength(240)
                         .HasColumnType("nvarchar(240)")
                         .HasColumnOrder(512);
 
-                    b.Property<Guid>("UserId")
+                    b.Property<string>("StateOrRegion")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("StateOrRegion");
+
+                    b.Property<string>("Street")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)")
+                        .HasColumnName("Street");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.ToTable("Addresses", "dbo");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.AuditLog", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnName("UserId");
+                        .HasColumnName("Id")
+                        .HasColumnOrder(0);
+
+                    b.Property<string>("ActionData")
+                        .IsRequired()
+                        .HasMaxLength(800)
+                        .HasColumnType("nvarchar(800)")
+                        .HasColumnName("ActionData");
+
+                    b.Property<DateTime>("ActionDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ActionDate");
+
+                    b.Property<DateTime?>("DateArchived")
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(511);
+
+                    b.Property<DateTime>("DateCreated")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("DateTime2")
+                        .HasDefaultValue(new DateTime(2025, 4, 28, 23, 22, 15, 27, DateTimeKind.Local).AddTicks(2633))
+                        .HasColumnName("_dateCreated")
+                        .HasColumnOrder(501);
+
+                    b.Property<DateTime?>("DateModified")
+                        .HasColumnType("DateTime2")
+                        .HasColumnName("_dateModified")
+                        .HasColumnOrder(508);
+
+                    b.Property<string>("EntityName")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)")
+                        .HasColumnName("EntityName");
+
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true)
+                        .HasColumnOrder(506);
+
+                    b.Property<bool?>("IsArchived")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(510);
+
+                    b.Property<string>("ReasonArchived")
+                        .HasMaxLength(240)
+                        .HasColumnType("nvarchar(240)")
+                        .HasColumnOrder(512);
+
+                    b.Property<string>("UserCode")
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)")
+                        .HasColumnName("UserCode");
 
                     b.HasKey("Id");
 
                     b.ToTable("AuditLogs", "dbo");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.CommercialOffersEntities.Estimate", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("Id")
+                        .HasColumnOrder(0);
+
+                    b.Property<decimal>("AdditionalFees")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("AdditionalFees");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)")
+                        .HasColumnName("Code");
+
+                    b.Property<Guid?>("ContractId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)")
+                        .HasColumnName("Currency");
+
+                    b.Property<Guid>("CustomerContactId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("DateArchived")
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(511);
+
+                    b.Property<DateTime>("DateCreated")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("DateTime2")
+                        .HasDefaultValue(new DateTime(2025, 4, 28, 23, 22, 15, 67, DateTimeKind.Local).AddTicks(1527))
+                        .HasColumnName("_dateCreated")
+                        .HasColumnOrder(501);
+
+                    b.Property<DateTime?>("DateModified")
+                        .HasColumnType("DateTime2")
+                        .HasColumnName("_dateModified")
+                        .HasColumnOrder(508);
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(800)
+                        .HasColumnType("nvarchar(800)")
+                        .HasColumnName("Description");
+
+                    b.Property<decimal>("EstimatedAmount")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("EstimatedAmount");
+
+                    b.Property<DateTime?>("ExpiryDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ExpiryDate");
+
+                    b.Property<Guid?>("InquiryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true)
+                        .HasColumnOrder(506);
+
+                    b.Property<bool?>("IsArchived")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(510);
+
+                    b.Property<DateTime>("IssuanceDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("IssuanceDate");
+
+                    b.Property<decimal>("LaborCost")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("LaborCost");
+
+                    b.Property<decimal>("MaterialCost")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("MaterialCost");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)")
+                        .HasColumnName("Notes");
+
+                    b.Property<int>("OfferDocumentStatus")
+                        .HasColumnType("int")
+                        .HasColumnName("OfferDocumentStatus");
+
+                    b.Property<string>("ReasonArchived")
+                        .HasMaxLength(240)
+                        .HasColumnType("nvarchar(240)")
+                        .HasColumnOrder(512);
+
+                    b.Property<string>("SourceDocRef")
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)")
+                        .HasColumnName("SourceDocRef");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ContractId")
+                        .IsUnique()
+                        .HasFilter("[ContractId] IS NOT NULL");
+
+                    b.HasIndex("CustomerContactId");
+
+                    b.HasIndex("InquiryId");
+
+                    b.ToTable("Estimates", "dbo");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.CommercialOffersEntities.EstimateItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(0);
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("DateArchived")
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(511);
+
+                    b.Property<DateTime>("DateCreated")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(501);
+
+                    b.Property<DateTime?>("DateModified")
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(508);
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("EstimateId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(506);
+
+                    b.Property<bool?>("IsArchived")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(510);
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ReasonArchived")
+                        .HasMaxLength(240)
+                        .HasColumnType("nvarchar(240)")
+                        .HasColumnOrder(512);
+
+                    b.Property<Guid?>("TintMaterialId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("TintServiceId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EstimateId");
+
+                    b.HasIndex("TintMaterialId");
+
+                    b.HasIndex("TintServiceId");
+
+                    b.ToTable("EstimateItem", "dbo");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.CommercialOffersEntities.OfferHistory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("Id")
+                        .HasColumnOrder(0);
+
+                    b.Property<string>("ChangedByUserCode")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)")
+                        .HasColumnName("ChangedByUserCode");
+
+                    b.Property<string>("Comments")
+                        .HasMaxLength(800)
+                        .HasColumnType("nvarchar(800)")
+                        .HasColumnName("Comments");
+
+                    b.Property<DateTime?>("DateArchived")
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(511);
+
+                    b.Property<DateTime>("DateCreated")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(501);
+
+                    b.Property<DateTime?>("DateModified")
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(508);
+
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true)
+                        .HasColumnOrder(506);
+
+                    b.Property<bool?>("IsArchived")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(510);
+
+                    b.Property<int>("OfferDocumentStatus")
+                        .HasColumnType("int")
+                        .HasColumnName("OfferDocumentStatus");
+
+                    b.Property<Guid>("OfferRecipientId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ReasonArchived")
+                        .HasMaxLength(240)
+                        .HasColumnType("nvarchar(240)")
+                        .HasColumnOrder(512);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OfferRecipientId");
+
+                    b.ToTable("OfferHistories", "dbo");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.CommercialOffersEntities.OfferMilestone", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(0);
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DateArchived")
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(511);
+
+                    b.Property<DateTime>("DateCreated")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(501);
+
+                    b.Property<DateTime?>("DateModified")
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(508);
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("EstimateId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal?>("EstimatedAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("ExpectedEndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("ExpectedStartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(506);
+
+                    b.Property<bool?>("IsArchived")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(510);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("ProposalId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("QuoteId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ReasonArchived")
+                        .HasMaxLength(240)
+                        .HasColumnType("nvarchar(240)")
+                        .HasColumnOrder(512);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EstimateId");
+
+                    b.HasIndex("ProposalId");
+
+                    b.HasIndex("QuoteId");
+
+                    b.ToTable("OfferMilestones", "dbo");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.CommercialOffersEntities.OfferRecipient", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("Id")
+                        .HasColumnOrder(0);
+
+                    b.Property<Guid>("CustomerContactId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("DateArchived")
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(511);
+
+                    b.Property<DateTime>("DateCreated")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(501);
+
+                    b.Property<DateTime?>("DateModified")
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(508);
+
+                    b.Property<Guid?>("EstimateId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true)
+                        .HasColumnOrder(506);
+
+                    b.Property<bool?>("IsArchived")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(510);
+
+                    b.Property<int>("OfferDocumentRecipientRole")
+                        .HasColumnType("int")
+                        .HasColumnName("OfferDocumentRecipientRole");
+
+                    b.Property<Guid?>("ProposalId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("QuoteId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ReasonArchived")
+                        .HasMaxLength(240)
+                        .HasColumnType("nvarchar(240)")
+                        .HasColumnOrder(512);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerContactId");
+
+                    b.HasIndex("EstimateId");
+
+                    b.HasIndex("ProposalId");
+
+                    b.HasIndex("QuoteId");
+
+                    b.ToTable("OfferRecipients", "dbo");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.CommercialOffersEntities.Proposal", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("Id")
+                        .HasColumnOrder(0);
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)")
+                        .HasColumnName("Code");
+
+                    b.Property<Guid?>("ContractId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)")
+                        .HasColumnName("Currency");
+
+                    b.Property<Guid>("CustomerContactId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("DateArchived")
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(511);
+
+                    b.Property<DateTime>("DateCreated")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("DateTime2")
+                        .HasDefaultValue(new DateTime(2025, 4, 28, 23, 22, 15, 69, DateTimeKind.Local).AddTicks(8560))
+                        .HasColumnName("_dateCreated")
+                        .HasColumnOrder(501);
+
+                    b.Property<DateTime?>("DateModified")
+                        .HasColumnType("DateTime2")
+                        .HasColumnName("_dateModified")
+                        .HasColumnOrder(508);
+
+                    b.Property<string>("Deliverables")
+                        .IsRequired()
+                        .HasMaxLength(800)
+                        .HasColumnType("nvarchar(800)")
+                        .HasColumnName("Deliverables");
+
+                    b.Property<DateTime?>("ExpiryDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ExpiryDate");
+
+                    b.Property<Guid?>("InquiryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true)
+                        .HasColumnOrder(506);
+
+                    b.Property<bool?>("IsArchived")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(510);
+
+                    b.Property<DateTime>("IssuanceDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("IssuanceDate");
+
+                    b.Property<int>("OfferDocumentStatus")
+                        .HasColumnType("int")
+                        .HasColumnName("OfferDocumentStatus");
+
+                    b.Property<string>("ProjectTimeline")
+                        .IsRequired()
+                        .HasMaxLength(800)
+                        .HasColumnType("nvarchar(800)")
+                        .HasColumnName("ProjectTimeline");
+
+                    b.Property<string>("ReasonArchived")
+                        .HasMaxLength(240)
+                        .HasColumnType("nvarchar(240)")
+                        .HasColumnOrder(512);
+
+                    b.Property<string>("SolutionDescription")
+                        .IsRequired()
+                        .HasMaxLength(800)
+                        .HasColumnType("nvarchar(800)")
+                        .HasColumnName("SolutionDescription");
+
+                    b.Property<string>("SourceDocRef")
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)")
+                        .HasColumnName("SourceDocRef");
+
+                    b.Property<string>("TermsAndConditions")
+                        .IsRequired()
+                        .HasMaxLength(800)
+                        .HasColumnType("nvarchar(800)")
+                        .HasColumnName("TermsAndConditions");
+
+                    b.Property<decimal>("TotalCost")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("TotalCost");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ContractId")
+                        .IsUnique()
+                        .HasFilter("[ContractId] IS NOT NULL");
+
+                    b.HasIndex("CustomerContactId");
+
+                    b.HasIndex("InquiryId");
+
+                    b.ToTable("Proposals", "dbo");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.CommercialOffersEntities.ProposalItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(0);
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("DateArchived")
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(511);
+
+                    b.Property<DateTime>("DateCreated")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(501);
+
+                    b.Property<DateTime?>("DateModified")
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(508);
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(506);
+
+                    b.Property<bool?>("IsArchived")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(510);
+
+                    b.Property<Guid>("ProposalId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ReasonArchived")
+                        .HasMaxLength(240)
+                        .HasColumnType("nvarchar(240)")
+                        .HasColumnOrder(512);
+
+                    b.Property<Guid?>("TintMaterialId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("TintServiceId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProposalId");
+
+                    b.HasIndex("TintMaterialId");
+
+                    b.HasIndex("TintServiceId");
+
+                    b.ToTable("ProposalItem", "dbo");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.CommercialOffersEntities.Quote", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("Id")
+                        .HasColumnOrder(0);
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)")
+                        .HasColumnName("Code");
+
+                    b.Property<Guid?>("ContractId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)")
+                        .HasColumnName("Currency");
+
+                    b.Property<Guid>("CustomerContactId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("DateArchived")
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(511);
+
+                    b.Property<DateTime>("DateCreated")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("DateTime2")
+                        .HasDefaultValue(new DateTime(2025, 4, 28, 23, 22, 15, 64, DateTimeKind.Local).AddTicks(2748))
+                        .HasColumnName("_dateCreated")
+                        .HasColumnOrder(501);
+
+                    b.Property<DateTime?>("DateModified")
+                        .HasColumnType("DateTime2")
+                        .HasColumnName("_dateModified")
+                        .HasColumnOrder(508);
+
+                    b.Property<DateTime?>("ExpiryDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ExpiryDate");
+
+                    b.Property<Guid?>("InquiryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true)
+                        .HasColumnOrder(506);
+
+                    b.Property<bool?>("IsArchived")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(510);
+
+                    b.Property<DateTime>("IssuanceDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("IssuanceDate");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(800)
+                        .HasColumnType("nvarchar(800)")
+                        .HasColumnName("Notes");
+
+                    b.Property<int>("OfferDocumentStatus")
+                        .HasColumnType("int")
+                        .HasColumnName("OfferDocumentStatus");
+
+                    b.Property<string>("ReasonArchived")
+                        .HasMaxLength(240)
+                        .HasColumnType("nvarchar(240)")
+                        .HasColumnOrder(512);
+
+                    b.Property<string>("SourceDocRef")
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)")
+                        .HasColumnName("SourceDocRef");
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("TotalAmount");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ContractId")
+                        .IsUnique()
+                        .HasFilter("[ContractId] IS NOT NULL");
+
+                    b.HasIndex("CustomerContactId");
+
+                    b.HasIndex("InquiryId");
+
+                    b.ToTable("Quotes", "dbo");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.CommercialOffersEntities.QuoteItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(0);
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("DateArchived")
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(511);
+
+                    b.Property<DateTime>("DateCreated")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(501);
+
+                    b.Property<DateTime?>("DateModified")
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(508);
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(506);
+
+                    b.Property<bool?>("IsArchived")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(510);
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("QuoteId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ReasonArchived")
+                        .HasMaxLength(240)
+                        .HasColumnType("nvarchar(240)")
+                        .HasColumnOrder(512);
+
+                    b.Property<Guid?>("TintMaterialId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("TintServiceId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QuoteId");
+
+                    b.HasIndex("TintMaterialId");
+
+                    b.HasIndex("TintServiceId");
+
+                    b.ToTable("QuoteItem", "dbo");
                 });
 
             modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.Contact", b =>
@@ -88,35 +923,16 @@ namespace WTE.TintTrack.Business.Infrastructure.DataPersistence.Migrations
                         .HasColumnName("Id")
                         .HasColumnOrder(0);
 
-                    b.Property<string>("AddressLine2")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("AddressLine2");
-
                     b.Property<string>("AltPhone")
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)")
                         .HasColumnName("AltPhone");
-
-                    b.Property<string>("City")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("City");
 
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(8)
                         .HasColumnType("nvarchar(8)")
                         .HasColumnName("Code");
-
-                    b.Property<int>("ContactType")
-                        .HasColumnType("int")
-                        .HasColumnName("ContactType");
-
-                    b.Property<string>("CountryISOCode")
-                        .HasMaxLength(3)
-                        .HasColumnType("nvarchar(3)")
-                        .HasColumnName("CountryISOCode");
 
                     b.Property<DateTime?>("DateArchived")
                         .HasColumnType("DateTime2")
@@ -125,7 +941,7 @@ namespace WTE.TintTrack.Business.Infrastructure.DataPersistence.Migrations
                     b.Property<DateTime>("DateCreated")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("DateTime2")
-                        .HasDefaultValue(new DateTime(2024, 12, 16, 9, 59, 49, 15, DateTimeKind.Local).AddTicks(2025))
+                        .HasDefaultValue(new DateTime(2025, 4, 28, 23, 22, 15, 35, DateTimeKind.Local).AddTicks(8512))
                         .HasColumnName("_dateCreated")
                         .HasColumnOrder(501);
 
@@ -148,6 +964,10 @@ namespace WTE.TintTrack.Business.Infrastructure.DataPersistence.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)")
                         .HasColumnName("FirstName");
+
+                    b.Property<int?>("Gender")
+                        .HasColumnType("int")
+                        .HasColumnName("Gender");
 
                     b.Property<bool?>("IsActive")
                         .HasColumnType("bit")
@@ -172,6 +992,10 @@ namespace WTE.TintTrack.Business.Infrastructure.DataPersistence.Migrations
                         .HasColumnType("nvarchar(30)")
                         .HasColumnName("LastName");
 
+                    b.Property<int?>("MaritalStatus")
+                        .HasColumnType("int")
+                        .HasColumnName("MaritalStatus");
+
                     b.Property<string>("Mobile")
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)")
@@ -187,35 +1011,15 @@ namespace WTE.TintTrack.Business.Infrastructure.DataPersistence.Migrations
                         .HasColumnType("nvarchar(30)")
                         .HasColumnName("Phone");
 
-                    b.Property<string>("PostalCode")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
-                        .HasColumnName("PostalCode");
-
                     b.Property<string>("ReasonArchived")
                         .HasMaxLength(240)
                         .HasColumnType("nvarchar(240)")
                         .HasColumnOrder(512);
 
-                    b.Property<string>("StateOrRegion")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("StateOrRegion");
-
-                    b.Property<string>("StreetAddress")
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)")
-                        .HasColumnName("StreetAddress");
-
                     b.PrimitiveCollection<string>("Tags")
                         .HasMaxLength(300)
                         .HasColumnType("nvarchar(300)")
                         .HasColumnName("Tags");
-
-                    b.Property<string>("Website")
-                        .HasMaxLength(2048)
-                        .HasColumnType("nvarchar(2048)")
-                        .HasColumnName("Website");
 
                     b.HasKey("Id");
 
@@ -230,36 +1034,11 @@ namespace WTE.TintTrack.Business.Infrastructure.DataPersistence.Migrations
                         .HasColumnName("Id")
                         .HasColumnOrder(0);
 
-                    b.Property<string>("AddressLine2")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("AddressLine2");
-
-                    b.Property<string>("City")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("City");
-
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(12)
                         .HasColumnType("nvarchar(12)")
                         .HasColumnName("Code");
-
-                    b.Property<string>("Company")
-                        .HasMaxLength(80)
-                        .HasColumnType("nvarchar(80)")
-                        .HasColumnName("Company");
-
-                    b.Property<string>("CountryISOCode")
-                        .HasMaxLength(3)
-                        .HasColumnType("nvarchar(3)")
-                        .HasColumnName("CountryISOCode");
-
-                    b.Property<string>("CreatedBy")
-                        .HasMaxLength(120)
-                        .HasColumnType("nvarchar(120)")
-                        .HasColumnName("CreatedBy");
 
                     b.Property<int>("CustomerStatus")
                         .HasColumnType("int")
@@ -272,7 +1051,7 @@ namespace WTE.TintTrack.Business.Infrastructure.DataPersistence.Migrations
                     b.Property<DateTime>("DateCreated")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("DateTime2")
-                        .HasDefaultValue(new DateTime(2024, 12, 16, 9, 59, 49, 10, DateTimeKind.Local).AddTicks(254))
+                        .HasDefaultValue(new DateTime(2025, 4, 28, 23, 22, 15, 31, DateTimeKind.Local).AddTicks(2533))
                         .HasColumnName("_dateCreated")
                         .HasColumnOrder(501);
 
@@ -281,10 +1060,15 @@ namespace WTE.TintTrack.Business.Infrastructure.DataPersistence.Migrations
                         .HasColumnName("_dateModified")
                         .HasColumnOrder(508);
 
-                    b.Property<string>("Email")
+                    b.Property<string>("GeneralEmail")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)")
-                        .HasColumnName("Email");
+                        .HasColumnName("GeneralEmail");
+
+                    b.Property<string>("IndustryType")
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("IndustryType");
 
                     b.Property<bool?>("IsActive")
                         .HasColumnType("bit")
@@ -299,41 +1083,26 @@ namespace WTE.TintTrack.Business.Infrastructure.DataPersistence.Migrations
                         .HasColumnType("bit")
                         .HasColumnName("IsImported");
 
+                    b.Property<string>("MainPhone")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
+                        .HasColumnName("MainPhone");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(80)
                         .HasColumnType("nvarchar(80)")
                         .HasColumnName("Name");
 
-                    b.Property<string>("Phone")
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)")
-                        .HasColumnName("Phone");
-
-                    b.Property<string>("Phone2")
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)")
-                        .HasColumnName("Phone2");
-
-                    b.Property<string>("PostalCode")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
-                        .HasColumnName("PostalCode");
+                    b.Property<string>("Notes")
+                        .HasMaxLength(800)
+                        .HasColumnType("nvarchar(800)")
+                        .HasColumnName("Notes");
 
                     b.Property<string>("ReasonArchived")
                         .HasMaxLength(240)
                         .HasColumnType("nvarchar(240)")
                         .HasColumnOrder(512);
-
-                    b.Property<string>("StateOrRegion")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("StateOrRegion");
-
-                    b.Property<string>("StreetAddress")
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)")
-                        .HasColumnName("StreetAddress");
 
                     b.PrimitiveCollection<string>("Tags")
                         .HasMaxLength(300)
@@ -343,6 +1112,11 @@ namespace WTE.TintTrack.Business.Infrastructure.DataPersistence.Migrations
                     b.Property<int?>("TaxExemptionReason")
                         .HasColumnType("int")
                         .HasColumnName("TaxExemptionReason");
+
+                    b.Property<string>("Website")
+                        .HasMaxLength(2048)
+                        .HasColumnType("nvarchar(2048)")
+                        .HasColumnName("Website");
 
                     b.HasKey("Id");
 
@@ -370,7 +1144,7 @@ namespace WTE.TintTrack.Business.Infrastructure.DataPersistence.Migrations
                     b.Property<DateTime>("DateCreated")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("DateTime2")
-                        .HasDefaultValue(new DateTime(2024, 12, 16, 9, 59, 49, 16, DateTimeKind.Local).AddTicks(8662))
+                        .HasDefaultValue(new DateTime(2025, 4, 28, 23, 22, 15, 37, DateTimeKind.Local).AddTicks(6722))
                         .HasColumnName("_dateCreated")
                         .HasColumnOrder(501);
 
@@ -406,64 +1180,6 @@ namespace WTE.TintTrack.Business.Infrastructure.DataPersistence.Migrations
                     b.ToTable("CustomerContacts", "dbo");
                 });
 
-            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.CustomerOwnership", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("Id")
-                        .HasColumnOrder(0);
-
-                    b.Property<Guid>("CustomerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("DateArchived")
-                        .HasColumnType("DateTime2")
-                        .HasColumnOrder(511);
-
-                    b.Property<DateTime>("DateCreated")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("DateTime2")
-                        .HasDefaultValue(new DateTime(2024, 12, 16, 9, 59, 49, 8, DateTimeKind.Local).AddTicks(1656))
-                        .HasColumnName("_dateCreated")
-                        .HasColumnOrder(501);
-
-                    b.Property<DateTime?>("DateModified")
-                        .HasColumnType("DateTime2")
-                        .HasColumnName("_dateModified")
-                        .HasColumnOrder(508);
-
-                    b.Property<bool?>("IsActive")
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true)
-                        .HasColumnOrder(506);
-
-                    b.Property<bool?>("IsArchived")
-                        .HasColumnType("bit")
-                        .HasColumnOrder(510);
-
-                    b.Property<string>("ReasonArchived")
-                        .HasMaxLength(240)
-                        .HasColumnType("nvarchar(240)")
-                        .HasColumnOrder(512);
-
-                    b.Property<string>("UserCode")
-                        .IsRequired()
-                        .HasMaxLength(8)
-                        .HasColumnType("nvarchar(8)")
-                        .HasColumnName("UserCode");
-
-                    b.Property<bool?>("UserIsOwner")
-                        .HasColumnType("bit")
-                        .HasColumnName("UserIsOwner");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
-
-                    b.ToTable("CustomerOwnerships", "dbo");
-                });
-
             modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.Inquiry", b =>
                 {
                     b.Property<Guid>("Id")
@@ -477,11 +1193,17 @@ namespace WTE.TintTrack.Business.Infrastructure.DataPersistence.Migrations
                         .HasColumnType("decimal(18, 2)")
                         .HasColumnName("Budget");
 
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)")
+                        .HasColumnName("Code");
+
                     b.Property<DateTime>("ConsultationDate")
                         .HasColumnType("datetime2")
                         .HasColumnName("ConsultationDate");
 
-                    b.Property<Guid?>("CustomerId")
+                    b.Property<Guid>("CustomerContactId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("DateArchived")
@@ -491,7 +1213,7 @@ namespace WTE.TintTrack.Business.Infrastructure.DataPersistence.Migrations
                     b.Property<DateTime>("DateCreated")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("DateTime2")
-                        .HasDefaultValue(new DateTime(2024, 12, 16, 9, 59, 49, 3, DateTimeKind.Local).AddTicks(300))
+                        .HasDefaultValue(new DateTime(2025, 4, 28, 23, 22, 15, 49, DateTimeKind.Local).AddTicks(5708))
                         .HasColumnName("_dateCreated")
                         .HasColumnOrder(501);
 
@@ -527,11 +1249,6 @@ namespace WTE.TintTrack.Business.Infrastructure.DataPersistence.Migrations
                         .HasColumnType("int")
                         .HasColumnName("PropertyType");
 
-                    b.Property<string>("ProposalCode")
-                        .HasMaxLength(8)
-                        .HasColumnType("nvarchar(8)")
-                        .HasColumnName("ProposalCode");
-
                     b.Property<string>("ReasonArchived")
                         .HasMaxLength(240)
                         .HasColumnType("nvarchar(240)")
@@ -553,35 +1270,28 @@ namespace WTE.TintTrack.Business.Infrastructure.DataPersistence.Migrations
                         .HasColumnType("nvarchar(80)")
                         .HasColumnName("Subject");
 
+                    b.PrimitiveCollection<string>("TintServiceCodes")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)")
+                        .HasColumnName("TintServiceCodes");
+
                     b.Property<int?>("TintType")
                         .HasColumnType("int")
                         .HasColumnName("TintType");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomerId");
+                    b.HasIndex("CustomerContactId");
 
                     b.ToTable("Inquiries", "dbo");
                 });
 
-            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.Invoice", b =>
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.InventoryItem", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnName("Id")
                         .HasColumnOrder(0);
-
-                    b.Property<decimal?>("AmountPaid")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18, 2)")
-                        .HasColumnName("AmountPaid");
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasMaxLength(8)
-                        .HasColumnType("nvarchar(8)")
-                        .HasColumnName("Code");
 
                     b.Property<DateTime?>("DateArchived")
                         .HasColumnType("DateTime2")
@@ -590,157 +1300,48 @@ namespace WTE.TintTrack.Business.Infrastructure.DataPersistence.Migrations
                     b.Property<DateTime>("DateCreated")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("DateTime2")
-                        .HasDefaultValue(new DateTime(2024, 12, 16, 9, 59, 49, 25, DateTimeKind.Local).AddTicks(7483))
-                        .HasColumnName("_dateCreated")
                         .HasColumnOrder(501);
 
                     b.Property<DateTime?>("DateModified")
                         .HasColumnType("DateTime2")
-                        .HasColumnName("_dateModified")
                         .HasColumnOrder(508);
-
-                    b.Property<DateTime>("InvoiceDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("InvoiceDate");
-
-                    b.Property<string>("InvoiceNumber")
-                        .IsRequired()
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)")
-                        .HasColumnName("InvoiceNumber");
 
                     b.Property<bool?>("IsActive")
                         .HasColumnType("bit")
-                        .HasDefaultValue(true)
                         .HasColumnOrder(506);
 
                     b.Property<bool?>("IsArchived")
                         .HasColumnType("bit")
                         .HasColumnOrder(510);
 
-                    b.Property<DateTime?>("PaymentDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("PaymentDate");
-
-                    b.Property<Guid>("ProjectId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<decimal>("QuantityInStock")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("ReasonArchived")
                         .HasMaxLength(240)
                         .HasColumnType("nvarchar(240)")
                         .HasColumnOrder(512);
 
-                    b.Property<decimal>("TotalAmount")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18, 2)")
-                        .HasColumnName("TotalAmount");
+                    b.Property<decimal>("ReorderLevel")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("ReservedQuantity")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid>("TintMaterialId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("UnitOfMeasure")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProjectId");
+                    b.HasIndex("TintMaterialId");
 
-                    b.ToTable("Invoices", "dbo");
+                    b.ToTable("InventoryItem", "dbo");
                 });
 
-            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.Project", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("Id")
-                        .HasColumnOrder(0);
-
-                    b.Property<decimal>("ActualCost")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18, 2)")
-                        .HasColumnName("ActualCost");
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasMaxLength(8)
-                        .HasColumnType("nvarchar(8)")
-                        .HasColumnName("Code");
-
-                    b.Property<Guid?>("CustomerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("DateArchived")
-                        .HasColumnType("DateTime2")
-                        .HasColumnOrder(511);
-
-                    b.Property<DateTime>("DateCreated")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("DateTime2")
-                        .HasDefaultValue(new DateTime(2024, 12, 16, 9, 59, 49, 23, DateTimeKind.Local).AddTicks(7219))
-                        .HasColumnName("_dateCreated")
-                        .HasColumnOrder(501);
-
-                    b.Property<DateTime?>("DateModified")
-                        .HasColumnType("DateTime2")
-                        .HasColumnName("_dateModified")
-                        .HasColumnOrder(508);
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)")
-                        .HasColumnName("Description");
-
-                    b.Property<DateTime?>("EndDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("EndDate");
-
-                    b.Property<decimal>("EstimatedCost")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18, 2)")
-                        .HasColumnName("EstimatedCost");
-
-                    b.Property<bool?>("IsActive")
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true)
-                        .HasColumnOrder(506);
-
-                    b.Property<bool?>("IsArchived")
-                        .HasColumnType("bit")
-                        .HasColumnOrder(510);
-
-                    b.Property<string>("ProjectName")
-                        .IsRequired()
-                        .HasMaxLength(80)
-                        .HasColumnType("nvarchar(80)")
-                        .HasColumnName("ProjectName");
-
-                    b.Property<Guid?>("ProposalId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("QuoteId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ReasonArchived")
-                        .HasMaxLength(240)
-                        .HasColumnType("nvarchar(240)")
-                        .HasColumnOrder(512);
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("StartDate");
-
-                    b.Property<int?>("TaxExemptionReason")
-                        .HasColumnType("int")
-                        .HasColumnName("TaxExemptionReason");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
-
-                    b.HasIndex("ProposalId");
-
-                    b.HasIndex("QuoteId");
-
-                    b.ToTable("Projects", "dbo");
-                });
-
-            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.Property", b =>
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.PropertyAsset", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -764,7 +1365,7 @@ namespace WTE.TintTrack.Business.Infrastructure.DataPersistence.Migrations
                     b.Property<DateTime>("DateCreated")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("DateTime2")
-                        .HasDefaultValue(new DateTime(2024, 12, 16, 9, 59, 49, 11, DateTimeKind.Local).AddTicks(8901))
+                        .HasDefaultValue(new DateTime(2025, 4, 28, 23, 22, 15, 39, DateTimeKind.Local).AddTicks(6199))
                         .HasColumnName("_dateCreated")
                         .HasColumnOrder(501);
 
@@ -806,20 +1407,24 @@ namespace WTE.TintTrack.Business.Infrastructure.DataPersistence.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("Properties", "dbo");
+                    b.ToTable("PropertyAssets", "dbo");
 
                     b.HasDiscriminator<int>("PropertyType");
 
                     b.UseTphMappingStrategy();
                 });
 
-            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.Proposal", b =>
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.SalesAndQuotingEntities.Contract", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("Id")
                         .HasColumnOrder(0);
+
+                    b.Property<int>("BillingType")
+                        .HasColumnType("int")
+                        .HasColumnName("BillingType");
 
                     b.Property<string>("Code")
                         .IsRequired()
@@ -834,7 +1439,7 @@ namespace WTE.TintTrack.Business.Infrastructure.DataPersistence.Migrations
                     b.Property<DateTime>("DateCreated")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("DateTime2")
-                        .HasDefaultValue(new DateTime(2024, 12, 16, 9, 59, 49, 21, DateTimeKind.Local).AddTicks(2675))
+                        .HasDefaultValue(new DateTime(2025, 4, 28, 23, 22, 15, 74, DateTimeKind.Local).AddTicks(6731))
                         .HasColumnName("_dateCreated")
                         .HasColumnOrder(501);
 
@@ -842,6 +1447,211 @@ namespace WTE.TintTrack.Business.Infrastructure.DataPersistence.Migrations
                         .HasColumnType("DateTime2")
                         .HasColumnName("_dateModified")
                         .HasColumnOrder(508);
+
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("EndDate");
+
+                    b.Property<Guid?>("EstimateId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal?>("FixedAmount")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("FixedAmount");
+
+                    b.Property<decimal?>("HourlyRate")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("HourlyRate");
+
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true)
+                        .HasColumnOrder(506);
+
+                    b.Property<bool?>("IsApproved")
+                        .HasColumnType("bit")
+                        .HasColumnName("IsApproved");
+
+                    b.Property<bool?>("IsArchived")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(510);
+
+                    b.Property<bool>("IsPaidInFull")
+                        .HasColumnType("bit")
+                        .HasColumnName("IsPaidInFull");
+
+                    b.Property<bool>("IsSigned")
+                        .HasColumnType("bit")
+                        .HasColumnName("IsSigned");
+
+                    b.Property<bool>("IsViewed")
+                        .HasColumnType("bit")
+                        .HasColumnName("IsViewed");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(800)
+                        .HasColumnType("nvarchar(800)")
+                        .HasColumnName("Notes");
+
+                    b.Property<int>("PaymentTerm")
+                        .HasColumnType("int")
+                        .HasColumnName("PaymentTerm");
+
+                    b.Property<Guid?>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ProposalId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("QuoteId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ReasonArchived")
+                        .HasMaxLength(240)
+                        .HasColumnType("nvarchar(240)")
+                        .HasColumnOrder(512);
+
+                    b.Property<string>("SignatureEnvelopeId")
+                        .HasMaxLength(80)
+                        .HasColumnType("nvarchar(80)")
+                        .HasColumnName("SignatureEnvelopeId");
+
+                    b.Property<string>("SignatureProvider")
+                        .HasMaxLength(80)
+                        .HasColumnType("nvarchar(80)")
+                        .HasColumnName("SignatureProvider");
+
+                    b.Property<int>("SignatureType")
+                        .HasColumnType("int")
+                        .HasColumnName("SignatureType");
+
+                    b.Property<string>("SignatureUrl")
+                        .HasMaxLength(2048)
+                        .HasColumnType("nvarchar(2048)")
+                        .HasColumnName("SignatureUrl");
+
+                    b.Property<string>("SignedBy")
+                        .HasMaxLength(80)
+                        .HasColumnType("nvarchar(80)")
+                        .HasColumnName("SignedBy");
+
+                    b.Property<DateTime?>("SignedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("SignedDate");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("StartDate");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Contracts", "dbo");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.SalesAndQuotingEntities.ContractMilestone", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(0);
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("ContractId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("DateArchived")
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(511);
+
+                    b.Property<DateTime>("DateCreated")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(501);
+
+                    b.Property<DateTime?>("DateModified")
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(508);
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("EstimatedAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("ExpectedEndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("ExpectedStartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(506);
+
+                    b.Property<bool?>("IsArchived")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(510);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReasonArchived")
+                        .HasMaxLength(240)
+                        .HasColumnType("nvarchar(240)")
+                        .HasColumnOrder(512);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ContractId");
+
+                    b.ToTable("ContractMilestone", "dbo");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.SalesAndQuotingEntities.Project", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("Id")
+                        .HasColumnOrder(0);
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)")
+                        .HasColumnName("Code");
+
+                    b.Property<Guid>("ContractId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("DateArchived")
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(511);
+
+                    b.Property<DateTime>("DateCreated")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("DateTime2")
+                        .HasDefaultValue(new DateTime(2025, 4, 28, 23, 22, 15, 83, DateTimeKind.Local).AddTicks(3098))
+                        .HasColumnName("_dateCreated")
+                        .HasColumnOrder(501);
+
+                    b.Property<DateTime?>("DateModified")
+                        .HasColumnType("DateTime2")
+                        .HasColumnName("_dateModified")
+                        .HasColumnOrder(508);
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("Description");
+
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("EndDate");
 
                     b.Property<bool?>("IsActive")
                         .HasColumnType("bit")
@@ -852,45 +1662,34 @@ namespace WTE.TintTrack.Business.Infrastructure.DataPersistence.Migrations
                         .HasColumnType("bit")
                         .HasColumnOrder(510);
 
-                    b.Property<string>("ProposalNumber")
+                    b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)")
-                        .HasColumnName("ProposalNumber");
-
-                    b.Property<Guid>("QuoteId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasMaxLength(80)
+                        .HasColumnType("nvarchar(80)")
+                        .HasColumnName("Name");
 
                     b.Property<string>("ReasonArchived")
                         .HasMaxLength(240)
                         .HasColumnType("nvarchar(240)")
                         .HasColumnOrder(512);
 
-                    b.Property<string>("ScopeOfWork")
-                        .IsRequired()
-                        .HasMaxLength(800)
-                        .HasColumnType("nvarchar(800)")
-                        .HasColumnName("ScopeOfWork");
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("StartDate");
 
-                    b.Property<string>("Terms")
-                        .IsRequired()
-                        .HasMaxLength(800)
-                        .HasColumnType("nvarchar(800)")
-                        .HasColumnName("Terms");
-
-                    b.Property<decimal>("TotalAmount")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18, 2)")
-                        .HasColumnName("TotalAmount");
+                    b.Property<int>("Status")
+                        .HasColumnType("int")
+                        .HasColumnName("Status");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("QuoteId");
+                    b.HasIndex("ContractId")
+                        .IsUnique();
 
-                    b.ToTable("Proposals", "dbo");
+                    b.ToTable("Projects", "dbo");
                 });
 
-            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.Quote", b =>
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.SalesAndQuotingEntities.ProjectMilestone", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -904,8 +1703,82 @@ namespace WTE.TintTrack.Business.Infrastructure.DataPersistence.Migrations
                         .HasColumnType("nvarchar(8)")
                         .HasColumnName("Code");
 
-                    b.Property<Guid>("CustomerId")
+                    b.Property<DateTime?>("DateArchived")
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(511);
+
+                    b.Property<DateTime>("DateCreated")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("DateTime2")
+                        .HasDefaultValue(new DateTime(2025, 4, 28, 23, 22, 15, 86, DateTimeKind.Local).AddTicks(6535))
+                        .HasColumnName("_dateCreated")
+                        .HasColumnOrder(501);
+
+                    b.Property<DateTime?>("DateModified")
+                        .HasColumnType("DateTime2")
+                        .HasColumnName("_dateModified")
+                        .HasColumnOrder(508);
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(800)
+                        .HasColumnType("nvarchar(800)")
+                        .HasColumnName("Description");
+
+                    b.Property<decimal?>("EstimatedAmount")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("EstimatedAmount");
+
+                    b.Property<DateTime?>("ExpectedEndDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ExpectedEndDate");
+
+                    b.Property<DateTime?>("ExpectedStartDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ExpectedStartDate");
+
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true)
+                        .HasColumnOrder(506);
+
+                    b.Property<bool?>("IsArchived")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(510);
+
+                    b.Property<bool>("IsCompleted")
+                        .HasColumnType("bit")
+                        .HasColumnName("IsCompleted");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(80)
+                        .HasColumnType("nvarchar(80)")
+                        .HasColumnName("Name");
+
+                    b.Property<Guid>("ProjectId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ReasonArchived")
+                        .HasMaxLength(240)
+                        .HasColumnType("nvarchar(240)")
+                        .HasColumnOrder(512);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("ProjectMilestones", "dbo");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.SalesAndQuotingEntities.WorkOrder", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(0);
+
+                    b.Property<DateTime?>("CompletionDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DateArchived")
                         .HasColumnType("DateTime2")
@@ -914,7 +1787,296 @@ namespace WTE.TintTrack.Business.Infrastructure.DataPersistence.Migrations
                     b.Property<DateTime>("DateCreated")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("DateTime2")
-                        .HasDefaultValue(new DateTime(2024, 12, 16, 9, 59, 49, 19, DateTimeKind.Local).AddTicks(2960))
+                        .HasColumnOrder(501);
+
+                    b.Property<DateTime?>("DateModified")
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(508);
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(506);
+
+                    b.Property<bool?>("IsArchived")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(510);
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ProjectMilestoneId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ReasonArchived")
+                        .HasMaxLength(240)
+                        .HasColumnType("nvarchar(240)")
+                        .HasColumnOrder(512);
+
+                    b.Property<DateTime>("ScheduledDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("WorkOrderStatus")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.HasIndex("ProjectMilestoneId");
+
+                    b.ToTable("WorkOrder", "dbo");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.SalesAndQuotingEntities.WorkOrderAssignment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(0);
+
+                    b.Property<DateTime?>("DateArchived")
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(511);
+
+                    b.Property<DateTime>("DateCreated")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(501);
+
+                    b.Property<DateTime?>("DateModified")
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(508);
+
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(506);
+
+                    b.Property<bool?>("IsArchived")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(510);
+
+                    b.Property<string>("ReasonArchived")
+                        .HasMaxLength(240)
+                        .HasColumnType("nvarchar(240)")
+                        .HasColumnOrder(512);
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("WorkOrderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WorkOrderId");
+
+                    b.ToTable("WorkOrderAssignment", "dbo");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.SalesAndQuotingEntities.WorkOrderItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(0);
+
+                    b.Property<DateTime?>("DateArchived")
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(511);
+
+                    b.Property<DateTime>("DateCreated")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(501);
+
+                    b.Property<DateTime?>("DateModified")
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(508);
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(506);
+
+                    b.Property<bool?>("IsArchived")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(510);
+
+                    b.Property<decimal>("Quantity")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("Rate")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("ReasonArchived")
+                        .HasMaxLength(240)
+                        .HasColumnType("nvarchar(240)")
+                        .HasColumnOrder(512);
+
+                    b.Property<Guid?>("TintMaterialId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("TintServiceId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("WorkOrderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TintMaterialId");
+
+                    b.HasIndex("TintServiceId");
+
+                    b.HasIndex("WorkOrderId");
+
+                    b.ToTable("WorkOrderItem", "dbo");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.SalesAndQuotingEntities.WorkOrderLog", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(0);
+
+                    b.Property<DateTime?>("DateArchived")
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(511);
+
+                    b.Property<DateTime>("DateCreated")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(501);
+
+                    b.Property<DateTime?>("DateModified")
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(508);
+
+                    b.Property<TimeSpan>("Duration")
+                        .HasColumnType("time");
+
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(506);
+
+                    b.Property<bool?>("IsArchived")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(510);
+
+                    b.Property<string>("Notes")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReasonArchived")
+                        .HasMaxLength(240)
+                        .HasColumnType("nvarchar(240)")
+                        .HasColumnOrder(512);
+
+                    b.Property<string>("UserCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("WorkDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("WorkOrderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WorkOrderId");
+
+                    b.ToTable("WorkOrderLog", "dbo");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.SalesAndQuotingEntities.WorkOrderLogPhoto", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(0);
+
+                    b.Property<DateTime?>("DateArchived")
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(511);
+
+                    b.Property<DateTime>("DateCreated")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(501);
+
+                    b.Property<DateTime?>("DateModified")
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(508);
+
+                    b.Property<string>("FileCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FileUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(506);
+
+                    b.Property<bool?>("IsArchived")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(510);
+
+                    b.Property<string>("ReasonArchived")
+                        .HasMaxLength(240)
+                        .HasColumnType("nvarchar(240)")
+                        .HasColumnOrder(512);
+
+                    b.Property<Guid>("WorkOrderLogId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WorkOrderLogId");
+
+                    b.ToTable("WorkOrderLogPhoto", "dbo");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.TintMaterialEntities.TintMaterial", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("Id")
+                        .HasColumnOrder(0);
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)")
+                        .HasColumnName("Code");
+
+                    b.Property<DateTime?>("DateArchived")
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(511);
+
+                    b.Property<DateTime>("DateCreated")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("DateTime2")
+                        .HasDefaultValue(new DateTime(2025, 4, 28, 23, 22, 15, 52, DateTimeKind.Local).AddTicks(4386))
                         .HasColumnName("_dateCreated")
                         .HasColumnOrder(501);
 
@@ -929,9 +2091,70 @@ namespace WTE.TintTrack.Business.Infrastructure.DataPersistence.Migrations
                         .HasColumnType("nvarchar(800)")
                         .HasColumnName("Description");
 
-                    b.Property<bool?>("IsAccepted")
+                    b.Property<bool?>("IsActive")
                         .HasColumnType("bit")
-                        .HasColumnName("IsAccepted");
+                        .HasDefaultValue(true)
+                        .HasColumnOrder(506);
+
+                    b.Property<bool?>("IsArchived")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(510);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(80)
+                        .HasColumnType("nvarchar(80)")
+                        .HasColumnName("Name");
+
+                    b.Property<string>("ReasonArchived")
+                        .HasMaxLength(240)
+                        .HasColumnType("nvarchar(240)")
+                        .HasColumnOrder(512);
+
+                    b.Property<decimal>("RollLength")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("RollLength");
+
+                    b.Property<decimal>("RollWidth")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("RollWidth");
+
+                    b.Property<int>("UnitOfMeasure")
+                        .HasColumnType("int")
+                        .HasColumnName("UnitOfMeasure");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TintMaterials", "dbo");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.TintMaterialEntities.TintMaterialPriceHistory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("Id")
+                        .HasColumnOrder(0);
+
+                    b.Property<DateTime>("ChangedOn")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ChangedOn");
+
+                    b.Property<DateTime?>("DateArchived")
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(511);
+
+                    b.Property<DateTime>("DateCreated")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("DateTime2")
+                        .HasDefaultValue(new DateTime(2025, 4, 28, 23, 22, 15, 55, DateTimeKind.Local).AddTicks(4812))
+                        .HasColumnName("_dateCreated")
+                        .HasColumnOrder(501);
+
+                    b.Property<DateTime?>("DateModified")
+                        .HasColumnType("DateTime2")
+                        .HasColumnName("_dateModified")
+                        .HasColumnOrder(508);
 
                     b.Property<bool?>("IsActive")
                         .HasColumnType("bit")
@@ -942,36 +2165,466 @@ namespace WTE.TintTrack.Business.Infrastructure.DataPersistence.Migrations
                         .HasColumnType("bit")
                         .HasColumnOrder(510);
 
-                    b.Property<DateTime>("QuoteDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("QuoteDate");
+                    b.Property<decimal>("NewPrice")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("NewPrice");
 
-                    b.Property<string>("QuoteNumber")
-                        .IsRequired()
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)")
-                        .HasColumnName("QuoteNumber");
+                    b.Property<decimal>("OldPrice")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("OldPrice");
 
                     b.Property<string>("ReasonArchived")
                         .HasMaxLength(240)
                         .HasColumnType("nvarchar(240)")
                         .HasColumnOrder(512);
 
-                    b.Property<decimal>("TotalAmount")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18, 2)")
-                        .HasColumnName("TotalAmount");
+                    b.Property<Guid>("TintMaterialId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TintMaterialId");
+
+                    b.ToTable("TintMaterialPriceHistories", "dbo");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.TintMaterialEntities.TintMaterialPriceOverride", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("Id")
+                        .HasColumnOrder(0);
+
+                    b.Property<decimal>("CustomPrice")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("CustomPrice");
+
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("DateArchived")
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(511);
+
+                    b.Property<DateTime>("DateCreated")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("DateTime2")
+                        .HasDefaultValue(new DateTime(2025, 4, 28, 23, 22, 15, 56, DateTimeKind.Local).AddTicks(2018))
+                        .HasColumnName("_dateCreated")
+                        .HasColumnOrder(501);
+
+                    b.Property<DateTime?>("DateModified")
+                        .HasColumnType("DateTime2")
+                        .HasColumnName("_dateModified")
+                        .HasColumnOrder(508);
+
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true)
+                        .HasColumnOrder(506);
+
+                    b.Property<bool?>("IsArchived")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(510);
+
+                    b.Property<string>("ReasonArchived")
+                        .HasMaxLength(240)
+                        .HasColumnType("nvarchar(240)")
+                        .HasColumnOrder(512);
+
+                    b.Property<Guid>("TintMaterialPriceScheduleId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("Quotes", "dbo");
+                    b.HasIndex("TintMaterialPriceScheduleId");
+
+                    b.ToTable("TintMaterialPriceOverrides", "dbo");
                 });
 
-            modelBuilder.Entity("WTE.TintTrack.Business.Domain.PropertySpecifications.ArchitecturalProperty", b =>
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.TintMaterialEntities.TintMaterialPriceSchedule", b =>
                 {
-                    b.HasBaseType("WTE.TintTrack.Business.Domain.Entities.Property");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("Id")
+                        .HasColumnOrder(0);
+
+                    b.Property<int>("CalculationType")
+                        .HasColumnType("int")
+                        .HasColumnName("CalculationType");
+
+                    b.Property<string>("CustomFormula")
+                        .HasMaxLength(130)
+                        .HasColumnType("nvarchar(130)")
+                        .HasColumnName("CustomFormula");
+
+                    b.Property<DateTime?>("DateArchived")
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(511);
+
+                    b.Property<DateTime>("DateCreated")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("DateTime2")
+                        .HasDefaultValue(new DateTime(2025, 4, 28, 23, 22, 15, 57, DateTimeKind.Local).AddTicks(4860))
+                        .HasColumnName("_dateCreated")
+                        .HasColumnOrder(501);
+
+                    b.Property<DateTime?>("DateModified")
+                        .HasColumnType("DateTime2")
+                        .HasColumnName("_dateModified")
+                        .HasColumnOrder(508);
+
+                    b.Property<DateTime>("EffectiveFrom")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("EffectiveFrom");
+
+                    b.Property<DateTime?>("EffectiveTo")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("EffectiveTo");
+
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true)
+                        .HasColumnOrder(506);
+
+                    b.Property<bool?>("IsArchived")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(510);
+
+                    b.Property<bool>("IsCurrent")
+                        .HasColumnType("bit")
+                        .HasColumnName("IsCurrent");
+
+                    b.Property<decimal>("MarkupPercentage")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("MarkupPercentage");
+
+                    b.Property<string>("ReasonArchived")
+                        .HasMaxLength(240)
+                        .HasColumnType("nvarchar(240)")
+                        .HasColumnOrder(512);
+
+                    b.Property<Guid>("TintMaterialId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("UnitCost")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("UnitCost");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TintMaterialId");
+
+                    b.ToTable("TintMaterialPriceSchedules", "dbo");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.TintMaterialEntities.TintMaterialPriceTier", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("Id")
+                        .HasColumnOrder(0);
+
+                    b.Property<DateTime?>("DateArchived")
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(511);
+
+                    b.Property<DateTime>("DateCreated")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("DateTime2")
+                        .HasDefaultValue(new DateTime(2025, 4, 28, 23, 22, 15, 62, DateTimeKind.Local).AddTicks(6058))
+                        .HasColumnName("_dateCreated")
+                        .HasColumnOrder(501);
+
+                    b.Property<DateTime?>("DateModified")
+                        .HasColumnType("DateTime2")
+                        .HasColumnName("_dateModified")
+                        .HasColumnOrder(508);
+
+                    b.Property<decimal>("DiscountPercentage")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("DiscountPercentage");
+
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true)
+                        .HasColumnOrder(506);
+
+                    b.Property<bool?>("IsArchived")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(510);
+
+                    b.Property<decimal>("MinQuantity")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("MinQuantity");
+
+                    b.Property<string>("ReasonArchived")
+                        .HasMaxLength(240)
+                        .HasColumnType("nvarchar(240)")
+                        .HasColumnOrder(512);
+
+                    b.Property<Guid>("TintMaterialPriceScheduleId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TintMaterialPriceScheduleId");
+
+                    b.ToTable("TintMaterialPriceTiers", "dbo");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.TintServiceEntities.TintService", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("Id")
+                        .HasColumnOrder(0);
+
+                    b.Property<string>("AdditionalFeatures")
+                        .IsRequired()
+                        .HasMaxLength(800)
+                        .HasColumnType("nvarchar(800)")
+                        .HasColumnName("AdditionalFeatures");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)")
+                        .HasColumnName("Code");
+
+                    b.Property<DateTime?>("DateArchived")
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(511);
+
+                    b.Property<DateTime>("DateCreated")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("DateTime2")
+                        .HasDefaultValue(new DateTime(2025, 4, 28, 23, 22, 15, 45, DateTimeKind.Local).AddTicks(6370))
+                        .HasColumnName("_dateCreated")
+                        .HasColumnOrder(501);
+
+                    b.Property<DateTime?>("DateModified")
+                        .HasColumnType("DateTime2")
+                        .HasColumnName("_dateModified")
+                        .HasColumnOrder(508);
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(800)
+                        .HasColumnType("nvarchar(800)")
+                        .HasColumnName("Description");
+
+                    b.Property<int>("EstimatedDurationMinutes")
+                        .HasColumnType("int")
+                        .HasColumnName("EstimatedDurationMinutes");
+
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true)
+                        .HasColumnOrder(506);
+
+                    b.Property<bool?>("IsArchived")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(510);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(80)
+                        .HasColumnType("nvarchar(80)")
+                        .HasColumnName("Name");
+
+                    b.Property<decimal>("Price")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18, 2)")
+                        .HasColumnName("Price");
+
+                    b.Property<string>("ReasonArchived")
+                        .HasMaxLength(240)
+                        .HasColumnType("nvarchar(240)")
+                        .HasColumnOrder(512);
+
+                    b.Property<int>("ServiceType")
+                        .HasColumnType("int")
+                        .HasColumnName("ServiceType");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TintServices", "dbo");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.TintServiceEntities.TintServicePriceOverride", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(0);
+
+                    b.Property<decimal>("CustomPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("DateArchived")
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(511);
+
+                    b.Property<DateTime>("DateCreated")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(501);
+
+                    b.Property<DateTime?>("DateModified")
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(508);
+
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(506);
+
+                    b.Property<bool?>("IsArchived")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(510);
+
+                    b.Property<string>("ReasonArchived")
+                        .HasMaxLength(240)
+                        .HasColumnType("nvarchar(240)")
+                        .HasColumnOrder(512);
+
+                    b.Property<Guid>("TintTintServicePriceScheduleId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("TintTintServicePriceScheduleId");
+
+                    b.ToTable("TintServicePriceOverride", "dbo");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.TintServiceEntities.TintServicePriceSchedule", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(0);
+
+                    b.Property<int>("CalculationType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CustomFormula")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DateArchived")
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(511);
+
+                    b.Property<DateTime>("DateCreated")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(501);
+
+                    b.Property<DateTime?>("DateModified")
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(508);
+
+                    b.Property<DateTime>("EffectiveFrom")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("EffectiveTo")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(506);
+
+                    b.Property<bool?>("IsArchived")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(510);
+
+                    b.Property<bool>("IsCurrent")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("MarkupPercentage")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("ReasonArchived")
+                        .HasMaxLength(240)
+                        .HasColumnType("nvarchar(240)")
+                        .HasColumnOrder(512);
+
+                    b.Property<Guid>("TintServiceId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("UnitCost")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TintServiceId");
+
+                    b.ToTable("TintServicePriceSchedule", "dbo");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.TintServiceEntities.TintServicePriceTier", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(0);
+
+                    b.Property<DateTime?>("DateArchived")
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(511);
+
+                    b.Property<DateTime>("DateCreated")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(501);
+
+                    b.Property<DateTime?>("DateModified")
+                        .HasColumnType("DateTime2")
+                        .HasColumnOrder(508);
+
+                    b.Property<decimal>("DiscountPercentage")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(506);
+
+                    b.Property<bool?>("IsArchived")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(510);
+
+                    b.Property<int>("MinQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ReasonArchived")
+                        .HasMaxLength(240)
+                        .HasColumnType("nvarchar(240)")
+                        .HasColumnOrder(512);
+
+                    b.Property<Guid>("TintServicePriceScheduleId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TintServicePriceScheduleId");
+
+                    b.ToTable("TintServicePriceTier", "dbo");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.PropertySpecifications.ArchitecturalPropertyAsset", b =>
+                {
+                    b.HasBaseType("WTE.TintTrack.Business.Domain.Entities.PropertyAsset");
 
                     b.Property<string>("BuildingType")
                         .IsRequired()
@@ -990,9 +2643,9 @@ namespace WTE.TintTrack.Business.Infrastructure.DataPersistence.Migrations
                     b.HasDiscriminator().HasValue(2);
                 });
 
-            modelBuilder.Entity("WTE.TintTrack.Business.Domain.PropertySpecifications.AutomotiveProperty", b =>
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.PropertySpecifications.AutomotivePropertyAsset", b =>
                 {
-                    b.HasBaseType("WTE.TintTrack.Business.Domain.Entities.Property");
+                    b.HasBaseType("WTE.TintTrack.Business.Domain.Entities.PropertyAsset");
 
                     b.Property<string>("Color")
                         .IsRequired()
@@ -1030,9 +2683,9 @@ namespace WTE.TintTrack.Business.Infrastructure.DataPersistence.Migrations
                     b.HasDiscriminator().HasValue(1);
                 });
 
-            modelBuilder.Entity("WTE.TintTrack.Business.Domain.PropertySpecifications.CommercialProperty", b =>
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.PropertySpecifications.CommercialPropertyAsset", b =>
                 {
-                    b.HasBaseType("WTE.TintTrack.Business.Domain.Entities.Property");
+                    b.HasBaseType("WTE.TintTrack.Business.Domain.Entities.PropertyAsset");
 
                     b.Property<string>("BusinessType")
                         .IsRequired()
@@ -1050,9 +2703,9 @@ namespace WTE.TintTrack.Business.Infrastructure.DataPersistence.Migrations
                     b.HasDiscriminator().HasValue(4);
                 });
 
-            modelBuilder.Entity("WTE.TintTrack.Business.Domain.PropertySpecifications.CustomProperty", b =>
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.PropertySpecifications.CustomPropertyAsset", b =>
                 {
-                    b.HasBaseType("WTE.TintTrack.Business.Domain.Entities.Property");
+                    b.HasBaseType("WTE.TintTrack.Business.Domain.Entities.PropertyAsset");
 
                     b.Property<string>("CustomGlassType")
                         .IsRequired()
@@ -1065,9 +2718,9 @@ namespace WTE.TintTrack.Business.Infrastructure.DataPersistence.Migrations
                     b.HasDiscriminator().HasValue(8);
                 });
 
-            modelBuilder.Entity("WTE.TintTrack.Business.Domain.PropertySpecifications.EnergyEfficientProperty", b =>
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.PropertySpecifications.EnergyEfficientPropertyAsset", b =>
                 {
-                    b.HasBaseType("WTE.TintTrack.Business.Domain.Entities.Property");
+                    b.HasBaseType("WTE.TintTrack.Business.Domain.Entities.PropertyAsset");
 
                     b.Property<string>("CoatingType")
                         .HasColumnType("nvarchar(max)");
@@ -1082,9 +2735,9 @@ namespace WTE.TintTrack.Business.Infrastructure.DataPersistence.Migrations
                     b.HasDiscriminator().HasValue(7);
                 });
 
-            modelBuilder.Entity("WTE.TintTrack.Business.Domain.PropertySpecifications.GlassFilmProperty", b =>
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.PropertySpecifications.GlassFilmPropertyAsset", b =>
                 {
-                    b.HasBaseType("WTE.TintTrack.Business.Domain.Entities.Property");
+                    b.HasBaseType("WTE.TintTrack.Business.Domain.Entities.PropertyAsset");
 
                     b.Property<double>("FilmThickness")
                         .HasColumnType("float");
@@ -1099,9 +2752,9 @@ namespace WTE.TintTrack.Business.Infrastructure.DataPersistence.Migrations
                     b.HasDiscriminator().HasValue(6);
                 });
 
-            modelBuilder.Entity("WTE.TintTrack.Business.Domain.PropertySpecifications.OtherProperty", b =>
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.PropertySpecifications.OtherPropertyAsset", b =>
                 {
-                    b.HasBaseType("WTE.TintTrack.Business.Domain.Entities.Property");
+                    b.HasBaseType("WTE.TintTrack.Business.Domain.Entities.PropertyAsset");
 
                     b.Property<string>("OtherDetails")
                         .IsRequired()
@@ -1110,9 +2763,9 @@ namespace WTE.TintTrack.Business.Infrastructure.DataPersistence.Migrations
                     b.HasDiscriminator().HasValue(11);
                 });
 
-            modelBuilder.Entity("WTE.TintTrack.Business.Domain.PropertySpecifications.OutdoorProperty", b =>
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.PropertySpecifications.OutdoorPropertyAsset", b =>
                 {
-                    b.HasBaseType("WTE.TintTrack.Business.Domain.Entities.Property");
+                    b.HasBaseType("WTE.TintTrack.Business.Domain.Entities.PropertyAsset");
 
                     b.Property<bool>("HasSafetyFeatures")
                         .HasColumnType("bit");
@@ -1127,9 +2780,9 @@ namespace WTE.TintTrack.Business.Infrastructure.DataPersistence.Migrations
                     b.HasDiscriminator().HasValue(10);
                 });
 
-            modelBuilder.Entity("WTE.TintTrack.Business.Domain.PropertySpecifications.ResidentialProperty", b =>
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.PropertySpecifications.ResidentialPropertyAsset", b =>
                 {
-                    b.HasBaseType("WTE.TintTrack.Business.Domain.Entities.Property");
+                    b.HasBaseType("WTE.TintTrack.Business.Domain.Entities.PropertyAsset");
 
                     b.Property<bool>("HasEnergyEfficientWindows")
                         .HasColumnType("bit");
@@ -1147,9 +2800,9 @@ namespace WTE.TintTrack.Business.Infrastructure.DataPersistence.Migrations
                     b.HasDiscriminator().HasValue(3);
                 });
 
-            modelBuilder.Entity("WTE.TintTrack.Business.Domain.PropertySpecifications.SignageProperty", b =>
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.PropertySpecifications.SignagePropertyAsset", b =>
                 {
-                    b.HasBaseType("WTE.TintTrack.Business.Domain.Entities.Property");
+                    b.HasBaseType("WTE.TintTrack.Business.Domain.Entities.PropertyAsset");
 
                     b.Property<string>("BrandingDetails")
                         .HasColumnType("nvarchar(max)");
@@ -1158,15 +2811,14 @@ namespace WTE.TintTrack.Business.Infrastructure.DataPersistence.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("SignageType")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasDiscriminator().HasValue(9);
                 });
 
-            modelBuilder.Entity("WTE.TintTrack.Business.Domain.PropertySpecifications.SpecialtyProperty", b =>
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.PropertySpecifications.SpecialtyPropertyAsset", b =>
                 {
-                    b.HasBaseType("WTE.TintTrack.Business.Domain.Entities.Property");
+                    b.HasBaseType("WTE.TintTrack.Business.Domain.Entities.PropertyAsset");
 
                     b.Property<string>("ApplicationDetails")
                         .IsRequired()
@@ -1183,6 +2835,240 @@ namespace WTE.TintTrack.Business.Infrastructure.DataPersistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasDiscriminator().HasValue(5);
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.Address", b =>
+                {
+                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.Contact", "Contact")
+                        .WithMany("Addresses")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.Customer", "Customer")
+                        .WithMany("Addresses")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Contact");
+
+                    b.Navigation("Customer");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.CommercialOffersEntities.Estimate", b =>
+                {
+                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.SalesAndQuotingEntities.Contract", "Contract")
+                        .WithOne("Estimate")
+                        .HasForeignKey("WTE.TintTrack.Business.Domain.Entities.CommercialOffersEntities.Estimate", "ContractId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.CustomerContact", "CustomerContact")
+                        .WithMany()
+                        .HasForeignKey("CustomerContactId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.Inquiry", "Inquiry")
+                        .WithMany("Estimates")
+                        .HasForeignKey("InquiryId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Contract");
+
+                    b.Navigation("CustomerContact");
+
+                    b.Navigation("Inquiry");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.CommercialOffersEntities.EstimateItem", b =>
+                {
+                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.CommercialOffersEntities.Estimate", "Estimate")
+                        .WithMany("EstimateItems")
+                        .HasForeignKey("EstimateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.TintMaterialEntities.TintMaterial", "TintMaterial")
+                        .WithMany("EstimateItems")
+                        .HasForeignKey("TintMaterialId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.TintServiceEntities.TintService", "TintService")
+                        .WithMany("EstimateItems")
+                        .HasForeignKey("TintServiceId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Estimate");
+
+                    b.Navigation("TintMaterial");
+
+                    b.Navigation("TintService");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.CommercialOffersEntities.OfferHistory", b =>
+                {
+                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.CommercialOffersEntities.OfferRecipient", "OfferRecipient")
+                        .WithMany("OfferHistories")
+                        .HasForeignKey("OfferRecipientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("OfferRecipient");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.CommercialOffersEntities.OfferMilestone", b =>
+                {
+                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.CommercialOffersEntities.Estimate", "Estimate")
+                        .WithMany("OfferMilestones")
+                        .HasForeignKey("EstimateId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.CommercialOffersEntities.Proposal", "Proposal")
+                        .WithMany("OfferMilestones")
+                        .HasForeignKey("ProposalId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.CommercialOffersEntities.Quote", "Quote")
+                        .WithMany("OfferMilestones")
+                        .HasForeignKey("QuoteId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("Estimate");
+
+                    b.Navigation("Proposal");
+
+                    b.Navigation("Quote");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.CommercialOffersEntities.OfferRecipient", b =>
+                {
+                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.CustomerContact", "CustomerContact")
+                        .WithMany()
+                        .HasForeignKey("CustomerContactId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.CommercialOffersEntities.Estimate", "Estimate")
+                        .WithMany("OfferRecipients")
+                        .HasForeignKey("EstimateId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.CommercialOffersEntities.Proposal", "Proposal")
+                        .WithMany("OfferRecipients")
+                        .HasForeignKey("ProposalId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.CommercialOffersEntities.Quote", "Quote")
+                        .WithMany("OfferRecipients")
+                        .HasForeignKey("QuoteId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("CustomerContact");
+
+                    b.Navigation("Estimate");
+
+                    b.Navigation("Proposal");
+
+                    b.Navigation("Quote");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.CommercialOffersEntities.Proposal", b =>
+                {
+                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.SalesAndQuotingEntities.Contract", "Contract")
+                        .WithOne("Proposal")
+                        .HasForeignKey("WTE.TintTrack.Business.Domain.Entities.CommercialOffersEntities.Proposal", "ContractId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.CustomerContact", "CustomerContact")
+                        .WithMany()
+                        .HasForeignKey("CustomerContactId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.Inquiry", "Inquiry")
+                        .WithMany("Proposals")
+                        .HasForeignKey("InquiryId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Contract");
+
+                    b.Navigation("CustomerContact");
+
+                    b.Navigation("Inquiry");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.CommercialOffersEntities.ProposalItem", b =>
+                {
+                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.CommercialOffersEntities.Proposal", "Proposal")
+                        .WithMany("ProposalItems")
+                        .HasForeignKey("ProposalId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.TintMaterialEntities.TintMaterial", "TintMaterial")
+                        .WithMany("ProposalItems")
+                        .HasForeignKey("TintMaterialId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.TintServiceEntities.TintService", "TintService")
+                        .WithMany("ProposalItems")
+                        .HasForeignKey("TintServiceId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Proposal");
+
+                    b.Navigation("TintMaterial");
+
+                    b.Navigation("TintService");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.CommercialOffersEntities.Quote", b =>
+                {
+                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.SalesAndQuotingEntities.Contract", "Contract")
+                        .WithOne("Quote")
+                        .HasForeignKey("WTE.TintTrack.Business.Domain.Entities.CommercialOffersEntities.Quote", "ContractId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.CustomerContact", "CustomerContact")
+                        .WithMany()
+                        .HasForeignKey("CustomerContactId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.Inquiry", "Inquiry")
+                        .WithMany("Quotes")
+                        .HasForeignKey("InquiryId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Contract");
+
+                    b.Navigation("CustomerContact");
+
+                    b.Navigation("Inquiry");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.CommercialOffersEntities.QuoteItem", b =>
+                {
+                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.CommercialOffersEntities.Quote", "Quote")
+                        .WithMany("QuoteItems")
+                        .HasForeignKey("QuoteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.TintMaterialEntities.TintMaterial", "TintMaterial")
+                        .WithMany("QuoteItems")
+                        .HasForeignKey("TintMaterialId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.TintServiceEntities.TintService", "TintService")
+                        .WithMany("QuoteItems")
+                        .HasForeignKey("TintServiceId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Quote");
+
+                    b.Navigation("TintMaterial");
+
+                    b.Navigation("TintService");
                 });
 
             modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.CustomerContact", b =>
@@ -1204,10 +3090,32 @@ namespace WTE.TintTrack.Business.Infrastructure.DataPersistence.Migrations
                     b.Navigation("Customer");
                 });
 
-            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.CustomerOwnership", b =>
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.Inquiry", b =>
+                {
+                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.CustomerContact", "CustomerContact")
+                        .WithMany("Inquiries")
+                        .HasForeignKey("CustomerContactId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CustomerContact");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.InventoryItem", b =>
+                {
+                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.TintMaterialEntities.TintMaterial", "TintMaterial")
+                        .WithMany("InventoryItems")
+                        .HasForeignKey("TintMaterialId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("TintMaterial");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.PropertyAsset", b =>
                 {
                     b.HasOne("WTE.TintTrack.Business.Domain.Entities.Customer", "Customer")
-                        .WithMany("CustomerOwnerships")
+                        .WithMany("PropertyAssets")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1215,20 +3123,32 @@ namespace WTE.TintTrack.Business.Infrastructure.DataPersistence.Migrations
                     b.Navigation("Customer");
                 });
 
-            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.Inquiry", b =>
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.SalesAndQuotingEntities.ContractMilestone", b =>
                 {
-                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.Customer", "Customer")
-                        .WithMany("Inquiries")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.SalesAndQuotingEntities.Contract", "Contract")
+                        .WithMany("ContractMilestones")
+                        .HasForeignKey("ContractId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Customer");
+                    b.Navigation("Contract");
                 });
 
-            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.Invoice", b =>
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.SalesAndQuotingEntities.Project", b =>
                 {
-                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.Project", "Project")
-                        .WithMany("Invoices")
+                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.SalesAndQuotingEntities.Contract", "Contract")
+                        .WithOne("Project")
+                        .HasForeignKey("WTE.TintTrack.Business.Domain.Entities.SalesAndQuotingEntities.Project", "ContractId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Contract");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.SalesAndQuotingEntities.ProjectMilestone", b =>
+                {
+                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.SalesAndQuotingEntities.Project", "Project")
+                        .WithMany("ProjectMilestones")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1236,95 +3156,312 @@ namespace WTE.TintTrack.Business.Infrastructure.DataPersistence.Migrations
                     b.Navigation("Project");
                 });
 
-            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.Project", b =>
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.SalesAndQuotingEntities.WorkOrder", b =>
                 {
-                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.Customer", null)
-                        .WithMany("Projects")
-                        .HasForeignKey("CustomerId");
-
-                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.Proposal", "Proposal")
-                        .WithMany("Projects")
-                        .HasForeignKey("ProposalId");
-
-                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.Quote", "Quote")
-                        .WithMany("Projects")
-                        .HasForeignKey("QuoteId")
+                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.SalesAndQuotingEntities.Project", "Project")
+                        .WithMany("WorkOrders")
+                        .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.SalesAndQuotingEntities.ProjectMilestone", "ProjectMilestone")
+                        .WithMany()
+                        .HasForeignKey("ProjectMilestoneId");
+
+                    b.Navigation("Project");
+
+                    b.Navigation("ProjectMilestone");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.SalesAndQuotingEntities.WorkOrderAssignment", b =>
+                {
+                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.SalesAndQuotingEntities.WorkOrder", "WorkOrder")
+                        .WithMany("WorkOrderAssignments")
+                        .HasForeignKey("WorkOrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("WorkOrder");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.SalesAndQuotingEntities.WorkOrderItem", b =>
+                {
+                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.TintMaterialEntities.TintMaterial", "TintMaterial")
+                        .WithMany("WorkOrderItems")
+                        .HasForeignKey("TintMaterialId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.TintServiceEntities.TintService", "TintService")
+                        .WithMany("WorkOrderItems")
+                        .HasForeignKey("TintServiceId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.SalesAndQuotingEntities.WorkOrder", "WorkOrder")
+                        .WithMany("WorkOrderItems")
+                        .HasForeignKey("WorkOrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TintMaterial");
+
+                    b.Navigation("TintService");
+
+                    b.Navigation("WorkOrder");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.SalesAndQuotingEntities.WorkOrderLog", b =>
+                {
+                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.SalesAndQuotingEntities.WorkOrder", "WorkOrder")
+                        .WithMany("WorkOrderLogs")
+                        .HasForeignKey("WorkOrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("WorkOrder");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.SalesAndQuotingEntities.WorkOrderLogPhoto", b =>
+                {
+                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.SalesAndQuotingEntities.WorkOrderLog", "WorkOrderLog")
+                        .WithMany("WorkOrderLogPhotos")
+                        .HasForeignKey("WorkOrderLogId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("WorkOrderLog");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.TintMaterialEntities.TintMaterialPriceHistory", b =>
+                {
+                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.TintMaterialEntities.TintMaterial", "TintMaterial")
+                        .WithMany()
+                        .HasForeignKey("TintMaterialId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TintMaterial");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.TintMaterialEntities.TintMaterialPriceOverride", b =>
+                {
+                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.Customer", "Customer")
+                        .WithMany("TintMaterialPriceOverrides")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.TintMaterialEntities.TintMaterialPriceSchedule", "TintMaterialPriceSchedule")
+                        .WithMany("TintMaterialPriceOverrides")
+                        .HasForeignKey("TintMaterialPriceScheduleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("TintMaterialPriceSchedule");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.TintMaterialEntities.TintMaterialPriceSchedule", b =>
+                {
+                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.TintMaterialEntities.TintMaterial", "TintMaterial")
+                        .WithMany("TintMaterialPriceSchedules")
+                        .HasForeignKey("TintMaterialId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TintMaterial");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.TintMaterialEntities.TintMaterialPriceTier", b =>
+                {
+                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.TintMaterialEntities.TintMaterialPriceSchedule", "TintMaterialPriceSchedule")
+                        .WithMany("TintMaterialPriceTiers")
+                        .HasForeignKey("TintMaterialPriceScheduleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TintMaterialPriceSchedule");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.TintServiceEntities.TintServicePriceOverride", b =>
+                {
+                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.TintServiceEntities.TintServicePriceSchedule", "TintTintServicePriceSchedule")
+                        .WithMany("TintServicePriceOverrides")
+                        .HasForeignKey("TintTintServicePriceScheduleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("TintTintServicePriceSchedule");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.TintServiceEntities.TintServicePriceSchedule", b =>
+                {
+                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.TintServiceEntities.TintService", "TintService")
+                        .WithMany("TintServicePriceSchedules")
+                        .HasForeignKey("TintServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TintService");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.TintServiceEntities.TintServicePriceTier", b =>
+                {
+                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.TintServiceEntities.TintServicePriceSchedule", "TintServicePriceSchedule")
+                        .WithMany("TintServicePriceTiers")
+                        .HasForeignKey("TintServicePriceScheduleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TintServicePriceSchedule");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.CommercialOffersEntities.Estimate", b =>
+                {
+                    b.Navigation("EstimateItems");
+
+                    b.Navigation("OfferMilestones");
+
+                    b.Navigation("OfferRecipients");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.CommercialOffersEntities.OfferRecipient", b =>
+                {
+                    b.Navigation("OfferHistories");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.CommercialOffersEntities.Proposal", b =>
+                {
+                    b.Navigation("OfferMilestones");
+
+                    b.Navigation("OfferRecipients");
+
+                    b.Navigation("ProposalItems");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.CommercialOffersEntities.Quote", b =>
+                {
+                    b.Navigation("OfferMilestones");
+
+                    b.Navigation("OfferRecipients");
+
+                    b.Navigation("QuoteItems");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.Contact", b =>
+                {
+                    b.Navigation("Addresses");
+
+                    b.Navigation("CustomerContacts");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.Customer", b =>
+                {
+                    b.Navigation("Addresses");
+
+                    b.Navigation("CustomerContacts");
+
+                    b.Navigation("PropertyAssets");
+
+                    b.Navigation("TintMaterialPriceOverrides");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.CustomerContact", b =>
+                {
+                    b.Navigation("Inquiries");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.Inquiry", b =>
+                {
+                    b.Navigation("Estimates");
+
+                    b.Navigation("Proposals");
+
+                    b.Navigation("Quotes");
+                });
+
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.SalesAndQuotingEntities.Contract", b =>
+                {
+                    b.Navigation("ContractMilestones");
+
+                    b.Navigation("Estimate");
+
+                    b.Navigation("Project");
 
                     b.Navigation("Proposal");
 
                     b.Navigation("Quote");
                 });
 
-            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.Property", b =>
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.SalesAndQuotingEntities.Project", b =>
                 {
-                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.Customer", "Customer")
-                        .WithMany("CustomerProperties")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("ProjectMilestones");
 
-                    b.Navigation("Customer");
+                    b.Navigation("WorkOrders");
                 });
 
-            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.Proposal", b =>
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.SalesAndQuotingEntities.WorkOrder", b =>
                 {
-                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.Quote", "Quote")
-                        .WithMany("Proposals")
-                        .HasForeignKey("QuoteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("WorkOrderAssignments");
 
-                    b.Navigation("Quote");
+                    b.Navigation("WorkOrderItems");
+
+                    b.Navigation("WorkOrderLogs");
                 });
 
-            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.Quote", b =>
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.SalesAndQuotingEntities.WorkOrderLog", b =>
                 {
-                    b.HasOne("WTE.TintTrack.Business.Domain.Entities.Customer", "Customer")
-                        .WithMany("Quotes")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
+                    b.Navigation("WorkOrderLogPhotos");
                 });
 
-            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.Contact", b =>
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.TintMaterialEntities.TintMaterial", b =>
                 {
-                    b.Navigation("CustomerContacts");
+                    b.Navigation("EstimateItems");
+
+                    b.Navigation("InventoryItems");
+
+                    b.Navigation("ProposalItems");
+
+                    b.Navigation("QuoteItems");
+
+                    b.Navigation("TintMaterialPriceSchedules");
+
+                    b.Navigation("WorkOrderItems");
                 });
 
-            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.Customer", b =>
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.TintMaterialEntities.TintMaterialPriceSchedule", b =>
                 {
-                    b.Navigation("CustomerContacts");
+                    b.Navigation("TintMaterialPriceOverrides");
 
-                    b.Navigation("CustomerOwnerships");
-
-                    b.Navigation("CustomerProperties");
-
-                    b.Navigation("Inquiries");
-
-                    b.Navigation("Projects");
-
-                    b.Navigation("Quotes");
+                    b.Navigation("TintMaterialPriceTiers");
                 });
 
-            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.Project", b =>
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.TintServiceEntities.TintService", b =>
                 {
-                    b.Navigation("Invoices");
+                    b.Navigation("EstimateItems");
+
+                    b.Navigation("ProposalItems");
+
+                    b.Navigation("QuoteItems");
+
+                    b.Navigation("TintServicePriceSchedules");
+
+                    b.Navigation("WorkOrderItems");
                 });
 
-            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.Proposal", b =>
+            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.TintServiceEntities.TintServicePriceSchedule", b =>
                 {
-                    b.Navigation("Projects");
-                });
+                    b.Navigation("TintServicePriceOverrides");
 
-            modelBuilder.Entity("WTE.TintTrack.Business.Domain.Entities.Quote", b =>
-                {
-                    b.Navigation("Projects");
-
-                    b.Navigation("Proposals");
+                    b.Navigation("TintServicePriceTiers");
                 });
 #pragma warning restore 612, 618
         }

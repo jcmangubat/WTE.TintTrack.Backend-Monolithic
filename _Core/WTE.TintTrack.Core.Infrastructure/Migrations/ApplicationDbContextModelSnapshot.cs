@@ -18,7 +18,7 @@ namespace WTE.TintTrack.Core.Infrastructure.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasDefaultSchema("dbo")
-                .HasAnnotation("ProductVersion", "9.0.0")
+                .HasAnnotation("ProductVersion", "9.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -185,12 +185,12 @@ namespace WTE.TintTrack.Core.Infrastructure.Migrations
                     b.Property<DateTime>("DateCreated")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 12, 4, 2, 42, 25, 522, DateTimeKind.Utc).AddTicks(577));
+                        .HasDefaultValue(new DateTime(2025, 3, 28, 11, 47, 55, 253, DateTimeKind.Utc).AddTicks(4019));
 
                     b.Property<DateTime>("DateModified")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 12, 4, 2, 42, 25, 524, DateTimeKind.Utc).AddTicks(4124));
+                        .HasDefaultValue(new DateTime(2025, 3, 28, 11, 47, 55, 256, DateTimeKind.Utc).AddTicks(5377));
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -306,7 +306,7 @@ namespace WTE.TintTrack.Core.Infrastructure.Migrations
                     b.Property<DateTime>("DateCreated")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("DateTime2")
-                        .HasDefaultValue(new DateTime(2024, 12, 4, 10, 42, 25, 560, DateTimeKind.Local).AddTicks(5210))
+                        .HasDefaultValue(new DateTime(2025, 3, 28, 19, 47, 55, 316, DateTimeKind.Local).AddTicks(816))
                         .HasColumnName("_dateCreated")
                         .HasColumnOrder(501);
 
@@ -345,10 +345,9 @@ namespace WTE.TintTrack.Core.Infrastructure.Migrations
                         .HasColumnName("PermissionLevel");
 
                     b.Property<string>("ReasonArchived")
-                        .IsRequired()
-                        .HasMaxLength(132)
-                        .HasColumnType("nvarchar(132)")
-                        .HasColumnOrder(511);
+                        .HasMaxLength(240)
+                        .HasColumnType("nvarchar(240)")
+                        .HasColumnOrder(512);
 
                     b.HasKey("Id");
 
@@ -370,7 +369,7 @@ namespace WTE.TintTrack.Core.Infrastructure.Migrations
                     b.Property<DateTime>("DateCreated")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("DateTime2")
-                        .HasDefaultValue(new DateTime(2024, 12, 4, 10, 42, 25, 563, DateTimeKind.Local).AddTicks(2414))
+                        .HasDefaultValue(new DateTime(2025, 3, 28, 19, 47, 55, 322, DateTimeKind.Local).AddTicks(7792))
                         .HasColumnName("_dateCreated")
                         .HasColumnOrder(501);
 
@@ -395,10 +394,9 @@ namespace WTE.TintTrack.Core.Infrastructure.Migrations
                         .HasColumnOrder(510);
 
                     b.Property<string>("ReasonArchived")
-                        .IsRequired()
-                        .HasMaxLength(132)
-                        .HasColumnType("nvarchar(132)")
-                        .HasColumnOrder(511);
+                        .HasMaxLength(240)
+                        .HasColumnType("nvarchar(240)")
+                        .HasColumnOrder(512);
 
                     b.HasKey("RoleId", "PermissionId");
 
@@ -426,7 +424,7 @@ namespace WTE.TintTrack.Core.Infrastructure.Migrations
                     b.Property<DateTime>("DateCreated")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("DateTime2")
-                        .HasDefaultValue(new DateTime(2024, 12, 4, 10, 42, 25, 568, DateTimeKind.Local).AddTicks(9169))
+                        .HasDefaultValue(new DateTime(2025, 3, 28, 19, 47, 55, 338, DateTimeKind.Local).AddTicks(8743))
                         .HasColumnName("_dateCreated")
                         .HasColumnOrder(501);
 
@@ -468,10 +466,9 @@ namespace WTE.TintTrack.Core.Infrastructure.Migrations
                         .HasColumnName("Price");
 
                     b.Property<string>("ReasonArchived")
-                        .IsRequired()
-                        .HasMaxLength(132)
-                        .HasColumnType("nvarchar(132)")
-                        .HasColumnOrder(511);
+                        .HasMaxLength(240)
+                        .HasColumnType("nvarchar(240)")
+                        .HasColumnOrder(512);
 
                     b.HasKey("Id");
 
@@ -493,7 +490,7 @@ namespace WTE.TintTrack.Core.Infrastructure.Migrations
                     b.Property<DateTime>("DateCreated")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("DateTime2")
-                        .HasDefaultValue(new DateTime(2024, 12, 4, 10, 42, 25, 573, DateTimeKind.Local).AddTicks(1453))
+                        .HasDefaultValue(new DateTime(2025, 3, 28, 19, 47, 55, 348, DateTimeKind.Local).AddTicks(214))
                         .HasColumnName("_dateCreated")
                         .HasColumnOrder(501);
 
@@ -532,10 +529,9 @@ namespace WTE.TintTrack.Core.Infrastructure.Migrations
                         .HasColumnName("PlanDiscountCode");
 
                     b.Property<string>("ReasonArchived")
-                        .IsRequired()
-                        .HasMaxLength(132)
-                        .HasColumnType("nvarchar(132)")
-                        .HasColumnOrder(511);
+                        .HasMaxLength(240)
+                        .HasColumnType("nvarchar(240)")
+                        .HasColumnOrder(512);
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2")
@@ -566,7 +562,7 @@ namespace WTE.TintTrack.Core.Infrastructure.Migrations
                     b.Property<DateTime>("DateCreated")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("DateTime2")
-                        .HasDefaultValue(new DateTime(2024, 12, 4, 10, 42, 25, 570, DateTimeKind.Local).AddTicks(4972))
+                        .HasDefaultValue(new DateTime(2025, 3, 28, 19, 47, 55, 342, DateTimeKind.Local).AddTicks(1725))
                         .HasColumnName("_dateCreated")
                         .HasColumnOrder(501);
 
@@ -603,10 +599,9 @@ namespace WTE.TintTrack.Core.Infrastructure.Migrations
                         .HasColumnName("Name");
 
                     b.Property<string>("ReasonArchived")
-                        .IsRequired()
-                        .HasMaxLength(132)
-                        .HasColumnType("nvarchar(132)")
-                        .HasColumnOrder(511);
+                        .HasMaxLength(240)
+                        .HasColumnType("nvarchar(240)")
+                        .HasColumnOrder(512);
 
                     b.HasKey("Id");
 
@@ -653,7 +648,7 @@ namespace WTE.TintTrack.Core.Infrastructure.Migrations
                     b.Property<DateTime>("DateCreated")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("DateTime2")
-                        .HasDefaultValue(new DateTime(2024, 12, 4, 10, 42, 25, 574, DateTimeKind.Local).AddTicks(5775))
+                        .HasDefaultValue(new DateTime(2025, 3, 28, 19, 47, 55, 350, DateTimeKind.Local).AddTicks(1133))
                         .HasColumnName("_dateCreated")
                         .HasColumnOrder(501);
 
@@ -694,10 +689,9 @@ namespace WTE.TintTrack.Core.Infrastructure.Migrations
                         .HasColumnName("Name");
 
                     b.Property<string>("ReasonArchived")
-                        .IsRequired()
-                        .HasMaxLength(132)
-                        .HasColumnType("nvarchar(132)")
-                        .HasColumnOrder(511);
+                        .HasMaxLength(240)
+                        .HasColumnType("nvarchar(240)")
+                        .HasColumnOrder(512);
 
                     b.Property<string>("TenantCode")
                         .IsRequired()
@@ -729,7 +723,7 @@ namespace WTE.TintTrack.Core.Infrastructure.Migrations
                     b.Property<DateTime>("DateCreated")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("DateTime2")
-                        .HasDefaultValue(new DateTime(2024, 12, 4, 10, 42, 25, 578, DateTimeKind.Local).AddTicks(1801))
+                        .HasDefaultValue(new DateTime(2025, 3, 28, 19, 47, 55, 354, DateTimeKind.Local).AddTicks(3184))
                         .HasColumnName("_dateCreated")
                         .HasColumnOrder(501);
 
@@ -748,10 +742,9 @@ namespace WTE.TintTrack.Core.Infrastructure.Migrations
                         .HasColumnOrder(510);
 
                     b.Property<string>("ReasonArchived")
-                        .IsRequired()
-                        .HasMaxLength(132)
-                        .HasColumnType("nvarchar(132)")
-                        .HasColumnOrder(511);
+                        .HasMaxLength(240)
+                        .HasColumnType("nvarchar(240)")
+                        .HasColumnOrder(512);
 
                     b.Property<Guid>("SubscriptionPlanId")
                         .HasColumnType("uniqueidentifier");
@@ -800,7 +793,7 @@ namespace WTE.TintTrack.Core.Infrastructure.Migrations
                     b.Property<DateTime>("DateCreated")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("DateTime2")
-                        .HasDefaultValue(new DateTime(2024, 12, 4, 10, 42, 25, 579, DateTimeKind.Local).AddTicks(8535))
+                        .HasDefaultValue(new DateTime(2025, 3, 28, 19, 47, 55, 356, DateTimeKind.Local).AddTicks(3544))
                         .HasColumnName("_dateCreated")
                         .HasColumnOrder(501);
 
@@ -848,10 +841,9 @@ namespace WTE.TintTrack.Core.Infrastructure.Migrations
                         .HasColumnName("Notes");
 
                     b.Property<string>("ReasonArchived")
-                        .IsRequired()
-                        .HasMaxLength(132)
-                        .HasColumnType("nvarchar(132)")
-                        .HasColumnOrder(511);
+                        .HasMaxLength(240)
+                        .HasColumnType("nvarchar(240)")
+                        .HasColumnOrder(512);
 
                     b.Property<Guid>("TenantSubscriptionId")
                         .HasColumnType("uniqueidentifier");
@@ -884,7 +876,7 @@ namespace WTE.TintTrack.Core.Infrastructure.Migrations
                     b.Property<DateTime>("DateCreated")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("DateTime2")
-                        .HasDefaultValue(new DateTime(2024, 12, 4, 10, 42, 25, 581, DateTimeKind.Local).AddTicks(4099))
+                        .HasDefaultValue(new DateTime(2025, 3, 28, 19, 47, 55, 358, DateTimeKind.Local).AddTicks(6004))
                         .HasColumnName("_dateCreated")
                         .HasColumnOrder(501);
 
@@ -914,10 +906,9 @@ namespace WTE.TintTrack.Core.Infrastructure.Migrations
                         .HasColumnName("PaymentStatus");
 
                     b.Property<string>("ReasonArchived")
-                        .IsRequired()
-                        .HasMaxLength(132)
-                        .HasColumnType("nvarchar(132)")
-                        .HasColumnOrder(511);
+                        .HasMaxLength(240)
+                        .HasColumnType("nvarchar(240)")
+                        .HasColumnOrder(512);
 
                     b.HasKey("Id");
 
@@ -941,7 +932,7 @@ namespace WTE.TintTrack.Core.Infrastructure.Migrations
                     b.Property<DateTime>("DateCreated")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("DateTime2")
-                        .HasDefaultValue(new DateTime(2024, 12, 4, 10, 42, 25, 566, DateTimeKind.Local).AddTicks(8663))
+                        .HasDefaultValue(new DateTime(2025, 3, 28, 19, 47, 55, 334, DateTimeKind.Local).AddTicks(4393))
                         .HasColumnName("_dateCreated")
                         .HasColumnOrder(501);
 
@@ -960,10 +951,9 @@ namespace WTE.TintTrack.Core.Infrastructure.Migrations
                         .HasColumnOrder(510);
 
                     b.Property<string>("ReasonArchived")
-                        .IsRequired()
-                        .HasMaxLength(132)
-                        .HasColumnType("nvarchar(132)")
-                        .HasColumnOrder(511);
+                        .HasMaxLength(240)
+                        .HasColumnType("nvarchar(240)")
+                        .HasColumnOrder(512);
 
                     b.Property<string>("RefreshToken")
                         .IsRequired()
@@ -1021,7 +1011,7 @@ namespace WTE.TintTrack.Core.Infrastructure.Migrations
                     b.Property<DateTime>("DateCreated")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("DateTime2")
-                        .HasDefaultValue(new DateTime(2024, 12, 4, 10, 42, 25, 582, DateTimeKind.Local).AddTicks(4676))
+                        .HasDefaultValue(new DateTime(2025, 3, 28, 19, 47, 55, 360, DateTimeKind.Local).AddTicks(3348))
                         .HasColumnName("_dateCreated")
                         .HasColumnOrder(501);
 
@@ -1040,10 +1030,9 @@ namespace WTE.TintTrack.Core.Infrastructure.Migrations
                         .HasColumnOrder(510);
 
                     b.Property<string>("ReasonArchived")
-                        .IsRequired()
-                        .HasMaxLength(132)
-                        .HasColumnType("nvarchar(132)")
-                        .HasColumnOrder(511);
+                        .HasMaxLength(240)
+                        .HasColumnType("nvarchar(240)")
+                        .HasColumnOrder(512);
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -1070,7 +1059,7 @@ namespace WTE.TintTrack.Core.Infrastructure.Migrations
                     b.Property<DateTime>("DateCreated")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("DateTime2")
-                        .HasDefaultValue(new DateTime(2024, 12, 4, 10, 42, 25, 583, DateTimeKind.Local).AddTicks(9155))
+                        .HasDefaultValue(new DateTime(2025, 3, 28, 19, 47, 55, 362, DateTimeKind.Local).AddTicks(4156))
                         .HasColumnName("_dateCreated")
                         .HasColumnOrder(501);
 
@@ -1093,10 +1082,9 @@ namespace WTE.TintTrack.Core.Infrastructure.Migrations
                         .HasColumnName("IsDefault");
 
                     b.Property<string>("ReasonArchived")
-                        .IsRequired()
-                        .HasMaxLength(132)
-                        .HasColumnType("nvarchar(132)")
-                        .HasColumnOrder(511);
+                        .HasMaxLength(240)
+                        .HasColumnType("nvarchar(240)")
+                        .HasColumnOrder(512);
 
                     b.Property<Guid>("TenantId")
                         .HasColumnType("uniqueidentifier");
@@ -1132,7 +1120,7 @@ namespace WTE.TintTrack.Core.Infrastructure.Migrations
                     b.Property<DateTime>("DateCreated")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("DateTime2")
-                        .HasDefaultValue(new DateTime(2024, 12, 4, 10, 42, 25, 576, DateTimeKind.Local).AddTicks(4400))
+                        .HasDefaultValue(new DateTime(2025, 3, 28, 19, 47, 55, 352, DateTimeKind.Local).AddTicks(1792))
                         .HasColumnName("_dateCreated")
                         .HasColumnOrder(501);
 
@@ -1165,10 +1153,9 @@ namespace WTE.TintTrack.Core.Infrastructure.Migrations
                         .HasColumnOrder(510);
 
                     b.Property<string>("ReasonArchived")
-                        .IsRequired()
-                        .HasMaxLength(132)
-                        .HasColumnType("nvarchar(132)")
-                        .HasColumnOrder(511);
+                        .HasMaxLength(240)
+                        .HasColumnType("nvarchar(240)")
+                        .HasColumnOrder(512);
 
                     b.Property<Guid?>("TenantId")
                         .HasColumnType("uniqueidentifier");
@@ -1200,7 +1187,7 @@ namespace WTE.TintTrack.Core.Infrastructure.Migrations
                     b.Property<DateTime>("DateCreated")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("DateTime2")
-                        .HasDefaultValue(new DateTime(2024, 12, 4, 10, 42, 25, 585, DateTimeKind.Local).AddTicks(5048))
+                        .HasDefaultValue(new DateTime(2025, 3, 28, 19, 47, 55, 364, DateTimeKind.Local).AddTicks(2547))
                         .HasColumnName("_dateCreated")
                         .HasColumnOrder(501);
 
@@ -1219,10 +1206,9 @@ namespace WTE.TintTrack.Core.Infrastructure.Migrations
                         .HasColumnOrder(510);
 
                     b.Property<string>("ReasonArchived")
-                        .IsRequired()
-                        .HasMaxLength(132)
-                        .HasColumnType("nvarchar(132)")
-                        .HasColumnOrder(511);
+                        .HasMaxLength(240)
+                        .HasColumnType("nvarchar(240)")
+                        .HasColumnOrder(512);
 
                     b.Property<Guid>("RoleId")
                         .HasColumnType("uniqueidentifier");

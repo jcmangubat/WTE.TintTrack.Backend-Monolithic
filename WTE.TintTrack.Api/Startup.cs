@@ -1,17 +1,18 @@
 ﻿using Microsoft.AspNetCore.OData;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using System.Text.Json;
 using System.Text.Json.Serialization.Metadata;
 using WTE.TintTrack.Api.Helpers.Extensions;
 using WTE.TintTrack.Api.Messaging._Mappings;
-using WTE.TintTrack.Api.Messaging.Business.Request;
+using WTE.TintTrack.Api.Messaging.Business.Requests.PropertyAsset;
 using WTE.TintTrack.Api.Middlewares;
 using WTE.TintTrack.Business.Application.DTOs;
-using WTE.TintTrack.Business.Application.DTOs.PropertySpecifications;
+using WTE.TintTrack.Business.Application.DTOs.PropertySpecificationModels;
 using WTE.TintTrack.Business.Application.Mappings;
 using WTE.TintTrack.Common.Models;
 using WTE.TintTrack.Core.Application.Mappings;
 using static WTE.TintTrack.Common.Constants.Consts;
+using Microsoft.AspNetCore.Mvc.Versioning;
 
 namespace WTE.TintTrack.Api;
 
@@ -50,31 +51,65 @@ public class Startup
         // Add ApplicationDbContext and configure the connection string
         services.AddDbContexts(Configuration);
 
-        // Add setup for Duende Identity, passing the logger
-        services.AddTransient<Startup>(); // Register the class that contains ConfigureServices
+        // Add setup for Duende Identity
+        // Note: Logger will be resolved from DI when JWT events fire, avoiding service provider anti-pattern
+        services.SetupDuendeIdentity(Configuration);
 
-        // Create a service provider to resolve the logger
-        using (var serviceProvider = services.BuildServiceProvider())
-        {
-            var logger = serviceProvider.GetRequiredService<ILogger<Startup>>();
-            services.SetupDuendeIdentity(Configuration, logger);
-        }
-
-        services.RegisterSMTPAndApplicationSettings(Configuration);
+        // Register all application configuration using Options pattern
+        services.AddApplicationConfiguration(Configuration);
+        
         services.RegisterRepositories();
         services.RegisterServices(_configuration);
 
-        // Add CORS policy to allow only the permissable origins setup in appSettings
-        var allowedOrigins = Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>();
+        // Add CORS policy using strongly-typed configuration
+        var corsSettings = Configuration.GetSection("Cors").Get<CorsSettings>() ?? new CorsSettings();
         services.AddCors(options =>
         {
             options.AddPolicy("AllowFrontend", policy =>
             {
-                policy.WithOrigins(allowedOrigins)
-                      .AllowAnyHeader()
-                      .AllowAnyMethod()
-                      .AllowCredentials();
+                if (corsSettings.AllowedOrigins?.Length > 0)
+                {
+                    policy.WithOrigins(corsSettings.AllowedOrigins);
+                }
+                else
+                {
+                    policy.AllowAnyOrigin();
+                }
+                
+                policy.AllowAnyHeader()
+                      .AllowAnyMethod();
+                
+                if (corsSettings.AllowCredentials)
+                {
+                    policy.AllowCredentials();
+                }
             });
+        });
+
+        // Add Response Compression for better performance
+        services.AddResponseCompression(options =>
+        {
+            options.EnableForHttps = true;
+            options.Providers.Add<Microsoft.AspNetCore.ResponseCompression.BrotliCompressionProvider>();
+            options.Providers.Add<Microsoft.AspNetCore.ResponseCompression.GzipCompressionProvider>();
+        });
+
+        // Configure API Versioning
+        services.AddApiVersioning(options =>
+        {
+            options.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1, 0);
+            options.AssumeDefaultVersionWhenUnspecified = true;
+            options.ReportApiVersions = true;
+            options.ApiVersionReader = ApiVersionReader.Combine(
+                new HeaderApiVersionReader("X-Version"),
+                new QueryStringApiVersionReader("version")
+            );
+        });
+
+        services.AddVersionedApiExplorer(options =>
+        {
+            options.GroupNameFormat = "'v'VV";  // Produces "v1.0" for ApiVersion(1, 0)
+            options.SubstituteApiVersionInUrl = true;
         });
 
         // Add other services like MVC, controllers, etc.
@@ -90,25 +125,25 @@ public class Startup
                 {
                     Modifiers = { typeInfo =>
                     {
-                        if (typeInfo.Type == typeof(PropertyDto)||
-                            typeInfo.Type == typeof(CreatePropertyRequest))
+                        if (typeInfo.Type == typeof(PropertyAssetDto)||
+                            typeInfo.Type == typeof(CreatePropertyAssetRequest))
                         {
                             typeInfo.PolymorphismOptions = new JsonPolymorphismOptions
                             {
-                                TypeDiscriminatorPropertyName = nameof(PropertyDto.PropertyType),
+                                TypeDiscriminatorPropertyName = nameof(PropertyAssetDto.PropertyType),
                                 IgnoreUnrecognizedTypeDiscriminators = true,
                                 DerivedTypes =
                                 {
-                                    new JsonDerivedType(typeof(ArchitecturalPropertyDto), (int)PropertyTypesEnum.Architectural),
-                                    new JsonDerivedType(typeof(AutomotivePropertyDto), (int)PropertyTypesEnum.Automotive),
-                                    new JsonDerivedType(typeof(ResidentialPropertyDto), (int)PropertyTypesEnum.Residential),
-                                    new JsonDerivedType(typeof(CommercialPropertyDto), (int)PropertyTypesEnum.Commercial),
-                                    new JsonDerivedType(typeof(SpecialtyPropertyDto), (int)PropertyTypesEnum.Specialty),
-                                    new JsonDerivedType(typeof(GlassFilmPropertyDto), (int)PropertyTypesEnum.GlassFilm),
-                                    new JsonDerivedType(typeof(EnergyEfficientPropertyDto), (int)PropertyTypesEnum.EnergyEfficient),
-                                    new JsonDerivedType(typeof(CustomPropertyDto), (int)PropertyTypesEnum.Custom),
-                                    new JsonDerivedType(typeof(SignagePropertyDto), (int)PropertyTypesEnum.Signage),
-                                    new JsonDerivedType(typeof(OutdoorPropertyDto), (int)PropertyTypesEnum.Outdoor)
+                                    new JsonDerivedType(typeof(ArchitecturalPropertyAssetDto), (int)PropertyTypesEnum.Architectural),
+                                    new JsonDerivedType(typeof(AutomotivePropertyAssetDto), (int)PropertyTypesEnum.Automotive),
+                                    new JsonDerivedType(typeof(ResidentialPropertyAssetDto), (int)PropertyTypesEnum.Residential),
+                                    new JsonDerivedType(typeof(CommercialPropertyAssetDto), (int)PropertyTypesEnum.Commercial),
+                                    new JsonDerivedType(typeof(SpecialtyPropertyAssetDto), (int)PropertyTypesEnum.Specialty),
+                                    new JsonDerivedType(typeof(GlassFilmPropertyAssetDto), (int)PropertyTypesEnum.GlassFilm),
+                                    new JsonDerivedType(typeof(EnergyEfficientPropertyAssetDto), (int)PropertyTypesEnum.EnergyEfficient),
+                                    new JsonDerivedType(typeof(CustomPropertyAssetDto), (int)PropertyTypesEnum.Custom),
+                                    new JsonDerivedType(typeof(SignagePropertyAssetDto), (int)PropertyTypesEnum.Signage),
+                                    new JsonDerivedType(typeof(OutdoorPropertyAssetDto), (int)PropertyTypesEnum.Outdoor)
                                 }
                             };
                         }
@@ -121,6 +156,11 @@ public class Startup
 
         // Register FluentValidation
         services.RegisterFluentValidations();
+
+        // Add Health Checks
+        services.AddHealthChecks()
+            .AddDbContextCheck<Core.Infrastructure.ApplicationDbContext>("core_database")
+            .AddDbContextCheck<Business.Infrastructure.TenantDbContext>("tenant_database");
 
         services.AddSwaggerConfiguration();
     }
@@ -140,8 +180,14 @@ public class Startup
             app.UseHsts();
         }
 
+        app.UseMiddleware<CorrelationIdMiddleware>();
+        app.UseMiddleware<RateLimitingMiddleware>();
+        app.UseMiddleware<TenantContextMiddleware>();
         app.UseMiddleware<HttpMessagingMiddleware>();
         //app.UseMiddleware<TokenValidationMiddleware>();
+
+        // Enable response compression (should be early in pipeline, before routing)
+        app.UseResponseCompression();
 
         app.UseHttpsRedirection();
         app.UseStaticFiles();
@@ -161,10 +207,28 @@ public class Startup
         if (env.IsDevelopment() || (_appSettings.EnableSwaggerInProd ?? false))
         {
             app.UseSwagger();
+            
+            var apiVersionDescriptionProvider = app.ApplicationServices
+                .GetRequiredService<IApiVersionDescriptionProvider>();
+
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "WTE TintTrack Business API Version 1.0");
-                c.RoutePrefix = string.Empty;  // To serve Swagger UI at the app's root (https://wte-tinttrack-backend-dev.azurewebsites.net/)
+                // Always add v1 endpoint first (Swagger UI default)
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "WTE TintTrack API V1");
+                
+                // Generate Swagger endpoints for all API versions discovered by the versioned API explorer
+                foreach (var description in apiVersionDescriptionProvider.ApiVersionDescriptions.OrderByDescending(x => x.ApiVersion))
+                {
+                    // Skip v1 if it's already added above
+                    if (description.GroupName != "v1")
+                    {
+                        c.SwaggerEndpoint(
+                            $"/swagger/{description.GroupName}/swagger.json",
+                            $"WTE TintTrack API {description.GroupName.ToUpperInvariant()}");
+                    }
+                }
+                
+                c.RoutePrefix = "swagger";  // Swagger UI available at /swagger
 
                 c.InjectStylesheet("/swagger/swagger-custom.css"); // Inject custom CSS
                 c.InjectJavascript("/swagger/swagger-custom.js"); // Optionally inject custom JS
@@ -177,6 +241,17 @@ public class Startup
             endpoints.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
+
+            // Health check endpoints
+            endpoints.MapHealthChecks("/health");
+            endpoints.MapHealthChecks("/health/ready", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
+            {
+                Predicate = check => check.Tags.Contains("ready")
+            });
+            endpoints.MapHealthChecks("/health/live", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
+            {
+                Predicate = _ => false
+            });
         });
 
         app.UseODataRouteDebug();

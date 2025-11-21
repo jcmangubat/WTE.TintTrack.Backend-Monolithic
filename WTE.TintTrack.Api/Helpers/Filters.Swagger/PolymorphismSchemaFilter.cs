@@ -1,9 +1,7 @@
 ﻿using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using WTE.TintTrack.Business.Application.DTOs;
-using WTE.TintTrack.Business.Application.DTOs.PropertySpecifications;
-using WTE.TintTrack.Business.Domain.Entities;
-using WTE.TintTrack.Business.Domain.PropertySpecifications;
+using WTE.TintTrack.Business.Application.DTOs.PropertySpecificationModels;
 
 namespace WTE.TintTrack.Api.Helpers.Filters.Swagger;
 
@@ -45,7 +43,7 @@ public class PolymorphismSchemaFilter : ISchemaFilter
 
 
         // Check if the base class (PropertyDto) is being processed
-        if (context.Type == typeof(PropertyDto))
+        if (context.Type == typeof(PropertyAssetDto))
         {
             // Set up the discriminator (only once, no need to add a property manually)
             schema.Discriminator = new OpenApiDiscriminator
@@ -73,16 +71,16 @@ public class PolymorphismSchemaFilter : ISchemaFilter
 
             schema.OneOf = [];
             var derivedTypes = new[] {
-                typeof(ArchitecturalPropertyDto),
-                typeof(AutomotivePropertyDto) ,
-                typeof(ResidentialPropertyDto) ,
-                typeof(CommercialPropertyDto) ,
-                typeof(SpecialtyPropertyDto) ,
-                typeof(GlassFilmPropertyDto) ,
-                typeof(EnergyEfficientPropertyDto) ,
-                typeof(CustomPropertyDto) ,
-                typeof(SignagePropertyDto) ,
-                typeof(OutdoorPropertyDto)
+                typeof(ArchitecturalPropertyAssetDto),
+                typeof(AutomotivePropertyAssetDto) ,
+                typeof(ResidentialPropertyAssetDto) ,
+                typeof(CommercialPropertyAssetDto) ,
+                typeof(SpecialtyPropertyAssetDto) ,
+                typeof(GlassFilmPropertyAssetDto) ,
+                typeof(EnergyEfficientPropertyAssetDto) ,
+                typeof(CustomPropertyAssetDto) ,
+                typeof(SignagePropertyAssetDto) ,
+                typeof(OutdoorPropertyAssetDto)
             };
 
             foreach (var derivedType in derivedTypes)

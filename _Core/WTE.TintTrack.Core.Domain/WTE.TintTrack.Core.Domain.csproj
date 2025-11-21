@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
@@ -29,11 +29,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="9.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.3">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="9.0.3" />
+    <PackageReference Include="SMEAppHouse.Core.Patterns.EF" Version="9.0.6" />
+    <PackageReference Include="SMEAppHouse.Core.Patterns.Repo" Version="9.0.6" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\_Common\WTE.TintTrack.Common.Application\WTE.TintTrack.Application.Shared.csproj" />
     <ProjectReference Include="..\..\_Common\WTE.TintTrack.Common\WTE.TintTrack.Common.csproj" />
   </ItemGroup>
 

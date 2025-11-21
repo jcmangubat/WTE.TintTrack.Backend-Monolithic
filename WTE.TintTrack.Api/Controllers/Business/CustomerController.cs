@@ -4,8 +4,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WTE.TintTrack.Api.Helpers.ControllerAbstractions;
 using WTE.TintTrack.Api.Helpers.ControllerAbstractions.Interfaces;
-using WTE.TintTrack.Api.Messaging.Business.Request;
-using WTE.TintTrack.Api.Messaging.Business.Responses;
+using WTE.TintTrack.Api.Messaging.Business.Requests.Customer;
+using WTE.TintTrack.Api.Messaging.Business.Requests.CustomerContact;
+using WTE.TintTrack.Api.Messaging.Business.Responses.Customer;
+using WTE.TintTrack.Api.Messaging.Business.Responses.CustomerContact;
 using WTE.TintTrack.Application.Shared.Interfaces;
 using WTE.TintTrack.Application.Shared.Messaging;
 using WTE.TintTrack.Application.Shared.Messaging.Interface;
@@ -14,7 +16,14 @@ using WTE.TintTrack.Business.Application.Interfaces;
 
 namespace WTE.TintTrack.Api.Controllers.Business;
 
-[Route("api/[controller]")]
+/// <summary>
+/// Controller for handling customer management operations.
+/// </summary>
+/// <remarks>
+/// This controller provides comprehensive customer management functionality, including CRUD operations for customers and the ability to associate contacts with customers. It supports managing customer relationships, contact associations, and maintaining customer data throughout the business lifecycle.
+/// </remarks>
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/[controller]")]
 [ApiController]
 [Authorize]
 public class CustomerController(
@@ -28,12 +37,12 @@ public class CustomerController(
         ICRUDExtender<CustomerDto, CreateCustomerRequest, UpdateCustomerRequest> entityCRUDExtender,
         IValidator<CreateCustomerRequest> entityCreateRequestValidator,
         IValidator<UpdateCustomerRequest> entityUpdateRequestValidator,
-        IValidator<AddCustomerContactRequest> addCustomerContactRequestValidator
+        IValidator<CreateCustomerContactRequest> addCustomerContactRequestValidator
     )
     : CodedEntityOperationsControllerBase<CustomerController, CustomerDto, CustomerResponse, CreateCustomerRequest, UpdateCustomerRequest>(
             logger, mapper, messageProviderService, customerService, entityCRUDExtender, entityCreateRequestValidator, entityUpdateRequestValidator)
 {
-    private readonly IValidator<AddCustomerContactRequest> _addCustomerContactRequestValidator = addCustomerContactRequestValidator;
+    private readonly IValidator<CreateCustomerContactRequest> _addCustomerContactRequestValidator = addCustomerContactRequestValidator;
 
     private readonly IContactService _contactService = contactService;
     private readonly ICustomerContactService _customerContactService = customerContactService;
@@ -43,12 +52,12 @@ public class CustomerController(
     [ProducesResponseType(typeof(ValidationFailureApiResponse<dynamic>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ServiceFailureApiResponse<IEnumerable<string>>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ServiceFailureApiResponse<dynamic>), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> AddCustomerContact(AddCustomerContactRequest request)
+    public async Task<IActionResult> AddCustomerContact(CreateCustomerContactRequest request)
     {
         var validationResult = await _addCustomerContactRequestValidator.ValidateAsync(request);
         if (!validationResult.IsValid)
         {
-            var validationResponse = new ValidationFailureApiResponse<AddCustomerContactRequest>(request, validationResult);
+            var validationResponse = new ValidationFailureApiResponse<CreateCustomerContactRequest>(request, validationResult);
             return CreateApiResponse(validationResponse);
         }
 
@@ -56,7 +65,7 @@ public class CustomerController(
         if (contact == null)
         {
             var apiMsg = MessageProviderService.GetMessage("ERR020");
-            var failureResponse = new ServiceFailureApiResponse<AddCustomerContactRequest>(
+            var failureResponse = new ServiceFailureApiResponse<CreateCustomerContactRequest>(
                                             request,
                                             apiMsg.Code, apiMsg.Message,
                                             statusCode: StatusCodes.Status400BadRequest
@@ -69,7 +78,7 @@ public class CustomerController(
         if (customer == null)
         {
             var apiMsg = MessageProviderService.GetMessage("ERR021");
-            var failureResponse = new ServiceFailureApiResponse<AddCustomerContactRequest>(
+            var failureResponse = new ServiceFailureApiResponse<CreateCustomerContactRequest>(
                                             request,
                                             apiMsg.Code, apiMsg.Message,
                                             statusCode: StatusCodes.Status400BadRequest
@@ -83,7 +92,7 @@ public class CustomerController(
         if (customerContact != null)
         {
             var apiMsg = MessageProviderService.GetMessage("ERR022");
-            var failureResponse = new ServiceFailureApiResponse<AddCustomerContactRequest>(
+            var failureResponse = new ServiceFailureApiResponse<CreateCustomerContactRequest>(
                                             request,
                                             apiMsg.Code, apiMsg.Message,
                                             statusCode: StatusCodes.Status400BadRequest
